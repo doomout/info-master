@@ -1,0 +1,64 @@
+HELP.md
+
+### Maven / Java Build ###
+target/
+build/
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+
+### IDEs ###
+# STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# IntelliJ IDEA
+.idea
+*.iws
+*.ipr
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+### Spring Boot ###
+application-local.yml
+application-dev.yml
+application-secret.yml
+# application.yml 은 커밋할 수 있지만, 안에 비번/API KEY 넣지 않기!
+
+### Logs ###
+*.log
+logs/
+
+### OS ###
+.DS_Store
+Thumbs.db
+
+### Others ###
+*.tmp
+*.cache
+
+### Node / Frontend ###
+node_modules/
+dist/
+build/
+
+# environment
+.env
+.env.local
+.env.*.local

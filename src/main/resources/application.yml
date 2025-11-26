@@ -1,0 +1,21 @@
+spring:
+  config:
+    import: optional:application-secret.yml
+  application:
+    name: info-master
+  datasource:
+    url: jdbc:postgresql://localhost:5432/infomaster
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # 개발 단계만
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+server:
+  port: 8080
+
