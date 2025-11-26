@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "\"User\"")  // 대문자/예약어 보호를 위해 큰따옴표 사용
-public class User {
+@Table(name = "member")  
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
