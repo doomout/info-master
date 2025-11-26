@@ -34,8 +34,8 @@ infomaster/
 ## 🛠 기술 스택
 
 ### Backend
-- Java 25
-- Spring Boot 3.x
+- Java 17
+- Spring Boot 3.5.8
 - Spring Data JPA
 - PostgreSQL
 
