@@ -7,7 +7,7 @@
 1. User 테이블
 사용자 정보 및 인증을 위한 기본 테이블
 ```sql
-CREATE TABLE public.user (
+CREATE TABLE public.member (
     id BIGSERIAL PRIMARY KEY,
     email VARCHAR(200) UNIQUE NOT NULL,
     password VARCHAR(200) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE public.question (
 ```sql
 CREATE TABLE public.answer (
     id BIGSERIAL PRIMARY KEY,
-    user_id BIGINT NOT NULL REFERENCES public.user(id) ON DELETE CASCADE,
+    member_id BIGINT NOT NULL REFERENCES public.member(id) ON DELETE CASCADE,
     question_id BIGINT NOT NULL REFERENCES public.question(id) ON DELETE CASCADE,
     answer_text TEXT NOT NULL,
     score INT,
