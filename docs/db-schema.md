@@ -7,7 +7,7 @@
 1. User 테이블
 사용자 정보 및 인증을 위한 기본 테이블
 ```sql
-CREATE TABLE public."User" (
+CREATE TABLE public.user (
     id BIGSERIAL PRIMARY KEY,
     email VARCHAR(200) UNIQUE NOT NULL,
     password VARCHAR(200) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE public."User" (
 
 기출 문제 정보를 저장하는 테이블
 ```sql
-CREATE TABLE public."Question" (
+CREATE TABLE public.question (
     id BIGSERIAL PRIMARY KEY,
     year INT NOT NULL,
     round INT NOT NULL,
@@ -38,10 +38,10 @@ CREATE TABLE public."Question" (
 사용자가 작성한 답안을 저장하는 테이블
 (User : Answer = 1:N, Question : Answer = 1:N)
 ```sql
-CREATE TABLE public."Answer" (
+CREATE TABLE public.answer (
     id BIGSERIAL PRIMARY KEY,
-    user_id BIGINT NOT NULL REFERENCES public."User"(id) ON DELETE CASCADE,
-    question_id BIGINT NOT NULL REFERENCES public."Question"(id) ON DELETE CASCADE,
+    user_id BIGINT NOT NULL REFERENCES public.user(id) ON DELETE CASCADE,
+    question_id BIGINT NOT NULL REFERENCES public.question(id) ON DELETE CASCADE,
     answer_text TEXT NOT NULL,
     score INT,
     comment TEXT,
@@ -53,7 +53,7 @@ CREATE TABLE public."Answer" (
 4. Tag 테이블
 문제 분류용 태그
 ```sql
-CREATE TABLE public."Tag" (
+CREATE TABLE public.tag (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL
 );
@@ -62,9 +62,9 @@ CREATE TABLE public."Tag" (
 5. QuestionTag 테이블
 문제와 태그의 N:N 관계를 위한 매핑 테이블
 ```sql
-CREATE TABLE public."QuestionTag" (
-    question_id BIGINT NOT NULL REFERENCES public."Question"(id) ON DELETE CASCADE,
-    tag_id BIGINT NOT NULL REFERENCES public."Tag"(id) ON DELETE CASCADE,
+CREATE TABLE public.question_tag (
+    question_id BIGINT NOT NULL REFERENCES public.question(id) ON DELETE CASCADE,
+    tag_id BIGINT NOT NULL REFERENCES public.tag(id) ON DELETE CASCADE,
     PRIMARY KEY (question_id, tag_id)
 );
 ```
