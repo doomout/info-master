@@ -58,15 +58,15 @@
 - [x] Postman으로 문제 등록 테스트
 - [x] 문제 조회/수정/삭제 테스트
 
-## ✔ Answer 기능 (TODO)
-- [ ] Answer 엔티티 생성
-- [ ] AnswerRepository 생성
-- [ ] AnswerService 생성
-- [ ] AnswerController 생성
-- [ ] CRUD 테스트
+## ✔ Answer 기능 (CRUD)
+- [x] Answer 엔티티 생성
+- [x] AnswerRepository 생성
+- [x] AnswerService 생성
+- [x] AnswerController 생성
+- [x] CRUD 테스트
 
 ## ✔ Tag & QuestionTag 기능 (TODO)
-- [ ] Tag CRUD
+- [x] Tag CRUD
 - [ ] 문제-태그 매핑 API
 - [ ] 문제 검색 시 태그 필터 적용
 
