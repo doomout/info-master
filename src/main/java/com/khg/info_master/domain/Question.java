@@ -35,7 +35,9 @@ public class Question {
     @Column(length = 20)
     private String difficulty;
 
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
+    @Builder.Default
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     @PreUpdate
