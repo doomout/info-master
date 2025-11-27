@@ -21,14 +21,10 @@ infomaster/
 ## 📄 문서
 
 - **Database Schema (DDL)**  
-  → [`docs/db-schema.md`](docs/db-schema.md)
+  → [`DB 구조`](docs/db-schema.md)
 
-- **프로젝트 아키텍처 (예정)**  
-  → docs/architecture.md
-
-- **API 명세 (예정)**  
-  → docs/api-spec.md
-
+- **프로젝트 진행사항**  
+  → [`프로젝트 진행`](docs/Development-progress.md)
 ---
 
 ## 🛠 기술 스택
