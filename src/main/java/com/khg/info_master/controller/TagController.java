@@ -1,6 +1,8 @@
 package com.khg.info_master.controller;
 
 import com.khg.info_master.domain.Tag;
+import com.khg.info_master.dto.QuestionListDTO;
+import com.khg.info_master.service.QuestionTagService;
 import com.khg.info_master.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.List;
 public class TagController {
 
     private final TagService tagService;
+    private final QuestionTagService questionTagService;
 
     @PostMapping
     public Tag create(@RequestBody Tag tag) {
@@ -39,4 +42,10 @@ public class TagController {
         tagService.delete(id);
         return "deleted";
     }
+
+    @GetMapping("/{tagId}/questions")
+    public List<QuestionListDTO> getQuestionsByTag(@PathVariable Long tagId) {
+        return questionTagService.getQuestionsByTagWithNames(tagId);
+    }
+
 }

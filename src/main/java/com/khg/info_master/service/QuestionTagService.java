@@ -3,6 +3,7 @@ package com.khg.info_master.service;
 import com.khg.info_master.domain.Question;
 import com.khg.info_master.domain.QuestionTag;
 import com.khg.info_master.domain.Tag;
+import com.khg.info_master.dto.QuestionListDTO;
 import com.khg.info_master.repository.QuestionRepository;
 import com.khg.info_master.repository.QuestionTagRepository;
 import com.khg.info_master.repository.TagRepository;
@@ -52,4 +53,29 @@ public class QuestionTagService {
     public List<QuestionTag> getQuestionsByTag(Long tagId) {
         return questionTagRepository.findByTagId(tagId);
     }
+
+    public List<QuestionListDTO> getQuestionsByTagWithNames(Long tagId) {
+
+    List<QuestionTag> list = questionTagRepository.findByTagId(tagId);
+
+    return list.stream().map(qt -> {
+
+        Question q = qt.getQuestion();
+
+        // 해당 문제에 달린 모든 태그 이름 조회
+        List<QuestionTag> tagList = questionTagRepository.findByQuestionId(q.getId());
+        List<String> tagNames = tagList.stream()
+                .map(t -> t.getTag().getName())
+                .toList();
+
+        return QuestionListDTO.builder()
+                .id(q.getId())
+                .subject(q.getSubject())
+                .number(q.getNumber())
+                .tags(tagNames)
+                .build();
+
+        }).toList();
+    }
+
 }
