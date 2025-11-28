@@ -93,9 +93,10 @@ CREATE TABLE public.tag (
 ### 5. QuestionTag 테이블 : 문제와 태그의 N:N 관계를 위한 매핑 테이블
 ```sql
 CREATE TABLE public.question_tag (
+    id BIGSERIAL PRIMARY KEY,
     question_id BIGINT NOT NULL REFERENCES public.question(id) ON DELETE CASCADE,
     tag_id BIGINT NOT NULL REFERENCES public.tag(id) ON DELETE CASCADE,
-    PRIMARY KEY (question_id, tag_id)
+    UNIQUE (question_id, tag_id)
 );
 ```
 | 컬럼명         | 타입     | 설명             |
