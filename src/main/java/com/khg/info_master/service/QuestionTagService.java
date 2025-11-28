@@ -8,6 +8,7 @@ import com.khg.info_master.repository.QuestionTagRepository;
 import com.khg.info_master.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class QuestionTagService {
     }
 
     // 태그 제거
+    @Transactional
     public void removeTag(Long questionId, Long tagId) {
         questionTagRepository.deleteByQuestionIdAndTagId(questionId, tagId);
     }
