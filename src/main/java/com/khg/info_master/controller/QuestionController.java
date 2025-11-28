@@ -1,6 +1,7 @@
 package com.khg.info_master.controller;
 
 import com.khg.info_master.domain.Question;
+import com.khg.info_master.dto.QuestionResponseDTO;
 import com.khg.info_master.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -39,4 +40,9 @@ public class QuestionController {
         questionService.delete(id);
         return "deleted";
     }
+    @GetMapping("/{id}/detail")
+    public QuestionResponseDTO getDetail(@PathVariable Long id) {
+        return questionService.getQuestionWithTags(id);
+    }
+
 }
