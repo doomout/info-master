@@ -2,10 +2,11 @@ package com.khg.info_master.controller;
 
 import com.khg.info_master.domain.Tag;
 import com.khg.info_master.dto.QuestionListDTO;
-import com.khg.info_master.service.QuestionTagService;
+import com.khg.info_master.dto.TagResponseDTO;
 import com.khg.info_master.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import com.khg.info_master.service.QuestionTagService;
 
 import java.util.List;
 
@@ -17,32 +18,37 @@ public class TagController {
     private final TagService tagService;
     private final QuestionTagService questionTagService;
 
-    @PostMapping
-    public Tag create(@RequestBody Tag tag) {
-        return tagService.create(tag);
-    }
-
     @GetMapping("/{id}")
-    public Tag get(@PathVariable Long id) {
-        return tagService.get(id);
+    public TagResponseDTO get(@PathVariable Long id) {
+        Tag tag = tagService.get(id);
+        return tagService.toDTO(tag);
     }
 
     @GetMapping
-    public List<Tag> getAll() {
-        return tagService.getAll();
+    public List<TagResponseDTO> getAll() {
+        return tagService.getAll().stream()
+                .map(tagService::toDTO)
+                .toList();
+    }
+
+    @PostMapping
+    public TagResponseDTO create(@RequestBody Tag tag) {
+        Tag saved = tagService.create(tag);
+        return tagService.toDTO(saved);
     }
 
     @PutMapping("/{id}")
-    public Tag update(@PathVariable Long id, @RequestBody Tag updated) {
-        return tagService.update(id, updated);
+    public TagResponseDTO update(@PathVariable Long id, @RequestBody Tag tag) {
+        Tag updated = tagService.update(id, tag);
+        return tagService.toDTO(updated);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         tagService.delete(id);
-        return "deleted";
     }
 
+    // 태그별 문제 조회
     @GetMapping("/{tagId}/questions")
     public List<QuestionListDTO> getQuestionsByTag(@PathVariable Long tagId) {
         return questionTagService.getQuestionsByTagWithNames(tagId);

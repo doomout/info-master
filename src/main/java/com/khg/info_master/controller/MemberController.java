@@ -1,6 +1,7 @@
 package com.khg.info_master.controller;
 
 import com.khg.info_master.domain.Member;
+import com.khg.info_master.dto.MemberResponseDTO;
 import com.khg.info_master.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,29 +15,33 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping
-    public Member create(@RequestBody Member member) {
-        return memberService.create(member);
-    }
-
     @GetMapping("/{id}")
-    public Member get(@PathVariable Long id) {
-        return memberService.get(id);
+    public MemberResponseDTO get(@PathVariable Long id) {
+        Member member = memberService.get(id);
+        return memberService.toDTO(member);
     }
 
     @GetMapping
-    public List<Member> getAll() {
-        return memberService.getAll();
+    public List<MemberResponseDTO> getAll() {
+        return memberService.getAll().stream()
+                .map(memberService::toDTO)
+                .toList();
+    }
+
+    @PostMapping
+    public MemberResponseDTO create(@RequestBody Member member) {
+        Member saved = memberService.create(member);
+        return memberService.toDTO(saved);
     }
 
     @PutMapping("/{id}")
-    public Member update(@PathVariable Long id, @RequestBody Member updateMember) {
-        return memberService.update(id, updateMember);
+    public MemberResponseDTO update(@PathVariable Long id, @RequestBody Member member) {
+        Member updated = memberService.update(id, member);
+        return memberService.toDTO(updated);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         memberService.delete(id);
-        return "deleted";
     }
 }
