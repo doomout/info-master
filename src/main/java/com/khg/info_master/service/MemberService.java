@@ -1,6 +1,7 @@
 package com.khg.info_master.service;
 
 import com.khg.info_master.domain.Member;
+import com.khg.info_master.dto.MemberResponseDTO;
 import com.khg.info_master.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,4 +40,15 @@ public class MemberService {
     public void delete(Long id) {
         memberRepository.deleteById(id);
     }
+
+    // DTO 변환 메서드
+    public MemberResponseDTO toDTO(Member member) {
+        return MemberResponseDTO.builder()
+                .id(member.getId())
+                .email(member.getEmail())
+                .name(member.getName())
+                .createdAt(member.getCreatedAt())
+                .build();
+    }
+
 }

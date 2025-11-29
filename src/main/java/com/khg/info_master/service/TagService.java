@@ -1,6 +1,7 @@
 package com.khg.info_master.service;
 
 import com.khg.info_master.domain.Tag;
+import com.khg.info_master.dto.TagResponseDTO;
 import com.khg.info_master.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,4 +36,13 @@ public class TagService {
     public void delete(Long id) {
         tagRepository.deleteById(id);
     }
+
+    // DTO 변환 메서드
+    public TagResponseDTO toDTO(Tag tag) {
+        return TagResponseDTO.builder()
+                .id(tag.getId())
+                .name(tag.getName())
+                .build();
+    }
+
 }
