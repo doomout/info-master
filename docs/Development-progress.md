@@ -65,7 +65,7 @@
 - [x] AnswerController 생성
 - [x] CRUD 테스트
 
-## ✔ Tag & QuestionTag 기능 (TODO)
+## ✔ Tag & QuestionTag 기능 (CRUD)
 - [x] Tag CRUD
 - [x] 문제-태그 매핑 API
 - [x] 문제 검색 시 태그 필터 적용
@@ -74,10 +74,10 @@
 
 # 4. DTO & Validation (리팩토링 단계)
 
-- [ ] MemberCreateRequest / MemberResponse DTO 생성
-- [ ] QuestionCreateRequest / QuestionResponse DTO 생성
-- [ ] Answer DTO 생성
-- [ ] Controller에서 Entity ↔ DTO 변환 적용
+- [x] MemberCreateRequest / MemberResponse DTO 생성
+- [x] QuestionCreateRequest / QuestionResponse DTO 생성
+- [x] Answer DTO 생성
+- [x] Controller에서 Entity ↔ DTO 변환 적용
 - [ ] Validation(@NotBlank, @Email 등) 추가
 
 ---
