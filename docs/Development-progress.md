@@ -67,16 +67,14 @@
 
 ## ✔ Tag & QuestionTag 기능 (CRUD)
 - [x] Tag CRUD
-- [x] 문제-태그 매핑 API
-- [x] 문제 검색 시 태그 필터 적용
+- [x] Question-Tag 매핑 기능
+- [x] Tag 기반 Question 검색 API
 
 ---
 
 # 4. DTO & Validation (리팩토링 단계)
 
-- [x] MemberCreateRequest / MemberResponse DTO 생성
-- [x] QuestionCreateRequest / QuestionResponse DTO 생성
-- [x] Answer DTO 생성
+- [x] DTO 생성
 - [x] Controller에서 Entity ↔ DTO 변환 적용
 - [ ] Validation(@NotBlank, @Email 등) 추가
 
@@ -84,10 +82,10 @@
 
 # 5. 글로벌 오류 처리
 
-- [ ] @RestControllerAdvice 생성
-- [ ] 공통 오류 포맷 지정
-- [ ] IllegalArgumentException 처리
-- [ ] 404, 400, 500 공통 처리 구조 구축
+- [x] @RestControllerAdvice 생성
+- [x] 공통 오류 포맷 지정
+- [x] IllegalArgumentException 처리
+- [x] 404, 400, 500 공통 처리 구조 구축
 
 ---
 
@@ -120,21 +118,20 @@
 
 ---
 
-# 현재 진행 상태 (2025.11.27)
+# 현재 진행 상태 (2025.11.30)
 
-| 기능 | 상태 |
-|------|--------|
-| Member CRUD | ✔ 완료 |
-| Question CRUD | ✔ 완료 |
-| DB 권한 설정 | ✔ 완료 |
-| Answer CRUD | ❌ |
-| Tag/N:N 매핑 | ❌ |
-| DTO/Validation | ❌ |
-| JWT 인증 | ❌ |
-| React 연동 | ❌ |
+| 기능              | 상태    |
+| --------------- | ----- |
+| Member CRUD     | ✔ 완료  |
+| Question CRUD   | ✔ 완료  |
+| Answer CRUD     | ✔ 완료  |
+| Tag CRUD        | ✔ 완료  |
+| Question-Tag 매핑 | ✔ 완료  |
+| DTO (변환)        | ✔ 완료  |
+| DTO Validation  | ❌ 미완료 |
+| 글로벌 예외 처리       | ✔ 완료  |
+| JWT 인증          | ❌ 미완료 |
+| React 연동        | ❌ 미완료 |
 
 ---
-
-# 다음 추천 작업
-Answer CRUD → DTO 도입 → Exception Handler → React 시작
 
