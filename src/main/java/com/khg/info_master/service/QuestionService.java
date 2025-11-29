@@ -17,10 +17,12 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionTagRepository questionTagRepository;
 
+    // CREATE
     public Question create(Question q) {
         return questionRepository.save(q);
     }
 
+    // READ
     public Question get(Long id) {
         return questionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 문제입니다."));
@@ -30,6 +32,7 @@ public class QuestionService {
         return questionRepository.findAll();
     }
 
+    // UPDATE
     public Question update(Long id, Question update) {
         Question q = get(id);
 
@@ -43,35 +46,52 @@ public class QuestionService {
         return questionRepository.save(q);
     }
 
+    // DELETE
     public void delete(Long id) {
         questionRepository.deleteById(id);
     }
 
-    public QuestionResponseDTO getQuestionWithTags(Long id) {
-
-    Question question = questionRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 문제입니다."));
-
-    // 문제의 태그 목록 조회
-    List<QuestionTag> tags = questionTagRepository.findByQuestionId(id);
-
-    // Tag 이름만 리스트로 추출
-    List<String> tagNames = tags.stream()
-            .map(qt -> qt.getTag().getName())
-            .toList();
-
-    return QuestionResponseDTO.builder()
-            .id(question.getId())
-            .year(question.getYear())
-            .round(question.getRound())
-            .subject(question.getSubject())
-            .number(question.getNumber())
-            .questionText(question.getQuestionText())
-            .difficulty(question.getDifficulty())
-            .createdAt(question.getCreatedAt())
-            .updatedAt(question.getUpdatedAt())
-            .tags(tagNames)   // 🔥 핵심!
-            .build();
+    // DTO 변환 (기본)
+    public QuestionResponseDTO toResponseDTO(Question q) {
+        return QuestionResponseDTO.builder()
+                .id(q.getId())
+                .year(q.getYear())
+                .round(q.getRound())
+                .subject(q.getSubject())
+                .number(q.getNumber())
+                .questionText(q.getQuestionText())
+                .difficulty(q.getDifficulty())
+                .createdAt(q.getCreatedAt())
+                .updatedAt(q.getUpdatedAt())
+                .tags(null) // 기본 조회는 태그 없음
+                .build();
     }
 
+    // 상세 조회 + 태그 포함
+    public QuestionResponseDTO getQuestionWithTags(Long id) {
+
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 문제입니다."));
+
+        // 문제의 태그 목록 조회
+        List<QuestionTag> tags = questionTagRepository.findByQuestionId(id);
+
+        // Tag 이름만 리스트로 추출
+        List<String> tagNames = tags.stream()
+                .map(qt -> qt.getTag().getName())
+                .toList();
+
+        return QuestionResponseDTO.builder()
+                .id(question.getId())
+                .year(question.getYear())
+                .round(question.getRound())
+                .subject(question.getSubject())
+                .number(question.getNumber())
+                .questionText(question.getQuestionText())
+                .difficulty(question.getDifficulty())
+                .createdAt(question.getCreatedAt())
+                .updatedAt(question.getUpdatedAt())
+                .tags(tagNames)
+                .build();
+    }
 }
