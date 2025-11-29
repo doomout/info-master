@@ -56,24 +56,24 @@ public class QuestionTagService {
 
     public List<QuestionListDTO> getQuestionsByTagWithNames(Long tagId) {
 
-    List<QuestionTag> list = questionTagRepository.findByTagId(tagId);
+        List<QuestionTag> list = questionTagRepository.findByTagId(tagId);
 
-    return list.stream().map(qt -> {
+        return list.stream().map(qt -> {
 
-        Question q = qt.getQuestion();
+            Question q = qt.getQuestion();
 
-        // 해당 문제에 달린 모든 태그 이름 조회
-        List<QuestionTag> tagList = questionTagRepository.findByQuestionId(q.getId());
-        List<String> tagNames = tagList.stream()
-                .map(t -> t.getTag().getName())
-                .toList();
+            // 해당 문제에 달린 모든 태그 이름 조회
+            List<QuestionTag> tagList = questionTagRepository.findByQuestionId(q.getId());
+            List<String> tagNames = tagList.stream()
+                    .map(t -> t.getTag().getName())
+                    .toList();
 
-        return QuestionListDTO.builder()
-                .id(q.getId())
-                .subject(q.getSubject())
-                .number(q.getNumber())
-                .tags(tagNames)
-                .build();
+            return QuestionListDTO.builder()
+                    .id(q.getId())
+                    .subject(q.getSubject())
+                    .number(q.getNumber())
+                    .tags(tagNames)
+                    .build();
 
         }).toList();
     }
