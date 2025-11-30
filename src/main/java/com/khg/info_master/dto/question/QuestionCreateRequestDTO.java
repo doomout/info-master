@@ -1,24 +1,28 @@
 package com.khg.info_master.dto.question;
 
-import java.util.List;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
 public class QuestionCreateRequestDTO {
 
-    @NotBlank(message = "질문 제목은 비어 있을 수 없습니다.")
-    private String title;
+    @NotNull(message = "year는 필수입니다.")
+    private Integer year;
 
-    @NotBlank(message = "질문 내용은 비어 있을 수 없습니다.")
-    private String content;
+    @NotNull(message = "round는 필수입니다.")
+    private Integer round;
 
-    @NotNull(message = "memberId는 필수값입니다.")
-    private Long memberId;
+    @NotBlank(message = "subject는 비어 있을 수 없습니다.")
+    private String subject;
 
-    // 태그 ID 리스트(선택)
-    private List<Long> tagIds;
+    @NotNull(message = "문제 번호(number)는 필수입니다.")
+    private Integer number;
+
+    @NotBlank(message = "문제 본문(questionText)은 비어 있을 수 없습니다.")
+    private String questionText;
+
+    private String difficulty;   // 선택 값
 }
