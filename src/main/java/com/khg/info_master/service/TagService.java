@@ -1,7 +1,7 @@
 package com.khg.info_master.service;
 
 import com.khg.info_master.domain.Tag;
-import com.khg.info_master.dto.TagResponseDTO;
+import com.khg.info_master.dto.tag.TagResponseDTO;
 import com.khg.info_master.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

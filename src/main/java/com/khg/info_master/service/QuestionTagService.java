@@ -3,7 +3,7 @@ package com.khg.info_master.service;
 import com.khg.info_master.domain.Question;
 import com.khg.info_master.domain.QuestionTag;
 import com.khg.info_master.domain.Tag;
-import com.khg.info_master.dto.QuestionListDTO;
+import com.khg.info_master.dto.question.QuestionListDTO;
 import com.khg.info_master.repository.QuestionRepository;
 import com.khg.info_master.repository.QuestionTagRepository;
 import com.khg.info_master.repository.TagRepository;

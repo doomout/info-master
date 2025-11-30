@@ -1,7 +1,7 @@
 package com.khg.info_master.controller;
 
 import com.khg.info_master.domain.Answer;
-import com.khg.info_master.dto.AnswerResponseDTO;
+import com.khg.info_master.dto.answer.AnswerResponseDTO;
 import com.khg.info_master.service.AnswerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -3,7 +3,7 @@ package com.khg.info_master.service;
 import com.khg.info_master.domain.Answer;
 import com.khg.info_master.domain.Member;
 import com.khg.info_master.domain.Question;
-import com.khg.info_master.dto.AnswerResponseDTO;
+import com.khg.info_master.dto.answer.AnswerResponseDTO;
 import com.khg.info_master.repository.AnswerRepository;
 import com.khg.info_master.repository.MemberRepository;
 import com.khg.info_master.repository.QuestionRepository;

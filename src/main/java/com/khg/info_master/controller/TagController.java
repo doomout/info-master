@@ -1,8 +1,8 @@
 package com.khg.info_master.controller;
 
 import com.khg.info_master.domain.Tag;
-import com.khg.info_master.dto.QuestionListDTO;
-import com.khg.info_master.dto.TagResponseDTO;
+import com.khg.info_master.dto.question.QuestionListDTO;
+import com.khg.info_master.dto.tag.TagResponseDTO;
 import com.khg.info_master.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

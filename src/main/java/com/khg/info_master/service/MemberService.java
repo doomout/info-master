@@ -1,7 +1,7 @@
 package com.khg.info_master.service;
 
 import com.khg.info_master.domain.Member;
-import com.khg.info_master.dto.MemberResponseDTO;
+import com.khg.info_master.dto.member.MemberResponseDTO;
 import com.khg.info_master.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

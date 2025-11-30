@@ -1,4 +1,4 @@
-package com.khg.info_master.dto;
+package com.khg.info_master.dto.tag;
 
 import lombok.Builder;
 import lombok.Getter;
