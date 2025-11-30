@@ -24,12 +24,19 @@ public class QuestionTagService {
     // 태그 추가
     public QuestionTag addTag(Long questionId, Long tagId) {
 
+        // 1) 문제 & 태그 존재 확인
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new IllegalArgumentException("문제가 존재하지 않습니다."));
 
         Tag tag = tagRepository.findById(tagId)
                 .orElseThrow(() -> new IllegalArgumentException("태그가 존재하지 않습니다."));
 
+        // 2) 중복 검사 추가
+        if (questionTagRepository.existsByQuestionIdAndTagId(questionId, tagId)) {
+            throw new IllegalArgumentException("이미 연결된 태그입니다.");
+        }
+
+        // 3) 저장
         QuestionTag questionTag = QuestionTag.builder()
                 .question(question)
                 .tag(tag)
@@ -37,6 +44,7 @@ public class QuestionTagService {
 
         return questionTagRepository.save(questionTag);
     }
+
 
     // 태그 제거
     @Transactional

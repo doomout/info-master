@@ -12,4 +12,6 @@ public interface QuestionTagRepository extends JpaRepository<QuestionTag, Long> 
     List<QuestionTag> findByTagId(Long tagId);
 
     void deleteByQuestionIdAndTagId(Long questionId, Long tagId);
+
+    boolean existsByQuestionIdAndTagId(Long questionId, Long tagId);
 }
