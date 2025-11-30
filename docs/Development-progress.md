@@ -2,8 +2,7 @@
 ## 📘 InfoMaster Backend Development Progress  
 정보관리기술사 학습 지원 서비스 — 백엔드 개발 진척도 문서  
 
-백엔드 스택: Spring Boot 3 + Java 17 + PostgreSQL + JPA  
-
+백엔드 스택: Spring Boot 3 · Java 17 · PostgreSQL · JPA
 ---
 
 # 1. 프로젝트 초기 설정
@@ -76,7 +75,8 @@
 
 - [x] DTO 생성
 - [x] Controller에서 Entity ↔ DTO 변환 적용
-- [ ] Validation(@NotBlank, @Email 등) 추가
+- [~] Validation 일부 적용 (@NotBlank, @NotNull)
+- [ ] 전체 엔티티 Validation 적용 (미완료)
 
 ---
 
@@ -88,8 +88,18 @@
 - [x] 404, 400, 500 공통 처리 구조 구축
 
 ---
+# 6. 테스트 (Unit / Integration)
 
-# 6. 인증/인가 (JWT)
+ - [x] Member CRUD 테스트
+ - [x] Question CRUD 테스트
+ - [x] Answer CRUD 테스트
+ - [x] Tag CRUD 테스트
+ - [x] QuestionTag 매핑 테스트(추가/조회/삭제/중복)
+ - [ ] JWT 테스트 (Security 적용 후 진행)
+ - [ ] API 통합 테스트 (React 연동 전)
+ ---
+
+# 7. 인증/인가 (JWT)
 
 - [ ] Spring Security 기본 적용
 - [ ] JWT Access Token 발급
@@ -99,7 +109,7 @@
 
 ---
 
-# 7. 프론트엔드(React) 연동
+# 8. 프론트엔드(React) 연동
 
 - [ ] React 프로젝트 생성
 - [ ] Member 등록 화면 + API 연동
@@ -109,7 +119,7 @@
 
 ---
 
-# 8. 문서 (Docs)
+# 9. 문서 (Docs)
 
 - [ ] DB 스키마 문서 완성
 - [ ] ERD 생성하여 docs에 추가
@@ -118,20 +128,21 @@
 
 ---
 
-# 현재 진행 상태 (2025.11.30)
+# 현재 진행 상태 (2025.12.01)
 
-| 기능              | 상태    |
-| --------------- | ----- |
-| Member CRUD     | ✔ 완료  |
-| Question CRUD   | ✔ 완료  |
-| Answer CRUD     | ✔ 완료  |
-| Tag CRUD        | ✔ 완료  |
-| Question-Tag 매핑 | ✔ 완료  |
-| DTO (변환)        | ✔ 완료  |
-| DTO Validation  | ❌ 미완료 |
-| 글로벌 예외 처리       | ✔ 완료  |
-| JWT 인증          | ❌ 미완료 |
-| React 연동        | ❌ 미완료 |
-
+| 기능               | 상태      |
+| ---------------- | ------- |
+| Member CRUD      | ✔ 완료    |
+| Question CRUD    | ✔ 완료    |
+| Answer CRUD      | ✔ 완료    |
+| Tag CRUD         | ✔ 완료    |
+| Question-Tag 매핑  | ✔ 완료    |
+| DTO 적용           | ✔ 완료    |
+| DTO Validation   | ⚠ 일부 완료 |
+| Global Exception | ✔ 완료    |
+| 테스트 구축           | ✔ 완료    |
+| JWT 인증           | ❌ 미완료   |
+| React 연동         | ❌ 미완료   |
+| 문서/ERD           | ❌ 미완료   |
 ---
 
