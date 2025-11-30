@@ -1,8 +1,11 @@
 package com.khg.info_master.controller;
 
-import com.khg.info_master.domain.Answer;
+import com.khg.info_master.dto.answer.AnswerCreateRequestDTO;
 import com.khg.info_master.dto.answer.AnswerResponseDTO;
+import com.khg.info_master.dto.answer.AnswerUpdateRequestDTO;
 import com.khg.info_master.service.AnswerService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,31 +20,30 @@ public class AnswerController {
 
     @GetMapping("/{id}")
     public AnswerResponseDTO get(@PathVariable Long id) {
-        Answer answer = answerService.get(id);
-        return answerService.toDTO(answer);
+        return answerService.toDTO(answerService.get(id));
     }
 
     @GetMapping
     public List<AnswerResponseDTO> getAll() {
-        return answerService.getAll().stream()
+        return answerService.getAll()
+                .stream()
                 .map(answerService::toDTO)
                 .toList();
     }
 
-    @PostMapping("/{memberId}/{questionId}")
+    @PostMapping
     public AnswerResponseDTO create(
-            @PathVariable Long memberId,
-            @PathVariable Long questionId,
-            @RequestBody Answer answer
+            @Valid @RequestBody AnswerCreateRequestDTO dto
     ) {
-        Answer created = answerService.create(memberId, questionId, answer);
-        return answerService.toDTO(created);
+        return answerService.create(dto);
     }
 
     @PutMapping("/{id}")
-    public AnswerResponseDTO update(@PathVariable Long id, @RequestBody Answer answer) {
-        Answer updated = answerService.update(id, answer);
-        return answerService.toDTO(updated);
+    public AnswerResponseDTO update(
+            @PathVariable Long id,
+            @Valid @RequestBody AnswerUpdateRequestDTO dto
+    ) {
+        return answerService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
