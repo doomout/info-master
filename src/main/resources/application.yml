@@ -10,7 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update   # 개발 단계만
+      ddl-auto: none   # 개발 단계만
     properties:
       hibernate:
         format_sql: true
