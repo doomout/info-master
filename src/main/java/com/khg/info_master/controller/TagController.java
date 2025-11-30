@@ -2,6 +2,7 @@ package com.khg.info_master.controller;
 
 import com.khg.info_master.domain.Tag;
 import com.khg.info_master.dto.question.QuestionListDTO;
+import com.khg.info_master.dto.tag.TagCreateRequestDTO;
 import com.khg.info_master.dto.tag.TagResponseDTO;
 import com.khg.info_master.service.TagService;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,8 @@ public class TagController {
     }
 
     @PostMapping
-    public TagResponseDTO create(@RequestBody Tag tag) {
-        Tag saved = tagService.create(tag);
-        return tagService.toDTO(saved);
+    public TagResponseDTO create(@RequestBody TagCreateRequestDTO dto) {
+        return tagService.create(dto.getName());
     }
 
     @PutMapping("/{id}")

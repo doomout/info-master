@@ -14,9 +14,25 @@ public class TagService {
 
     private final TagRepository tagRepository;
 
-    public Tag create(Tag tag) {
-        return tagRepository.save(tag);
+    public TagResponseDTO create(String name) {
+
+        // 1) 중복 검사
+        if (tagRepository.existsByName(name)) {
+            throw new IllegalArgumentException("이미 존재하는 태그입니다.");
+        }
+
+        // 2) 엔티티 생성
+        Tag tag = Tag.builder()
+                .name(name)
+                .build();
+
+        // 3) 저장
+        Tag saved = tagRepository.save(tag);
+
+        // 4) DTO 변환
+        return toDTO(saved);
     }
+
 
     public Tag get(Long id) {
         return tagRepository.findById(id)
