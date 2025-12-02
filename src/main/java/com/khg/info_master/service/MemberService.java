@@ -2,6 +2,7 @@ package com.khg.info_master.service;
 
 import com.khg.info_master.domain.Member;
 import com.khg.info_master.dto.member.MemberResponseDTO;
+import com.khg.info_master.dto.member.MemberUpdateRequestDTO;
 import com.khg.info_master.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,11 +31,17 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    public Member update(Long id, Member updateMember) {
+    // DTO를 활용한 회원 정보 수정
+    public MemberResponseDTO update(Long id, MemberUpdateRequestDTO dto) {
         Member member = get(id);
-        member.setName(updateMember.getName());
-        member.setPassword(updateMember.getPassword());
-        return memberRepository.save(member);
+        if (dto.getEmail() != null) {
+            member.setEmail(dto.getEmail());
+        }
+        member.setName(dto.getName());
+        member.setPassword(dto.getPassword());
+        Member saved = memberRepository.save(member);
+
+        return toDTO(saved);
     }
 
     public void delete(Long id) {

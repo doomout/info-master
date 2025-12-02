@@ -2,6 +2,7 @@ package com.khg.info_master.controller;
 
 import com.khg.info_master.domain.Member;
 import com.khg.info_master.dto.member.MemberResponseDTO;
+import com.khg.info_master.dto.member.MemberUpdateRequestDTO;
 import com.khg.info_master.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +36,11 @@ public class MemberController {
     }
 
     @PutMapping("/{id}")
-    public MemberResponseDTO update(@PathVariable Long id, @RequestBody Member member) {
-        Member updated = memberService.update(id, member);
-        return memberService.toDTO(updated);
+    public MemberResponseDTO update(
+            @PathVariable Long id,
+            @RequestBody MemberUpdateRequestDTO dto
+    ) {
+        return memberService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")

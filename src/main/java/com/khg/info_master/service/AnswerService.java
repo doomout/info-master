@@ -71,7 +71,7 @@ public class AnswerService {
 
         return toDTO(saved);
     }
-
+    
     public void delete(Long id) {
         answerRepository.deleteById(id);
     }
