@@ -1,7 +1,8 @@
 package com.khg.info_master.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.khg.info_master.dto.question.QuestionCreateRequestDTO;
+import com.khg.info_master.domain.Question;
+import com.khg.info_master.dto.question.QuestionUpdateRequestDTO;
 import com.khg.info_master.repository.QuestionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,46 +12,103 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import java.util.Map;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class QuestionControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+    @Autowired MockMvc mockMvc;
 
-    @Autowired
-    QuestionRepository questionRepository;
+    @Autowired ObjectMapper objectMapper;
 
-    @Autowired
-    ObjectMapper objectMapper;
+    @Autowired QuestionRepository questionRepository;
+
+    Long questionId;
 
     @BeforeEach
-    void clean() {
+    void setup() {
         questionRepository.deleteAll();
+
+        Question q = Question.builder()
+                .year(2024)
+                .round(1)
+                .subject("보안")
+                .number(3)
+                .questionText("SQL Injection 예방 방법은?")
+                .difficulty("중")
+                .build();
+
+        questionId = questionRepository.save(q).getId();
     }
 
+    // CREATE 테스트
     @Test
     void 문제_생성_성공() throws Exception {
 
-        QuestionCreateRequestDTO dto = new QuestionCreateRequestDTO();
-        dto.setYear(2024);
-        dto.setRound(1);
-        dto.setSubject("정보시스템 구축관리");
-        dto.setNumber(1);
-        dto.setQuestionText("정규화 1~3NF를 설명하시오.");
-        dto.setDifficulty("중");
+        Map<String, Object> dto = Map.of(
+                "year", 2025,
+                "round", 2,
+                "subject", "데이터베이스",
+                "number", 7,
+                "questionText", "트랜잭션이란 무엇인가?",
+                "difficulty", "상"
+        );
 
         mockMvc.perform(post("/api/questions")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.year").value(2024))
-                .andExpect(jsonPath("$.round").value(1))
-                .andExpect(jsonPath("$.subject").value("정보시스템 구축관리"))
-                .andExpect(jsonPath("$.number").value(1))
-                .andExpect(jsonPath("$.questionText").value("정규화 1~3NF를 설명하시오."));
+                .andExpect(jsonPath("$.subject").value("데이터베이스"))
+                .andExpect(jsonPath("$.number").value(7));
+    }
+
+    // READ 단건
+    @Test
+    void 문제_단건조회_성공() throws Exception {
+        mockMvc.perform(get("/api/questions/" + questionId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(questionId));
+    }
+
+    // READ 전체
+    @Test
+    void 문제_전체조회_성공() throws Exception {
+        mockMvc.perform(get("/api/questions"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].subject").value("보안"));
+    }
+
+    // UPDATE (DTO 적용)
+    @Test
+    void 문제_수정_성공() throws Exception {
+
+        Map<String, Object> dto = Map.of(
+                "year", 2025,
+                "round", 3,
+                "subject", "네트워크",
+                "number", 10,
+                "questionText", "OSI 7계층을 설명하시오.",
+                "difficulty", "중"
+        );
+
+        mockMvc.perform(put("/api/questions/" + questionId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.subject").value("네트워크"))
+                .andExpect(jsonPath("$.number").value(10));
+    }
+
+    // DELETE 테스트
+    @Test
+    void 문제_삭제_성공() throws Exception {
+
+        mockMvc.perform(delete("/api/questions/" + questionId))
+                .andExpect(status().isOk())
+                .andExpect(content().string("deleted"));
     }
 }
