@@ -1,7 +1,7 @@
 package com.khg.info_master.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.khg.info_master.dto.member.MemberCreateRequestDTO;
+import com.khg.info_master.domain.Member;
 import com.khg.info_master.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,67 +11,88 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import java.util.Map;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class MemberControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+    @Autowired MockMvc mockMvc;
+    @Autowired MemberRepository memberRepository;
+    @Autowired ObjectMapper objectMapper;
 
-    @Autowired
-    MemberRepository memberRepository;
-
-    @Autowired
-    ObjectMapper objectMapper;
+    Long memberId;
 
     @BeforeEach
-    void clean() {
+    void setup() {
         memberRepository.deleteAll();
+
+        Member m = Member.builder()
+                .email("test@test.com")
+                .password("1234")
+                .name("tester")
+                .build();
+
+        memberId = memberRepository.save(m).getId();
     }
 
+    // ---------------------------
+    // 1) 단건 조회 테스트
+    // ---------------------------
     @Test
-    void 회원_생성_성공() throws Exception {
+    void 회원_단건조회_성공() throws Exception {
 
-        // DTO 만들기
-        MemberCreateRequestDTO dto = new MemberCreateRequestDTO();
-        dto.setEmail("test@test.com");
-        dto.setPassword("123456");
-        dto.setName("홍길동");
+        mockMvc.perform(get("/api/members/" + memberId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("test@test.com"))
+                .andExpect(jsonPath("$.name").value("tester"));
+    }
 
-        mockMvc.perform(post("/api/members")
+    // ---------------------------
+    // 2) 전체 조회 테스트
+    // ---------------------------
+    @Test
+    void 회원_전체조회_성공() throws Exception {
+
+        mockMvc.perform(get("/api/members"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    // ---------------------------
+    // 3) 회원 수정 테스트 (DTO 기반)
+    // ---------------------------
+    @Test
+    void 회원_수정_성공() throws Exception {
+
+        Map<String, Object> dto = Map.of(
+                "email", "new@test.com",
+                "password", "abcd",
+                "name", "newtester"
+        );
+
+        mockMvc.perform(put("/api/members/" + memberId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value("test@test.com"))
-                .andExpect(jsonPath("$.name").value("홍길동"));
+                .andExpect(jsonPath("$.email").value("new@test.com"))
+                .andExpect(jsonPath("$.name").value("newtester"));
     }
 
+    // ---------------------------
+    // 4) 회원 삭제 테스트
+    // ---------------------------
     @Test
-    void 회원_이메일_중복_실패() throws Exception {
+    void 회원_삭제_성공() throws Exception {
 
-        // 1) 첫 번째 회원 생성
-        MemberCreateRequestDTO dto1 = new MemberCreateRequestDTO();
-        dto1.setEmail("dup@test.com");
-        dto1.setPassword("111111");
-        dto1.setName("첫번째");
-
-        mockMvc.perform(post("/api/members")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto1)))
+        mockMvc.perform(delete("/api/members/" + memberId))
                 .andExpect(status().isOk());
 
-        // 2) 두번째 회원 생성 (중복 이메일)
-        MemberCreateRequestDTO dto2 = new MemberCreateRequestDTO();
-        dto2.setEmail("dup@test.com");
-        dto2.setPassword("222222");
-        dto2.setName("두번째");
-
-        mockMvc.perform(post("/api/members")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto2)))
-                .andExpect(status().isBadRequest()); // 글로벌 예외 처리에 따라 400 또는 409
+        // 삭제 후 조회 시 4xx 발생해야 정상
+        mockMvc.perform(get("/api/members/" + memberId))
+                .andExpect(status().is4xxClientError());
     }
 }

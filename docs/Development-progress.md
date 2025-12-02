@@ -90,11 +90,11 @@
 ---
 # 6. 테스트 (Unit / Integration)
 
- - [x] Member CRUD 테스트
- - [x] Question CRUD 테스트
- - [x] Answer CRUD 테스트
- - [x] Tag CRUD 테스트
- - [x] QuestionTag 매핑 테스트(추가/조회/삭제/중복)
+ - [x] Member CRUD 테스트(C)
+ - [x] Question CRUD 테스트(C)
+ - [x] Answer CRUD 테스트(C)
+ - [x] Tag CRUD 테스트(C)
+ - [x] QuestionTag 매핑 테스트(추가/조회/중복)(C)
  - [ ] JWT 테스트 (Security 적용 후 진행)
  - [ ] API 통합 테스트 (React 연동 전)
  ---
