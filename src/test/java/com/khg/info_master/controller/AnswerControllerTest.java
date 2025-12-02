@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.khg.info_master.domain.Member;
 import com.khg.info_master.domain.Question;
 import com.khg.info_master.dto.answer.AnswerCreateRequestDTO;
+import com.khg.info_master.dto.answer.AnswerUpdateRequestDTO;
 import com.khg.info_master.repository.AnswerRepository;
 import com.khg.info_master.repository.MemberRepository;
 import com.khg.info_master.repository.QuestionRepository;
@@ -15,84 +16,142 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import java.util.Map;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class AnswerControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+    @Autowired MockMvc mockMvc;
+    @Autowired ObjectMapper objectMapper;
 
-    @Autowired
-    MemberRepository memberRepository;
-
-    @Autowired
-    QuestionRepository questionRepository;
-    
-    @Autowired
-    AnswerRepository answerRepository;
-
-    @Autowired
-    ObjectMapper objectMapper;
+    @Autowired MemberRepository memberRepository;
+    @Autowired QuestionRepository questionRepository;
+    @Autowired AnswerRepository answerRepository;
 
     Long memberId;
     Long questionId;
-
-    // 테스트 후에는 DB 초기화
-    @BeforeEach
-    void clean() {
-        answerRepository.deleteAll();
-        questionRepository.deleteAll();
-        memberRepository.deleteAll();
-    }
-
+    Long answerId;
 
     @BeforeEach
     void setup() {
-        // 1. Member 저장
-        Member member = Member.builder()
-                .email("test1@test.com")
-                .password("123456")
+
+        answerRepository.deleteAll();
+        questionRepository.deleteAll();
+        memberRepository.deleteAll();
+
+        // 1) Member 생성
+        Member m = Member.builder()
+                .email("test@test.com")
+                .password("1234")
                 .name("tester")
                 .build();
+        memberId = memberRepository.save(m).getId();
 
-        Member savedMember = memberRepository.save(member);
-        memberId = savedMember.getId();
-
-        // 2. Question 저장
+        // 2) Question 생성
         Question q = Question.builder()
-                .year(2025)
+                .year(2024)
                 .round(1)
                 .subject("보안")
-                .number(3)
-                .questionText("다음 중 SQL Injection을 방지하기 위한 방법은?")
+                .number(1)
+                .questionText("XSS 방지 방법은?")
                 .difficulty("중")
                 .build();
+        questionId = questionRepository.save(q).getId();
 
-        Question savedQuestion = questionRepository.save(q);
-        questionId = savedQuestion.getId();
-    }
-
-    @Test
-    void 답변_생성_성공() throws Exception {
-
-        // Answer 생성 DTO
+        // 3) 초기 Answer 생성
         AnswerCreateRequestDTO dto = new AnswerCreateRequestDTO();
         dto.setMemberId(memberId);
         dto.setQuestionId(questionId);
-        dto.setAnswerText("정규화는 이상현상을 제거하고 데이터 중복을 최소화하는 과정입니다.");
+        dto.setAnswerText("정답입니다.");
         dto.setScore(80);
-        dto.setComment("전반적으로 잘 설명했음");
+        dto.setComment("좋아요");
+
+        // JSON → POST 호출
+        try {
+            String json = objectMapper.writeValueAsString(dto);
+            String response = mockMvc.perform(post("/api/answers")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
+                    .andExpect(status().isOk())
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString();
+
+            // 응답에서 answerId 추출
+            Map<String, Object> map = objectMapper.readValue(response, Map.class);
+            answerId = Long.valueOf(map.get("id").toString());
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // CREATE
+    @Test
+    void 답변_생성_성공() throws Exception {
+
+        AnswerCreateRequestDTO dto = new AnswerCreateRequestDTO();
+        dto.setMemberId(memberId);
+        dto.setQuestionId(questionId);
+        dto.setAnswerText("새로운 답변입니다.");
+        dto.setScore(90);
+        dto.setComment("잘 작성됨");
 
         mockMvc.perform(post("/api/answers")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.answerText").value("새로운 답변입니다."))
                 .andExpect(jsonPath("$.memberId").value(memberId))
-                .andExpect(jsonPath("$.questionId").value(questionId))
-                .andExpect(jsonPath("$.answerText").value(dto.getAnswerText()));
+                .andExpect(jsonPath("$.questionId").value(questionId));
     }
 
+    // READ 단건
+    @Test
+    void 답변_단건조회_성공() throws Exception {
+        mockMvc.perform(get("/api/answers/" + answerId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(answerId));
+    }
+
+    // READ 전체
+    @Test
+    void 답변_전체조회_성공() throws Exception {
+        mockMvc.perform(get("/api/answers"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].memberId").value(memberId));
+    }
+
+    // UPDATE
+    @Test
+    void 답변_수정_성공() throws Exception {
+
+        AnswerUpdateRequestDTO dto = new AnswerUpdateRequestDTO();
+        dto.setAnswerText("수정된 답변 내용");
+        dto.setScore(95);
+        dto.setComment("수정 코멘트");
+
+        mockMvc.perform(put("/api/answers/" + answerId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.answerText").value("수정된 답변 내용"))
+                .andExpect(jsonPath("$.score").value(95));
+    }
+
+    // DELETE
+    @Test
+    void 답변_삭제_성공() throws Exception {
+
+        mockMvc.perform(delete("/api/answers/" + answerId))
+                .andExpect(status().isOk());
+
+        // 삭제 후 조회하면 400 or 404 → 예외 처리됨
+        mockMvc.perform(get("/api/answers/" + answerId))
+                .andExpect(status().isBadRequest());
+    }
 }
