@@ -1,42 +1,53 @@
 package com.khg.info_master.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.khg.info_master.dto.tag.TagCreateRequestDTO;
+import com.khg.info_master.domain.Tag;
+import com.khg.info_master.dto.tag.TagResponseDTO;
 import com.khg.info_master.repository.TagRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import java.util.Map;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class TagControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+    @Autowired MockMvc mockMvc;
+    @Autowired ObjectMapper objectMapper;
+    @Autowired TagRepository tagRepository;
 
-    @Autowired
-    TagRepository tagRepository;
-
-    @Autowired
-    ObjectMapper objectMapper;
+    Long tagId;
 
     @BeforeEach
-    void clean() {
+    void setup() {
         tagRepository.deleteAll();
+
+        Tag tag = Tag.builder()
+                .name("보안")
+                .build();
+
+        tagId = tagRepository.save(tag).getId();
     }
 
+    // CREATE 테스트
     @Test
     void 태그_생성_성공() throws Exception {
 
-        TagCreateRequestDTO dto = new TagCreateRequestDTO();
-        dto.setName("데이터베이스");
+        Map<String, Object> dto = Map.of(
+                "name", "데이터베이스"
+        );
 
         mockMvc.perform(post("/api/tags")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -45,25 +56,63 @@ class TagControllerTest {
                 .andExpect(jsonPath("$.name").value("데이터베이스"));
     }
 
+    // CREATE 중복 실패
     @Test
-    void 태그_중복_실패() throws Exception {
+    void 태그_중복_생성_실패() throws Exception {
 
-        // 1) 첫 번째 태그 생성
-        TagCreateRequestDTO dto1 = new TagCreateRequestDTO();
-        dto1.setName("보안");
+        Map<String, Object> dto = Map.of(
+                "name", "보안"    // 이미 존재
+        );
 
         mockMvc.perform(post("/api/tags")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto1)))
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest());
+    }
+
+    // READ 단건 조회
+    @Test
+    void 태그_단건조회_성공() throws Exception {
+
+        mockMvc.perform(get("/api/tags/" + tagId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(tagId))
+                .andExpect(jsonPath("$.name").value("보안"));
+    }
+
+    // READ 전체 조회
+    @Test
+    void 태그_전체조회_성공() throws Exception {
+
+        mockMvc.perform(get("/api/tags"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("보안"));
+    }
+
+    // UPDATE 테스트
+    @Test
+    void 태그_수정_성공() throws Exception {
+
+        Map<String, Object> dto = Map.of(
+                "name", "네트워크"
+        );
+
+        mockMvc.perform(put("/api/tags/" + tagId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("네트워크"));
+    }
+
+    // DELETE 테스트
+    @Test
+    void 태그_삭제_성공() throws Exception {
+
+        mockMvc.perform(delete("/api/tags/" + tagId))
                 .andExpect(status().isOk());
 
-        // 2) 동일 이름으로 태그 생성 → 실패해야 함
-        TagCreateRequestDTO dto2 = new TagCreateRequestDTO();
-        dto2.setName("보안");
-
-        mockMvc.perform(post("/api/tags")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto2)))
-                .andExpect(status().isBadRequest()); // 글로벌 예외 핸들러 기준
+        // 삭제 후 조회 -> 400 (예외 처리)
+        mockMvc.perform(get("/api/tags/" + tagId))
+                .andExpect(status().isBadRequest());
     }
 }
