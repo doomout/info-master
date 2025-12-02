@@ -3,6 +3,7 @@ package com.khg.info_master.service;
 import com.khg.info_master.domain.Question;
 import com.khg.info_master.domain.QuestionTag;
 import com.khg.info_master.dto.question.QuestionResponseDTO;
+import com.khg.info_master.dto.question.QuestionUpdateRequestDTO;
 import com.khg.info_master.repository.QuestionRepository;
 import com.khg.info_master.repository.QuestionTagRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,18 +34,20 @@ public class QuestionService {
     }
 
     // UPDATE
-    public Question update(Long id, Question update) {
+    public Question update(Long id, QuestionUpdateRequestDTO dto) {
+
         Question q = get(id);
 
-        q.setYear(update.getYear());
-        q.setRound(update.getRound());
-        q.setSubject(update.getSubject());
-        q.setNumber(update.getNumber());
-        q.setQuestionText(update.getQuestionText());
-        q.setDifficulty(update.getDifficulty());
+        q.setYear(dto.getYear());
+        q.setRound(dto.getRound());
+        q.setSubject(dto.getSubject());
+        q.setNumber(dto.getNumber());
+        q.setQuestionText(dto.getQuestionText());
+        q.setDifficulty(dto.getDifficulty());
 
         return questionRepository.save(q);
     }
+
 
     // DELETE
     public void delete(Long id) {

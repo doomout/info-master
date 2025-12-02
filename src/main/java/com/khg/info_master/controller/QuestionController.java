@@ -2,6 +2,7 @@ package com.khg.info_master.controller;
 
 import com.khg.info_master.domain.Question;
 import com.khg.info_master.dto.question.QuestionResponseDTO;
+import com.khg.info_master.dto.question.QuestionUpdateRequestDTO;
 import com.khg.info_master.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -37,10 +38,14 @@ public class QuestionController {
 
     // 수정
     @PutMapping("/{id}")
-    public QuestionResponseDTO update(@PathVariable Long id, @RequestBody Question update) {
-        Question updated = questionService.update(id, update);
+    public QuestionResponseDTO update(
+            @PathVariable Long id,
+            @RequestBody QuestionUpdateRequestDTO dto
+    ) {
+        Question updated = questionService.update(id, dto);
         return questionService.toResponseDTO(updated);
     }
+
 
     // 삭제
     @DeleteMapping("/{id}")
