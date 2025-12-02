@@ -1,7 +1,9 @@
 package com.khg.info_master.service;
 
 import com.khg.info_master.domain.Tag;
+import com.khg.info_master.dto.tag.TagCreateRequestDTO;
 import com.khg.info_master.dto.tag.TagResponseDTO;
+import com.khg.info_master.dto.tag.TagUpdateRequestDTO;
 import com.khg.info_master.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,16 +16,17 @@ public class TagService {
 
     private final TagRepository tagRepository;
 
-    public TagResponseDTO create(String name) {
+    // CREATE를 DTO 사용하여 처리
+    public TagResponseDTO create(TagCreateRequestDTO dto) {
 
-        // 1) 중복 검사
-        if (tagRepository.existsByName(name)) {
+        // 1) 중복 체크
+        if (tagRepository.existsByName(dto.getName())) {
             throw new IllegalArgumentException("이미 존재하는 태그입니다.");
         }
 
         // 2) 엔티티 생성
         Tag tag = Tag.builder()
-                .name(name)
+                .name(dto.getName())
                 .build();
 
         // 3) 저장
@@ -32,7 +35,6 @@ public class TagService {
         // 4) DTO 변환
         return toDTO(saved);
     }
-
 
     public Tag get(Long id) {
         return tagRepository.findById(id)
@@ -43,11 +45,13 @@ public class TagService {
         return tagRepository.findAll();
     }
 
-    public Tag update(Long id, Tag updated) {
+    // UPDATE를 DTO 사용하여 처리
+    public Tag update(Long id, TagUpdateRequestDTO dto) {
         Tag tag = get(id);
-        tag.setName(updated.getName());
+        tag.setName(dto.getName());
         return tagRepository.save(tag);
     }
+
 
     public void delete(Long id) {
         tagRepository.deleteById(id);

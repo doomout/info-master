@@ -1,13 +1,13 @@
 package com.khg.info_master.controller;
 
-import com.khg.info_master.domain.Tag;
 import com.khg.info_master.dto.question.QuestionListDTO;
 import com.khg.info_master.dto.tag.TagCreateRequestDTO;
 import com.khg.info_master.dto.tag.TagResponseDTO;
+import com.khg.info_master.dto.tag.TagUpdateRequestDTO;
+import com.khg.info_master.service.QuestionTagService;
 import com.khg.info_master.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import com.khg.info_master.service.QuestionTagService;
 
 import java.util.List;
 
@@ -21,8 +21,7 @@ public class TagController {
 
     @GetMapping("/{id}")
     public TagResponseDTO get(@PathVariable Long id) {
-        Tag tag = tagService.get(id);
-        return tagService.toDTO(tag);
+        return tagService.toDTO(tagService.get(id));
     }
 
     @GetMapping
@@ -34,13 +33,15 @@ public class TagController {
 
     @PostMapping
     public TagResponseDTO create(@RequestBody TagCreateRequestDTO dto) {
-        return tagService.create(dto.getName());
+        return tagService.create(dto);    // ← 서비스가 전체 처리
     }
 
     @PutMapping("/{id}")
-    public TagResponseDTO update(@PathVariable Long id, @RequestBody Tag tag) {
-        Tag updated = tagService.update(id, tag);
-        return tagService.toDTO(updated);
+    public TagResponseDTO update(
+            @PathVariable Long id,
+            @RequestBody TagUpdateRequestDTO dto
+    ) {
+        return tagService.toDTO(tagService.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
@@ -53,5 +54,4 @@ public class TagController {
     public List<QuestionListDTO> getQuestionsByTag(@PathVariable Long tagId) {
         return questionTagService.getQuestionsByTagWithNames(tagId);
     }
-
 }
