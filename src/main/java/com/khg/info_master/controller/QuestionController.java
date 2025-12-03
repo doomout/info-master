@@ -1,9 +1,12 @@
 package com.khg.info_master.controller;
 
 import com.khg.info_master.domain.Question;
+import com.khg.info_master.dto.question.QuestionCreateRequestDTO;
 import com.khg.info_master.dto.question.QuestionResponseDTO;
 import com.khg.info_master.dto.question.QuestionUpdateRequestDTO;
 import com.khg.info_master.service.QuestionService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +21,13 @@ public class QuestionController {
 
     // 생성
     @PostMapping
-    public QuestionResponseDTO create(@RequestBody Question q) {
-        return questionService.toResponseDTO(questionService.create(q));
+    public QuestionResponseDTO create(
+            @RequestBody @Valid QuestionCreateRequestDTO dto
+    ) {
+        Question saved = questionService.create(dto);
+        return questionService.toResponseDTO(saved);
     }
+
 
     // 단일 조회
     @GetMapping("/{id}")
