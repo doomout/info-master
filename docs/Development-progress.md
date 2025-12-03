@@ -75,8 +75,8 @@
 
 - [x] DTO 생성
 - [x] Controller에서 Entity ↔ DTO 변환 적용
-- [~] Validation 일부 적용 (@NotBlank, @NotNull)
-- [ ] 전체 엔티티 Validation 적용 (미완료)
+- [x] Validation 일부 적용 (@NotBlank, @NotNull)
+- [x] 전체 엔티티 Validation 적용 (미완료)
 
 ---
 
@@ -95,8 +95,12 @@
  - [x] Answer CRUD 테스트(C)
  - [x] Tag CRUD 테스트(C)
  - [x] QuestionTag 매핑 테스트(추가/조회/중복)(C)
+ - [x] Member Validation 테스트
+ - [x] Question Validation 테스트
+ - [x] Answer Validation 테스트
+ - [x] Tag Validation 테스트
  - [ ] JWT 테스트 (Security 적용 후 진행)
- - [ ] API 통합 테스트 (React 연동 전)
+ - [ ] API 통합 테스트 (React 연동 후)
  ---
 
 # 7. 인증/인가 (JWT)
@@ -128,7 +132,7 @@
 
 ---
 
-# 현재 진행 상태 (2025.12.01)
+# 현재 진행 상태 (2025.12.03)
 
 | 기능               | 상태      |
 | ---------------- | ------- |
@@ -138,7 +142,7 @@
 | Tag CRUD         | ✔ 완료    |
 | Question-Tag 매핑  | ✔ 완료    |
 | DTO 적용           | ✔ 완료    |
-| DTO Validation   | ⚠ 일부 완료 |
+| DTO Validation   | ✔ 완료 |
 | Global Exception | ✔ 완료    |
 | 테스트 구축           | ✔ 완료    |
 | JWT 인증           | ❌ 미완료   |
