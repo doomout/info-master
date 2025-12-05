@@ -45,7 +45,10 @@ export default function MemberEditPage() {
           <label>Name:</label>
           <input name="name" value={member.name} onChange={change} />
         </div>
-
+        <div>
+          <label>Password:</label>
+          <input type="password" name="password" value={member.password || ""} onChange={change} required/>
+        </div>
         <div>
           <label>Email:</label>
           <input name="email" value={member.email} onChange={change} />
