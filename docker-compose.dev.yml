@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: info-master-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app                    # 로컬 프로젝트 전체를 마운트
+      - ~/.m2:/root/.m2           # Maven 캐시 공유 → 빠른 빌드
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    restart: always

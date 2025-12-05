@@ -1,0 +1,19 @@
+FROM eclipse-temurin:17-jdk
+
+WORKDIR /app
+
+# 로컬 코드를 컨테이너에서 사용하도록
+# JAR 빌드 없이 직접 실행하는 dev 환경
+COPY mvnw .
+COPY .mvn ./.mvn
+COPY pom.xml .
+
+# Maven dependency 다운로드 (속도 최적화)
+RUN chmod +x mvnw && ./mvnw dependency:go-offline
+
+# 로컬 소스는 volume mount로 연결할 예정이므로 여기서는 COPY 하지 않는다.
+
+EXPOSE 8080
+
+# 개발 모드 실행
+CMD ["./mvnw", "spring-boot:run"]
