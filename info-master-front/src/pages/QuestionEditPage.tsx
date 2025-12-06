@@ -39,12 +39,14 @@ export default function QuestionEditPage() {
         <input name="round" type="number" value={q.round} onChange={change} />
         <input name="subject" value={q.subject} onChange={change} />
         <input name="number" type="number" value={q.number} onChange={change} />
-
         <textarea name="questionText" value={q.questionText} onChange={change} />
 
-        <input name="difficulty" value={q.difficulty || ""} onChange={change} />
+        <div style={{ marginTop: "16px" }}>
+            <input name="difficulty" value={q.difficulty || ""} onChange={change} />
+            <button type="submit">Update</button>
 
-        <button type="submit">Update</button>
+            <button type="button" style={{ marginLeft: "12px" }}onClick={() => nav("/questions")}>Cancel</button>
+        </div>
       </form>
     </div>
   );
