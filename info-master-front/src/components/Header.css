@@ -1,0 +1,32 @@
+.header {
+  background: #222;
+  color: white;
+  padding: 12px 0;
+}
+
+.header-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.nav a {
+  margin-left: 16px;
+  color: #ddd;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.nav a:hover {
+  color: white;
+}

@@ -1,10 +1,11 @@
 import { Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+
 import HomePage from "./pages/HomePage";
 import MemberListPage from "./pages/MemberListPage";
-import MemberCreatePage from "./pages/MemberCreatepage";
+import MemberCreatePage from "./pages/MemberCreatePage";
 import MemberDetailPage from "./pages/MemberDetailPage";
 import MemberEditPage from "./pages/MemberEditPage";
-import Header from "./components/Header";
 import QuestionListPage from "./pages/QuestionListPage";
 import QuestionCreatePage from "./pages/QuestionCreatePage";
 import QuestionDetailPage from "./pages/QuestionDetailPage";
@@ -12,9 +13,7 @@ import QuestionEditPage from "./pages/QuestionEditPage";
 
 export default function App() {
   return (
-    <div>
-      <Header />
-
+    <Layout>
       <Routes>
         <Route path="/" element={<HomePage />} />
 
@@ -27,8 +26,7 @@ export default function App() {
         <Route path="/questions/create" element={<QuestionCreatePage />} />
         <Route path="/questions/:id" element={<QuestionDetailPage />} />
         <Route path="/questions/:id/edit" element={<QuestionEditPage />} />
-
       </Routes>
-    </div>
+    </Layout>
   );
 }
