@@ -1,0 +1,32 @@
+.home-container {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.home-description {
+  font-size: 18px;
+  color: #555;
+  margin: 20px 0 40px;
+}
+
+.home-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.home-btn {
+  padding: 12px 22px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 16px;
+  color: white;
+}
+
+.home-btn.blue { background: #007bff; }
+.home-btn.green { background: #28a745; }
+.home-btn.gray { background: #6c757d; }
+
+.home-btn:hover {
+  opacity: 0.9;
+}
