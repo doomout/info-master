@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/api";
 import type { Member } from "../types/Member";
+import { toast } from "react-toastify";
 
 export default function MemberEditPage() {
   const { id } = useParams();
@@ -26,11 +27,13 @@ export default function MemberEditPage() {
 
     try {
       await api.put(`/api/members/${id}`, member);
-      alert("Updated!");
+      //alert("Updated!");
+      toast.success("수정되었습니다!");
       nav("/members");
     } catch (err) {
       console.error(err);
-      alert("Error updating");
+      //alert("Error updating");
+      toast.error("수정 중 오류가 발생했습니다.");
     }
   };
 

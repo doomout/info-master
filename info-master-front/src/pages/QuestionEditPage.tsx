@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { QuestionApi } from "../api/api";
 import type { Question } from "../types/Question";
+import { toast } from "react-toastify";
 
 export default function QuestionEditPage() {
   const { id } = useParams();
@@ -23,9 +24,14 @@ export default function QuestionEditPage() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!q) return;
-
-    await QuestionApi.update(Number(id), q);
-    nav("/questions");
+    try {
+      await QuestionApi.update(Number(id), q);
+      toast.success("수정되었습니다!");
+      nav("/questions");
+    } catch (err) {
+      console.error(err);
+      toast.error("수정 중 오류가 발생했습니다.");
+    }
   };
 
   if (!q) return <p>Loading...</p>;
