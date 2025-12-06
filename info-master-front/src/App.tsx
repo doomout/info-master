@@ -2,14 +2,14 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 
 import HomePage from "./pages/HomePage";
-import MemberListPage from "./pages/MemberListPage";
-import MemberCreatePage from "./pages/MemberCreatePage";
-import MemberDetailPage from "./pages/MemberDetailPage";
-import MemberEditPage from "./pages/MemberEditPage";
-import QuestionListPage from "./pages/QuestionListPage";
-import QuestionCreatePage from "./pages/QuestionCreatePage";
-import QuestionDetailPage from "./pages/QuestionDetailPage";
-import QuestionEditPage from "./pages/QuestionEditPage";
+import MemberListPage from "./pages/Members/MemberListPage";
+import MemberCreatePage from "./pages/Members/MemberCreatePage";
+import MemberDetailPage from "./pages/Members/MemberDetailPage";
+import MemberEditPage from "./pages/Members/MemberEditPage";
+import QuestionListPage from "./pages/Questions/QuestionListPage";
+import QuestionCreatePage from "./pages/Questions/QuestionCreatePage";
+import QuestionDetailPage from "./pages/Questions/QuestionDetailPage";
+import QuestionEditPage from "./pages/Questions/QuestionEditPage";
 
 export default function App() {
   return (

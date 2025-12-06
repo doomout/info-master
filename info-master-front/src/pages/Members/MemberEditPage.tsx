@@ -1,8 +1,8 @@
 // Member 수정 페이지 (PUT)
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import api from "../api/api";
-import type { Member } from "../types/Member";
+import api from "../../api/api";
+import type { Member } from "../../types/Member";
 import { toast } from "react-toastify";
 
 export default function MemberEditPage() {

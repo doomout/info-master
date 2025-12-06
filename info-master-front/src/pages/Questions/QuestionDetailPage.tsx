@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { QuestionApi } from "../api/api";
-import type { Question } from "../types/Question";
+import { QuestionApi } from "../../api/api";
+import type { Question } from "../../types/Question";
 
 export default function QuestionDetailPage() {
   const { id } = useParams();

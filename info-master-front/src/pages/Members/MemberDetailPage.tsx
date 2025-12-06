@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import api from "../api/api";
-import type { Member } from "../types/Member";
+import api from "../../api/api";
+import type { Member } from "../../types/Member";
 
 export default function MemberDetailPage() {
   const { id } = useParams();

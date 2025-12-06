@@ -1,7 +1,7 @@
 // Member 생성 페이지 (POST)
 
 import { useState } from "react";
-import api from "../api/api";
+import api from "../../api/api";
 import { useNavigate } from "react-router-dom";
 
 export default function MemberCreatePage() {

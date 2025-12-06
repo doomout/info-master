@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { QuestionApi } from "../api/api";
-import type { Question } from "../types/Question";
+import { QuestionApi } from "../../api/api";
+import type { Question } from "../../types/Question";
 import { toast } from "react-toastify";
 
 export default function QuestionEditPage() {

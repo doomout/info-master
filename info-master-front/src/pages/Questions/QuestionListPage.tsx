@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { QuestionApi } from "../api/api";
-import type { Question } from "../types/Question";
+import { QuestionApi } from "../../api/api";
+import type { Question } from "../../types/Question";
 
 export default function QuestionListPage() {
   const [list, setList] = useState<Question[]>([]);

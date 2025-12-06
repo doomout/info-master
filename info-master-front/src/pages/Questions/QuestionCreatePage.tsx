@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { QuestionApi } from "../api/api";
+import { QuestionApi } from "../../api/api";
 
 export default function QuestionCreatePage() {
   const nav = useNavigate();

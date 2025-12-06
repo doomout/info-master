@@ -1,9 +1,9 @@
 // Member 목록 조회 페이지
 import { useEffect, useState } from "react";
-import api from "../api/api";
-import type { Member } from "../types/Member";
+import api from "../../api/api";
+import type { Member } from "../../types/Member";
 import { Link } from "react-router-dom";
-import DeleteButton from "../components/DeleteButton";
+import DeleteButton from "../../components/DeleteButton";
 
 export default function MemberListPage() {
   const [members, setMembers] = useState<Member[]>([]);
