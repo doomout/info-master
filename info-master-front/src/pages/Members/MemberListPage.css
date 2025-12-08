@@ -1,0 +1,78 @@
+.member-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.member-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.member-title {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* 리스트 카드 */
+
+.member-list {
+  list-style: none;
+  padding: 0;
+}
+
+.member-item {
+  background: #f8f9fa;
+  padding: 15px 18px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.member-info {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.member-actions button,
+.member-actions a {
+  margin-left: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-view {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-edit {
+  background-color: #ffc107;
+  color: black;
+}
+
+.btn-delete {
+  background-color: #dc3545;
+  color: white;
+}

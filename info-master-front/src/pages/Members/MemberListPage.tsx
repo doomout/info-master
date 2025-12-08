@@ -1,31 +1,51 @@
-// Member 목록 조회 페이지
 import { useEffect, useState } from "react";
-import api from "../../api/api";
-import type { Member } from "../../types/Member";
 import { Link } from "react-router-dom";
-import DeleteButton from "../../components/DeleteButton";
+import MemberApi from "../../api/MemberApi";  
+import type { Member } from "../../types/Member";
+import "./MemberListPage.css";
 
 export default function MemberListPage() {
   const [members, setMembers] = useState<Member[]>([]);
 
+  // 목록 조회
   useEffect(() => {
-    api.get<Member[]>("/api/members")
+    MemberApi.list()
       .then((res) => setMembers(res.data))
-      .catch((err) => console.error(err));
+      .catch(console.error);
   }, []);
 
-  return (
-    <div>
-      <h2>Members</h2>
-      <Link to="/members/create">+ Create Member</Link>
+  // 삭제 기능
+  const handleDelete = async (id: number) => {
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
-      <ul>
+    await MemberApi.remove(id);
+    setMembers((prev) => prev.filter((m) => m.id !== id));
+  };
+
+  return (
+    <div className="member-container">
+      <div className="member-header">
+        <h2 className="member-title">Members</h2>
+
+        <Link to="/members/create" className="btn-primary">
+          + Create Member
+        </Link>
+      </div>
+
+      <ul className="member-list">
         {members.map((m) => (
-          <li key={m.id}>
-            {m.name} ({m.email}){" "}
-            <Link to={`/members/${m.id}`}>[View]</Link>{" "}
-            <Link to={`/members/${m.id}/edit`}>[Edit]</Link>
-            <DeleteButton id={m.id} onDelete={() => setMembers(members.filter(x => x.id !== m.id))} />
+          <li key={m.id} className="member-item">
+            <div className="member-info">
+              {m.name} ({m.email})
+            </div>
+
+            <div className="member-actions">
+              <Link to={`/members/${m.id}`} className="btn-view">View</Link>
+              <Link to={`/members/${m.id}/edit`} className="btn-edit">Edit</Link>
+              <button className="btn-delete" onClick={() => handleDelete(m.id)}>
+                Delete
+              </button>
+            </div>
           </li>
         ))}
       </ul>
