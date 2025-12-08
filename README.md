@@ -6,18 +6,6 @@
 **React + Spring Boot 3 + PostgreSQL 기반 웹 서비스**입니다.
 
 ---
-
-## 📂 프로젝트 구조
-```text
-infomaster/
-├─ backend/ # Spring Boot API 서버
-├─ frontend/ # React 프론트엔드
-└─ docs/ # 문서 모음
-└─ db-schema.md # 데이터베이스 스키마(DDL)
-```
-
----
-
 ## 📄 문서
 
 - **Database Schema (DDL)**  
@@ -44,12 +32,5 @@ infomaster/
 - VS Code
 - GitHub
 - pgAdmin4
-
+- 도커 데스크탑, 도커 허브
 ---
-
-## 🚀 로컬 실행 방법
-
-### 1) Backend 실행
-```bash
-cd backend
-./mvnw spring-boot:run
