@@ -1,9 +1,16 @@
 // API 타입 정의
 export interface Member {
-  id: number;
+  id: number;          
   name: string;
   email: string;
-  password?: string;   // 서버에서 내려오지 않음
+  password?: string;   
   createdAt?: string;
   updatedAt?: string;
+}
+
+// 멤버 생성용 타입 정의
+export interface CreateMember {
+  name: string;
+  email: string;
+  password: string;
 }
