@@ -25,10 +25,10 @@ export default function MemberListPage() {
   return (
     <div className="member-container">
       <div className="member-header">
-        <h2 className="member-title">Members</h2>
+        <h2 className="member-title">회원목록</h2>
 
         <Link to="/members/create" className="btn-primary">
-          + Create Member
+          + 회원등록
         </Link>
       </div>
 
@@ -40,10 +40,10 @@ export default function MemberListPage() {
             </div>
 
             <div className="member-actions">
-              <Link to={`/members/${m.id}`} className="btn-view">View</Link>
-              <Link to={`/members/${m.id}/edit`} className="btn-edit">Edit</Link>
+              <Link to={`/members/${m.id}`} className="btn-view">상세보기</Link>
+              <Link to={`/members/${m.id}/edit`} className="btn-edit">수정</Link>
               <button className="btn-delete" onClick={() => handleDelete(m.id)}>
-                Delete
+                삭제
               </button>
             </div>
           </li>

@@ -28,32 +28,32 @@ export default function MemberDetailPage() {
 
   return (
     <div className="detail-card">
-      <h2 className="detail-title">Member Detail</h2>
+      <h2 className="detail-title">회원 상세 보기</h2>
 
       <div className="detail-row">
-        <span className="label">Name:</span>
+        <span className="label">이름:</span>
         <span>{member.name}</span>
       </div>
 
       <div className="detail-row">
-        <span className="label">Email:</span>
+        <span className="label">이메일:</span>
         <span>{member.email}</span>
       </div>
 
       <div className="detail-row">
-        <span className="label">Created At:</span>
+        <span className="label">생성일:</span>
         <span>{member.createdAt}</span>
       </div>
       
       <div className="detail-actions">
         <Link to={`/members/${id}/edit`} className="btn-edit">
-          Edit
+          수정
         </Link>
         <button className="btn-delete" onClick={handleDelete}>
-          Delete
+          삭제
         </button>
         <button className="btn-back" onClick={() => nav("/members")}>
-          Back
+          목록
         </button>
       </div>
     </div>

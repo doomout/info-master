@@ -49,12 +49,12 @@ export default function MemberEditPage() {
 
   return (
     <div className="form-card">
-      <h2 className="form-title">Edit Member</h2>
+      <h2 className="form-title">회원 수정</h2>
 
       <form onSubmit={submit} className="form-layout">
         {/* Name */}
         <div className="form-field">
-          <label>Name</label>
+          <label>이름</label>
           <input
             name="name"
             value={form.name}
@@ -65,7 +65,7 @@ export default function MemberEditPage() {
 
         {/* Email */}
         <div className="form-field">
-          <label>Email</label>
+          <label>이메일</label>
           <input
             name="email"
             value={form.email}
@@ -76,7 +76,7 @@ export default function MemberEditPage() {
 
         {/* Password */}
         <div className="form-field">
-          <label>Password</label>
+          <label>비밀번호</label>
           <input
             type="password"
             name="password"
@@ -87,7 +87,7 @@ export default function MemberEditPage() {
         </div>
 
         <button type="submit" className="btn-primary">
-          Save Changes
+          저장 후 목록으로
         </button>
       </form>
     </div>

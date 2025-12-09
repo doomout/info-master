@@ -34,21 +34,21 @@ export default function MemberCreatePage() {
 
   return (
     <div className="form-card">
-      <h2 className="form-title">Create Member</h2>
+      <h2 className="form-title">회원 가입</h2>
 
       <form onSubmit={submit} className="form-layout">
         <div className="form-field">
-          <label>Name</label>
+          <label>이름</label>
           <input name="name" value={form.name} onChange={change} required />
         </div>
-
+    
         <div className="form-field">
-          <label>Email</label>
+          <label>이메일</label>
           <input name="email" value={form.email} onChange={change} required />
         </div>
 
         <div className="form-field">
-          <label>Password</label>
+          <label>비밀번호</label>
           <input
             type="password"
             name="password"
@@ -58,7 +58,7 @@ export default function MemberCreatePage() {
           />
         </div>
 
-        <button className="btn-primary">Create</button>
+        <button className="btn-primary">가입</button>
       </form>
     </div>
   );
