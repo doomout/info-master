@@ -1,0 +1,91 @@
+/* 전체 컨테이너 */
+.questions-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 상단 제목 + 생성 버튼 */
+.questions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-create {
+  background: #007bff;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+/* 카드 레이아웃 */
+.questions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.question-card {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+/* 제목 영역 */
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: #666;
+}
+
+.question-subject {
+  color: #c0392b;
+  font-weight: bold;
+}
+
+/* 본문 */
+.question-number {
+  margin: 5px 0;
+}
+
+.question-text {
+  color: #333;
+  margin-bottom: 12px;
+}
+
+/* 버튼 영역 */
+.question-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* 버튼 공통 — 여기 중요함 */
+.question-actions a,
+.question-actions button {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  line-height: 18px;
+}
+
+/* 개별 버튼 */
+.btn-view {
+  background: #27ae60;
+}
+
+.btn-edit {
+  background: #2980b9;
+}
+
+.btn-delete {
+  background: #e74c3c;
+  border: none;
+}
