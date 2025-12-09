@@ -114,9 +114,9 @@ export default function QuestionCreatePage() {
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="btn-save">Save</button>
+          <button type="submit" className="btn-save">저장</button>
           <button type="button" className="btn-cancel" onClick={() => nav("/questions")}>
-            Cancel
+            취소
           </button>
         </div>
       </form>

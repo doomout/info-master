@@ -16,10 +16,10 @@ export default function QuestionListPage() {
   return (
     <div className="questions-container">
       <div className="questions-header">
-        <h2>Questions</h2>
+        <h2>문제</h2>
 
         <Link to="/questions/create" className="btn-create">
-          + Create Question
+          + 문제 생성
         </Link>
       </div>
 
@@ -40,14 +40,14 @@ export default function QuestionListPage() {
 
             <div className="question-actions">
               <Link to={`/questions/${q.id}`} className="btn-view">
-                View
+                상세보기
               </Link>
 
               <Link to={`/questions/${q.id}/edit`} className="btn-edit">
-                Edit
+                수정
               </Link>
 
-              <button className="btn-delete">Delete</button>
+              <button className="btn-delete">삭제</button>
             </div>
           </div>
         ))}

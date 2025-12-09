@@ -67,19 +67,23 @@
 }
 
 .btn-primary {
-  padding: 10px 20px;
-  background: #2563eb;
+  background: #1976d2;
   color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
   border: none;
-  border-radius: 8px;
+  font-size: 15px;
   cursor: pointer;
 }
 
 .btn-secondary {
-  padding: 10px 20px;
-  background: gray;
+  background: #777;
   color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
   border: none;
-  border-radius: 8px;
+  font-size: 15px;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
 }

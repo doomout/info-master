@@ -1,40 +1,56 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { QuestionApi } from "../../api/api";
 import type { Question } from "../../types/Question";
+import "./QuestionDetailPage.css";
 
 export default function QuestionDetailPage() {
   const { id } = useParams();
   const nav = useNavigate();
-  const [q, setQ] = useState<Question | null>(null);
+  const [question, setQuestion] = useState<Question | null>(null);
 
   useEffect(() => {
+    if (!id) return;
     QuestionApi.get(Number(id))
-      .then(res => setQ(res.data))
+      .then((res) => setQuestion(res.data))
       .catch(console.error);
   }, [id]);
 
-  if (!q) return <p>Loading...</p>;
-
-  const remove = async () => {
-    if (!window.confirm("Delete?")) return;
-
+  const handleDelete = async () => {
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
     await QuestionApi.remove(Number(id));
     nav("/questions");
   };
 
+  if (!question) return <div className="loading">Loading...</div>;
+
   return (
-    <div>
-      <h2>{q.subject} - No.{q.number}</h2>
+    <div className="question-detail-container">
+      <div className="question-card">
+        <h1 className="question-title">
+          {question.subject} - No.{question.number}
+        </h1>
 
-      <p><strong>Year:</strong> {q.year}</p>
-      <p><strong>Round:</strong> {q.round}</p>
-      <p><strong>Difficulty:</strong> {q.difficulty}</p>
+        <div className="question-meta">
+          <span>{question.year}년</span>
+          <span>{question.round}회차</span>
+          {question.difficulty && <span>난이도: {question.difficulty}</span>}
+        </div>
 
-      <p>{q.questionText}</p>
+        <p className="question-text">{question.questionText}</p>
 
-      <Link to={`/questions/${q.id}/edit`}>Edit</Link>
-      <button onClick={remove}>Delete</button>
+        <div className="question-actions">
+          <Link to={`/questions/${question.id}/edit`} className="btn-edit">
+            수정
+          </Link>
+          <button onClick={handleDelete} className="btn-delete">
+            삭제
+          </button>
+          <Link to="/questions" className="btn-back">
+            목록
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
