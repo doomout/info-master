@@ -44,12 +44,7 @@ export default function MemberDetailPage() {
         <span className="label">Created At:</span>
         <span>{member.createdAt}</span>
       </div>
-
-      <div className="detail-row">
-        <span className="label">Updated At:</span>
-        <span>{member.updatedAt}</span>
-      </div>
-
+      
       <div className="detail-actions">
         <Link to={`/members/${id}/edit`} className="btn-edit">
           Edit
