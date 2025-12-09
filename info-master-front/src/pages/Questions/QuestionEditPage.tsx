@@ -78,9 +78,10 @@ export default function QuestionEditPage() {
           />
         </div>
 
-        <div className="form-buttons">
+        <div className="form-actions">
           <button type="submit" className="btn-primary">저장</button>
-          <button type="button" className="btn-secondary" onClick={() => nav(-1)}>
+
+          <button type="button" className="btn-cancel" onClick={() => nav("/questions")}>
             취소
           </button>
         </div>
