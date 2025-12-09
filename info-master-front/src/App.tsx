@@ -11,6 +11,10 @@ import QuestionCreatePage from "./pages/Questions/QuestionCreatePage";
 import QuestionDetailPage from "./pages/Questions/QuestionDetailPage";
 import QuestionEditPage from "./pages/Questions/QuestionEditPage";
 
+import TagListPage from "./pages/Tag/TagListPage";
+import TagCreatePage from "./pages/Tag/TagCreatepage";
+import TagEditPage from "./pages/Tag/TagEditPage";
+
 import Header from "./components/Header";
 import Container from "./components/Container";
 
@@ -33,6 +37,12 @@ export default function App() {
         <Route path="/questions/create" element={<QuestionCreatePage />} />
         <Route path="/questions/:id" element={<QuestionDetailPage />} />
         <Route path="/questions/:id/edit" element={<QuestionEditPage />} />
+
+        {/* Tag Routes */}
+        <Route path="/tags" element={<TagListPage />} />
+        <Route path="/tags/new" element={<TagCreatePage />} />
+        <Route path="/tags/:id" element={<TagEditPage />} />
+
       </Routes>
     </Container>
   );

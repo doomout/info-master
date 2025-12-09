@@ -11,6 +11,7 @@ export default function Header() {
           <Link to="/">홈</Link>
           <Link to="/members">회원 관리</Link>
           <Link to="/questions">문제 관리</Link>
+          <Link to="/tags">태그 관리</Link>
         </nav>
       </div>
     </header>

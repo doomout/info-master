@@ -26,6 +26,7 @@
 .home-btn.blue { background: #007bff; }
 .home-btn.green { background: #28a745; }
 .home-btn.gray { background: #6c757d; }
+.home-btn.red { background: #dc3545; }
 
 .home-btn:hover {
   opacity: 0.9;
