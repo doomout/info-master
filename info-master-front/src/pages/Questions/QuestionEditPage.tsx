@@ -2,56 +2,87 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { QuestionApi } from "../../api/api";
 import type { Question } from "../../types/Question";
-import { toast } from "react-toastify";
+import "./QuestionForm.css";
 
 export default function QuestionEditPage() {
   const { id } = useParams();
   const nav = useNavigate();
 
-  const [q, setQ] = useState<Question | null>(null);
+  const [form, setForm] = useState<Question | null>(null);
 
+  // 기존 데이터 불러오기
   useEffect(() => {
+    if (!id) return;
+
     QuestionApi.get(Number(id))
-      .then(res => setQ(res.data))
+      .then((res) => setForm(res.data))
       .catch(console.error);
   }, [id]);
 
+  // 공통 change 이벤트
   const change = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    if (!q) return;
-    setQ({ ...q, [e.target.name]: e.target.value });
+    if (!form) return;
+
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!q) return;
+    if (!form || !id) return;
+
     try {
-      await QuestionApi.update(Number(id), q);
-      toast.success("수정되었습니다!");
-      nav("/questions");
+      await QuestionApi.update(Number(id), form);
+      alert("문제가 수정되었습니다!");
+      nav(`/questions/${id}`);
     } catch (err) {
       console.error(err);
-      toast.error("수정 중 오류가 발생했습니다.");
+      alert("문제 수정 중 오류 발생");
     }
   };
 
-  if (!q) return <p>Loading...</p>;
+  if (!form) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h2>Edit Question</h2>
+    <div className="question-form-card">
+      <h2 className="form-title">문제 수정</h2>
 
-      <form onSubmit={submit}>
-        <input name="year" type="number" value={q.year} onChange={change} />
-        <input name="round" type="number" value={q.round} onChange={change} />
-        <input name="subject" value={q.subject} onChange={change} />
-        <input name="number" type="number" value={q.number} onChange={change} />
-        <textarea name="questionText" value={q.questionText} onChange={change} />
+      <form onSubmit={submit} className="question-form">
+        <div className="form-row">
+          <label>연도</label>
+          <input type="number" name="year" value={form.year} onChange={change} required />
+        </div>
 
-        <div style={{ marginTop: "16px" }}>
-            <input name="difficulty" value={q.difficulty || ""} onChange={change} />
-            <button type="submit">Update</button>
+        <div className="form-row">
+          <label>회차</label>
+          <input type="number" name="round" value={form.round} onChange={change} required />
+        </div>
 
-            <button type="button" style={{ marginLeft: "12px" }}onClick={() => nav("/questions")}>Cancel</button>
+        <div className="form-row">
+          <label>문제 번호</label>
+          <input type="number" name="number" value={form.number} onChange={change} required />
+        </div>
+
+        <div className="form-row">
+          <label>과목명</label>
+          <input type="text" name="subject" value={form.subject} onChange={change} required />
+        </div>
+
+        <div className="form-row">
+          <label>문제 내용</label>
+          <textarea
+            name="questionText"
+            rows={6}
+            value={form.questionText}
+            onChange={change}
+            required
+          />
+        </div>
+
+        <div className="form-buttons">
+          <button type="submit" className="btn-primary">저장</button>
+          <button type="button" className="btn-secondary" onClick={() => nav(-1)}>
+            취소
+          </button>
         </div>
       </form>
     </div>
