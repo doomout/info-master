@@ -1,37 +1,34 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TagApi } from "../../api/api";
+import "./tag.css";
 
 export default function TagCreatePage() {
   const nav = useNavigate();
-
-  const [form, setForm] = useState({
-    name: "",
-  });
-
-  const change = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const [name, setName] = useState("");
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    TagApi.create(form).then(() => nav("/tags"));
+    TagApi.create({ name }).then(() => nav("/tags"));
   };
 
   return (
-    <div>
-      <h2>태그 생성</h2>
+    <div className="tag-page">
+      <div className="page-title">새 태그 생성</div>
 
       <form onSubmit={submit}>
-        <input
-          name="name"
-          value={form.name}
-          onChange={change}
-          placeholder="태그 이름"
-          required
-        />
+        <div className="form-group">
+          <label>태그 이름</label>
+          <input
+            value={name}
+            onChange={e => setName(e.target.value)}
+            required
+          />
+        </div>
 
-        <button type="submit">저장</button>
+        <button type="submit" className="btn btn-primary">
+          저장
+        </button>
       </form>
     </div>
   );
