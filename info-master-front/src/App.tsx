@@ -18,6 +18,10 @@ import TagEditPage from "./pages/Tag/TagEditPage";
 import Header from "./components/Header";
 import Container from "./components/Container";
 
+import AnswerCreatePage from "./pages/Answer/AnswerCreatePage";
+import AnswerDetailPage from "./pages/Answer/AnswerDetailPage";
+import AnswerEditPage from "./pages/Answer/AnswerEditPage";
+
 export default function App() {
   return (
     <Container>
@@ -42,6 +46,18 @@ export default function App() {
         <Route path="/tags" element={<TagListPage />} />
         <Route path="/tags/new" element={<TagCreatePage />} />
         <Route path="/tags/:id" element={<TagEditPage />} />
+        
+        {/* Question */}
+        <Route path="/questions" element={<QuestionListPage />} />
+        <Route path="/questions/:id" element={<QuestionDetailPage />} />
+        <Route path="/questions/:id/edit" element={<QuestionEditPage />} />
+        <Route path="/questions/new" element={<QuestionCreatePage />} />
+
+        {/* Answer */}
+        <Route path="/answers/new" element={<AnswerCreatePage />} />
+        <Route path="/answers/:id" element={<AnswerDetailPage />} />
+        <Route path="/answers/:id/edit" element={<AnswerEditPage />} />
+
 
       </Routes>
     </Container>
