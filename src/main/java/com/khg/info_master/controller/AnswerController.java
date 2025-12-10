@@ -50,4 +50,11 @@ public class AnswerController {
     public void delete(@PathVariable Long id) {
         answerService.delete(id);
     }
+
+    // 추가: questionId로 답안 조회
+    @GetMapping("/question/{questionId}")
+    public AnswerResponseDTO getByQuestion(@PathVariable Long questionId) {
+        return answerService.getByQuestion(questionId);
+    }
+
 }

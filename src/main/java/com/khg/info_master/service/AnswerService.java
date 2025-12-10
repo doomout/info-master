@@ -73,6 +73,14 @@ public class AnswerService {
         return answerRepository.findAll();
     }
 
+    // 추가: questionId로 답안 조회
+    public AnswerResponseDTO getByQuestion(Long questionId) {
+        return answerRepository.findByQuestionId(questionId)
+                .map(this::toDTO)
+                .orElse(null);
+    }
+
+
     public AnswerResponseDTO update(Long id, AnswerUpdateRequestDTO dto) {
 
         Answer answer = get(id);
