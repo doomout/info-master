@@ -2,6 +2,7 @@
 import axios from "axios";
 import type { Question } from "../types/Question";
 import type { Tag } from "../types/Tag";
+import type { Answer } from "../types/Answer";
 
 const api = axios.create({
   baseURL: "http://localhost:8080",
@@ -30,6 +31,16 @@ export const TagApi = {
   create: (data: { name: string }) => api.post("/api/tags", data),
   update: (id: number, data: { name: string }) => api.put(`/api/tags/${id}`, data),
   delete: (id: number) => api.delete(`/api/tags/${id}`),
+};
+
+// Answer CRUD
+export const AnswerApi = {
+  create: (data: Answer) => api.post("/api/answers", data),
+  get: (id: number) => api.get<Answer>(`/api/answers/${id}`),
+  update: (id: number, data: Answer) => api.put(`/api/answers/${id}`, data),
+  delete: (id: number) => api.delete(`/api/answers/${id}`),
+  listByQuestion: (questionId: number) =>
+    api.get<Answer[]>(`/api/questions/${questionId}/answers`)
 };
 
 export default api;
