@@ -10,9 +10,9 @@ export default function QuestionDetailPage() {
   const nav = useNavigate();
 
   const [question, setQuestion] = useState<Question | null>(null);
-  const [answers, setAnswers] = useState<Answer[]>([]);
+  const [answer, setAnswer] = useState<Answer | null>(null);
 
-  // 1) 문제 상세 가져오기
+  // 1) 문제 상세 불러오기
   useEffect(() => {
     if (!id) return;
 
@@ -21,14 +21,18 @@ export default function QuestionDetailPage() {
       .catch(console.error);
   }, [id]);
 
-  // 2) 해당 문제에 대한 답안 목록 가져오기
+  // 2) 답안 1개만 불러오기
   useEffect(() => {
-    if (!id) return;
+    if (!question || !question.id) return;
 
-    AnswerApi.listByQuestion(Number(id))
-      .then((res) => setAnswers(res.data))
+    AnswerApi.listByQuestion(question.id)
+      .then((res) => {
+        if (res.data.length > 0) {
+          setAnswer(res.data[0]);
+        }
+      })
       .catch(console.error);
-  }, [id]);
+  }, [question]);
 
   const handleDelete = async () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
@@ -54,12 +58,20 @@ export default function QuestionDetailPage() {
         <p className="question-text">{question.questionText}</p>
 
         <div className="question-actions">
-          <Link
-            to={`/answers/new?questionId=${question.id}`}
-            className="btn btn-primary"
-          >
-            ✍️ 답안 작성하기
-          </Link>
+          {/* 답안이 존재하면 → 수정/보기 버튼 */}
+          {answer ? (
+            <Link to={`/answers/${answer.id}`} className="btn btn-primary">
+              📄 답안 보기 / 수정하기
+            </Link>
+          ) : (
+            // 답안이 없으면 → 새로 작성 버튼
+            <Link
+              to={`/answers/new?questionId=${question.id}`}
+              className="btn btn-primary"
+            >
+              ✍️ 답안 작성하기
+            </Link>
+          )}
 
           <Link to={`/questions/${question.id}/edit`} className="btn-edit">
             수정
@@ -73,19 +85,6 @@ export default function QuestionDetailPage() {
             목록
           </Link>
 
-          {/* 3) 답안 목록 출력 */}
-          <h3 style={{ marginTop: 30 }}>작성된 답안</h3>
-          <ul>
-            {answers.length === 0 && <li>아직 작성된 답안이 없습니다.</li>}
-
-            {answers.map((a) => (
-              <li key={a.id}>
-                <Link to={`/answers/${a.id}`}>
-                  {a.createdAt?.substring(0, 10)} 작성한 답안 보기
-                </Link>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </div>
