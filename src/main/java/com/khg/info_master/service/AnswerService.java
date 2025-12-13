@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,27 +34,19 @@ public class AnswerService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 문제입니다."));
 
         // 2. 기존 답안 있는지 확인 (1:1 핵심)
-        Optional<Answer> existingOpt = answerRepository.findByQuestionId(questionId);
+        List<Answer> existingList = answerRepository.findByQuestionId(questionId);
+
 
         Answer answer;
-
-        if (existingOpt.isPresent()) {
-            // ----------------------------
-            // 이미 존재 → UPDATE 수행
-            // ----------------------------
-            answer = existingOpt.get();
+        if (!existingList.isEmpty()) {
+            // 이미 존재 —> UPDATE 수행
+            answer = existingList.get(0);
             answer.setAnswerText(dto.getAnswerText());
-            answer.setScore(dto.getScore());
-            answer.setComment(dto.getComment());
-            answer.setMember(member);  // 작성자 바뀔 수도 있음
+            answer.setMember(member);
         } else {
-            // ----------------------------
-            // 존재하지 않으면 → 새로 생성
-            // ----------------------------
+            // 새로 생성
             answer = new Answer();
             answer.setAnswerText(dto.getAnswerText());
-            answer.setScore(dto.getScore());
-            answer.setComment(dto.getComment());
             answer.setMember(member);
             answer.setQuestion(question);
         }
@@ -73,12 +64,14 @@ public class AnswerService {
         return answerRepository.findAll();
     }
 
-    // 추가: questionId로 답안 조회
-    public AnswerResponseDTO getByQuestion(Long questionId) {
+    // 추가: questionId로 답안 조회(답은 1개)
+    public List<AnswerResponseDTO> getByQuestion(Long questionId) {
         return answerRepository.findByQuestionId(questionId)
+                .stream()
                 .map(this::toDTO)
-                .orElse(null);
+                .toList();
     }
+
 
 
     public AnswerResponseDTO update(Long id, AnswerUpdateRequestDTO dto) {

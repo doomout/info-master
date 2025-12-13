@@ -1,91 +1,146 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { QuestionApi, AnswerApi } from "../../api/api";
-import type { Question } from "../../types/Question";
-import type { Answer } from "../../types/Answer";
-import "./QuestionDetailPage.css";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function QuestionDetailPage() {
   const { id } = useParams();
   const nav = useNavigate();
 
-  const [question, setQuestion] = useState<Question | null>(null);
-  const [answer, setAnswer] = useState<Answer | null>(null);
+  const [question, setQuestion] = useState<any>(null);
+  const [answer, setAnswer] = useState<any>(null);
+  const questionId = Number(id);
 
-  // 1) 문제 상세 불러오기
+  // 문제 + 답안 가져오기
   useEffect(() => {
-    if (!id) return;
+    if (!questionId) return;
 
-    QuestionApi.get(Number(id))
-      .then((res) => setQuestion(res.data))
-      .catch(console.error);
-  }, [id]);
+    QuestionApi.get(questionId).then((res) => setQuestion(res.data));
 
-  // 2) 답안 1개만 불러오기
-  useEffect(() => {
-    if (!question || !question.id) return;
-
-    AnswerApi.listByQuestion(question.id)
+    AnswerApi.listByQuestion(questionId)
       .then((res) => {
-        if (res.data.length > 0) {
-          setAnswer(res.data[0]);
-        }
+        setAnswer(res.data.length > 0 ? res.data[0] : null);
       })
       .catch(console.error);
-  }, [question]);
+  }, [questionId]);
 
-  const handleDelete = async () => {
-    if (!window.confirm("정말 삭제하시겠습니까?")) return;
-    await QuestionApi.remove(Number(id));
-    nav("/questions");
-  };
-
-  if (!question) return <div className="loading">Loading...</div>;
+  if (!question) return <div>Loading...</div>;
 
   return (
-    <div className="question-detail-container">
-      <div className="question-card">
-        <h1 className="question-title">
-          {question.subject} - No.{question.number}
-        </h1>
+    <div style={{ padding: 20, maxWidth: 900, margin: "0 auto" }}>
+      <div
+        style={{
+          border: "1px solid #ddd",
+          padding: 20,
+          borderRadius: 10,
+          background: "white",
+          marginBottom: 30,
+        }}
+      >
+        <h2>
+          {question.subject} — No.{question.number}
+        </h2>
 
-        <div className="question-meta">
-          <span>{question.year}년</span>
-          <span>{question.round}회차</span>
-          {question.difficulty && <span>난이도: {question.difficulty}</span>}
-        </div>
+        <p style={{ color: "#666", marginBottom: 10 }}>
+          {question.year}년 {question.round}회차 &nbsp;|&nbsp; 난이도: {question.difficulty}
+        </p>
 
-        <p className="question-text">{question.questionText}</p>
+        <pre
+          style={{
+            whiteSpace: "pre-wrap",
+            background: "#fafafa",
+            padding: 15,
+            borderRadius: 6,
+            border: "1px solid #eee",
+          }}
+        >
+          {question.questionText}
+        </pre>
 
-        <div className="question-actions">
-          {/* 답안이 존재하면 → 수정/보기 버튼 */}
-          {answer ? (
-            <Link to={`/answers/${answer.id}`} className="btn btn-primary">
-              📄 답안 보기 / 수정하기
-            </Link>
-          ) : (
-            // 답안이 없으면 → 새로 작성 버튼
-            <Link
-              to={`/answers/new?questionId=${question.id}`}
-              className="btn btn-primary"
+        {/* 버튼 영역 */}
+        <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
+          {!answer ? (
+            <button
+              onClick={() => nav(`/answers/new?questionId=${questionId}`)}
+              style={{
+                padding: "10px 16px",
+                background: "#007bff",
+                color: "white",
+                borderRadius: 6,
+                border: 0,
+                cursor: "pointer",
+              }}
             >
               ✍️ 답안 작성하기
-            </Link>
+            </button>
+          ) : (
+            <>
+              <button
+                onClick={() => nav(`/answers/${answer.id}/edit`)}
+                style={{
+                  padding: "10px 16px",
+                  background: "#007bff",
+                  color: "white",
+                  borderRadius: 6,
+                  border: 0,
+                  cursor: "pointer",
+                }}
+              >
+                ✏️ 답안 수정하기
+              </button>
+
+              <button
+                onClick={() => nav(`/answers/${answer.id}`)}
+                style={{
+                  padding: "10px 16px",
+                  background: "#6c757d",
+                  color: "white",
+                  borderRadius: 6,
+                  border: 0,
+                  cursor: "pointer",
+                }}
+              >
+                답안 상세보기
+              </button>
+            </>
           )}
 
-          <Link to={`/questions/${question.id}/edit`} className="btn-edit">
-            수정
-          </Link>
-
-          <button onClick={handleDelete} className="btn-delete">
-            삭제
-          </button>
-
-          <Link to="/questions" className="btn-back">
+          <Link
+            to="/questions"
+            style={{
+              padding: "10px 16px",
+              background: "#444",
+              color: "white",
+              borderRadius: 6,
+              textDecoration: "none",
+            }}
+          >
             목록
           </Link>
-
         </div>
+      </div>
+
+      {/* ===== 답안 표시 영역 ===== */}
+      <div
+        style={{
+          border: "1px solid #ddd",
+          padding: 20,
+          borderRadius: 10,
+          background: "white",
+        }}
+      >
+        <h3>📘 작성된 답안</h3>
+
+        {!answer ? (
+          <p style={{ color: "#888", padding: 20 }}>아직 답안이 없습니다.</p>
+        ) : (
+          <div style={{ marginTop: 20 }}>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {answer.answerText}
+            </ReactMarkdown>
+          </div>
+        )}
       </div>
     </div>
   );
