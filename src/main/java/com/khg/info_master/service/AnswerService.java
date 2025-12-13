@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,25 +27,23 @@ public class AnswerService {
         Long memberId = dto.getMemberId();
         Long questionId = dto.getQuestionId();
 
-        // 1. 연관 엔티티 조회
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 문제입니다."));
 
-        // 2. 기존 답안 있는지 확인 (1:1 핵심)
-        List<Answer> existingList = answerRepository.findByQuestionId(questionId);
-
+        // 기존 답안 1개 확인
+        Optional<Answer> existingOpt = answerRepository.findByQuestionId(questionId);
 
         Answer answer;
-        if (!existingList.isEmpty()) {
-            // 이미 존재 —> UPDATE 수행
-            answer = existingList.get(0);
+        if (existingOpt.isPresent()) {
+            // UPDATE
+            answer = existingOpt.get();
             answer.setAnswerText(dto.getAnswerText());
             answer.setMember(member);
         } else {
-            // 새로 생성
+            // INSERT
             answer = new Answer();
             answer.setAnswerText(dto.getAnswerText());
             answer.setMember(member);
@@ -54,6 +53,7 @@ public class AnswerService {
         Answer saved = answerRepository.save(answer);
         return toDTO(saved);
     }
+
 
     public Answer get(Long id) {
         return answerRepository.findById(id)
@@ -65,12 +65,13 @@ public class AnswerService {
     }
 
     // 추가: questionId로 답안 조회(답은 1개)
-    public List<AnswerResponseDTO> getByQuestion(Long questionId) {
-        return answerRepository.findByQuestionId(questionId)
-                .stream()
-                .map(this::toDTO)
-                .toList();
+    public AnswerResponseDTO getByQuestion(Long questionId) {
+        Answer answer = answerRepository.findByQuestionId(questionId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 문제의 답변이 없습니다."));
+
+        return toDTO(answer);
     }
+
 
 
 

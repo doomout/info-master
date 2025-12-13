@@ -53,7 +53,8 @@ public class AnswerController {
 
     // 추가: questionId로 답안 조회
     @GetMapping("/question/{questionId}")
-    public List<AnswerResponseDTO> getByQuestion(@PathVariable Long questionId) {
+    public AnswerResponseDTO getByQuestion(@PathVariable Long questionId) {
         return answerService.getByQuestion(questionId);
     }
+
 }
