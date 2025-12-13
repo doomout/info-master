@@ -2,7 +2,6 @@ package com.khg.info_master.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.khg.info_master.domain.Tag;
-import com.khg.info_master.dto.tag.TagResponseDTO;
 import com.khg.info_master.repository.TagRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Map;
@@ -21,7 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@ActiveProfiles("test")   // ★ H2 환경으로 테스트 실행!
+@AutoConfigureMockMvc(addFilters = false) // (Security 있으면 필터 제거)
 class TagControllerTest {
 
     @Autowired MockMvc mockMvc;

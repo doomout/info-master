@@ -2,7 +2,6 @@ package com.khg.info_master.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.khg.info_master.domain.Question;
-import com.khg.info_master.dto.question.QuestionUpdateRequestDTO;
 import com.khg.info_master.repository.QuestionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Map;
@@ -18,7 +18,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@ActiveProfiles("test")   // ★ H2 환경으로 테스트 실행!
+@AutoConfigureMockMvc(addFilters = false) // (Security 있으면 필터 제거)
 class QuestionControllerTest {
 
     @Autowired MockMvc mockMvc;
