@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AnswerApi, QuestionApi } from "../../api/api";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 
 export default function AnswerCreatePage() {
   const nav = useNavigate();
@@ -39,7 +37,7 @@ export default function AnswerCreatePage() {
       nav(`/answers/${res.data.id}`);
     } catch (e) {
       console.error(e);
-      alert("저장 도중 오류 발생!");
+      alert("저장 도중 오류가 발생했습니다.");
     }
   };
 
@@ -47,58 +45,101 @@ export default function AnswerCreatePage() {
 
   return (
     <div style={{ padding: 20, maxWidth: 900, margin: "0 auto" }}>
-      <h2>✍️ 답안 작성</h2>
+      <h2 style={{ marginBottom: 15 }}>✍️ 답안 작성</h2>
 
-      {/* 문제 정보 표시 */}
-      <div style={{ border: "1px solid #ddd", padding: 15, marginBottom: 20 }}>
+      {/* 문제 정보 */}
+      <div
+        style={{
+          border: "1px solid #ddd",
+          padding: 15,
+          marginBottom: 25,
+          background: "#fafafa",
+          borderRadius: 8
+        }}
+      >
         <h3>
           {question.subject} — No.{question.number}
         </h3>
-        <p style={{ color: "#666" }}>
+        <p style={{ color: "#666", fontSize: 14 }}>
           {question.year}년 {question.round}회차
         </p>
-        <pre style={{ whiteSpace: "pre-wrap", marginTop: 10 }}>
+        <pre
+          style={{
+            whiteSpace: "pre-wrap",
+            marginTop: 10,
+            fontFamily: "inherit",
+            background: "#fff",
+            padding: 10,
+            borderRadius: 5,
+            border: "1px solid #eee"
+          }}
+        >
           {question.questionText}
         </pre>
       </div>
 
-      {/* Markdown 입력기 */}
-      <h3>📝 답안 (Markdown 지원)</h3>
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        rows={15}
-        style={{
-          width: "100%",
-          padding: 12,
-          border: "1px solid #ccc",
-          borderRadius: 4,
-          fontFamily: "Consolas, monospace"
-        }}
-      />
-
-      {/* 미리보기 */}
-      <h3 style={{ marginTop: 30 }}>👀 미리보기</h3>
+      {/* Markdown 사용법 안내 */}
       <div
         style={{
+          background: "#f0f7ff",
           padding: 15,
-          border: "1px solid #ddd",
-          borderRadius: 4,
-          background: "#fafafa"
+          border: "1px solid #cce0ff",
+          borderRadius: 6,
+          marginBottom: 20,
+          lineHeight: 1.6,
         }}
       >
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {text || "_작성 중입니다…_"}
-        </ReactMarkdown>
+        <strong>📘 Markdown 간단 사용법</strong>
+        <ul style={{ marginTop: 8, paddingLeft: 20, fontSize: 14 }}>
+          <li><code># 제목</code> → 큰 제목</li>
+          <li><code>## 제목</code> → 중간 제목</li>
+          <li><code>**굵게**</code>, <code>*기울임*</code></li>
+          <li><code>- 리스트 항목</code></li>
+          <li><code>1. 번호 리스트</code></li>
+          <li>
+            <code>| A | B | C |</code><br />
+            <code>|---|---|---|</code><br />
+            <code>| 1 | 2 | 3 |</code>
+            <br />→ 표 만들기
+          </li>
+          <li>
+            <code>```</code> 코드 작성 <code>```</code> → 코드블럭
+          </li>
+          <li><code>&gt; 인용문</code> → 인용 스타일</li>
+          <li>줄바꿈은 <b>Enter 두 번</b>!</li>
+        </ul>
+      </div>
+
+      {/* 답안 입력 */}
+      <div style={{ marginBottom: 20 }}>
+        <h3 style={{ marginBottom: 8 }}>📝 답안 입력 (Markdown 지원)</h3>
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          rows={16}
+          style={{
+            width: "100%",
+            padding: 12,
+            border: "1px solid #ccc",
+            borderRadius: 6,
+            fontSize: 15,
+            fontFamily: "Consolas, monospace",
+            resize: "vertical",
+          }}
+        />
       </div>
 
       <button
         onClick={save}
         style={{
-          marginTop: 20,
-          padding: "10px 18px",
+          padding: "12px 20px",
           fontSize: 16,
-          cursor: "pointer"
+          fontWeight: "bold",
+          borderRadius: 6,
+          cursor: "pointer",
+          border: "none",
+          background: "#333",
+          color: "white",
         }}
       >
         저장하기
