@@ -1,80 +1,123 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { AnswerApi } from "../../api/api";
-import type { Answer } from "../../types/Answer";
+import { useNavigate, useParams } from "react-router-dom";
+import { AnswerApi, QuestionApi } from "../../api/api";
 
 export default function AnswerEditPage() {
-  const { id } = useParams();
+  const { id } = useParams(); // 수정할 답안 ID
   const nav = useNavigate();
 
-  const [answer, setAnswer] = useState<Answer | null>(null);
+  const [answer, setAnswer] = useState<any>(null);
+  const [question, setQuestion] = useState<any>(null);
   const [text, setText] = useState("");
-  const [comment, setComment] = useState("");
-  const [score, setScore] = useState<number | null>(null);
 
-  // 답안 상세 조회
+  // 답안 로딩
   useEffect(() => {
     if (!id) return;
+
     AnswerApi.get(Number(id))
       .then((res) => {
         setAnswer(res.data);
-        setText(res.data.answerText || "");
-        setComment(res.data.comment || "");
-        setScore(res.data.score ?? null);
+        setText(res.data.answerText); // 기존 내용 채워넣기
+
+        // 문제 정보도 로드
+        return QuestionApi.get(res.data.questionId);
       })
-      .catch((err) => console.error(err));
+      .then((res) => setQuestion(res.data))
+      .catch(console.error);
   }, [id]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!id) return;
+  const save = async () => {
+    if (!text.trim()) {
+      alert("답안을 입력하세요!");
+      return;
+    }
 
-    await AnswerApi.update(Number(id), {
-      answerText: text,
-      comment,
-      score
-    });
+    try {
+      const body = {
+        ...answer,
+        answerText: text,
+      };
 
-    alert("답안이 수정되었습니다.");
-    nav(`/answers/${id}`);
+      const res = await AnswerApi.update(answer.id, body);
+      alert("답안이 수정되었습니다.");
+      nav(`/answers/${res.data.id}`);
+    } catch (e) {
+      console.error(e);
+      alert("수정 중 오류 발생!");
+    }
   };
 
-  if (!answer) return <div>Loading...</div>;
+  if (!answer || !question) return <div>Loading...</div>;
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: 20 }}>
-      <h2>✏️ 답안 수정</h2>
+    <div style={{ padding: 20, maxWidth: 900, margin: "0 auto" }}>
+      <h2 style={{ marginBottom: 15 }}>✏️ 답안 수정</h2>
 
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        
-        <label>답변 내용</label>
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          rows={10}
-          style={{ width: "100%", padding: 10 }}
-        />
+      {/* 문제 정보 */}
+      <div
+        style={{
+          border: "1px solid #ddd",
+          padding: 15,
+          marginBottom: 25,
+          background: "#fafafa",
+          borderRadius: 8
+        }}
+      >
+        <h3>
+          {question.subject} — No.{question.number}
+        </h3>
+        <p style={{ color: "#666", fontSize: 14 }}>
+          {question.year}년 {question.round}회차
+        </p>
 
-        <label>코멘트</label>
-        <textarea
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          rows={4}
-          style={{ width: "100%", padding: 10 }}
-        />
+        <pre
+          style={{
+            whiteSpace: "pre-wrap",
+            marginTop: 10,
+            fontFamily: "inherit",
+            background: "#fff",
+            padding: 10,
+            borderRadius: 5,
+            border: "1px solid #eee"
+          }}
+        >
+          {question.questionText}
+        </pre>
+      </div>
 
-        <label>점수</label>
-        <input
-          type="number"
-          value={score ?? ""}
-          onChange={(e) => setScore(Number(e.target.value))}
-          style={{ width: 100, padding: 6 }}
-        />
+      {/* 답안 입력 */}
+      <h3>📝 답안 내용</h3>
+      <textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        rows={16}
+        style={{
+          width: "100%",
+          padding: 12,
+          border: "1px solid #ccc",
+          borderRadius: 6,
+          fontSize: 15,
+          fontFamily: "Consolas, monospace",
+          resize: "vertical",
+          marginBottom: 20
+        }}
+      />
 
-        <button type="submit" style={{ padding: "10px 15px", marginTop: 20 }}>
-          저장하기
-        </button>
-      </form>
+      <button
+        onClick={save}
+        style={{
+          padding: "12px 20px",
+          fontSize: 16,
+          fontWeight: "bold",
+          borderRadius: 6,
+          cursor: "pointer",
+          border: "none",
+          background: "#333",
+          color: "white",
+        }}
+      >
+        수정하기
+      </button>
     </div>
   );
 }

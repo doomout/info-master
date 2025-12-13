@@ -57,7 +57,7 @@ export default function App() {
         <Route path="/answers/new" element={<AnswerCreatePage />} />
         <Route path="/answers/:id" element={<AnswerDetailPage />} />
         <Route path="/answers/:id/edit" element={<AnswerEditPage />} />
-
+    
 
       </Routes>
     </Container>
