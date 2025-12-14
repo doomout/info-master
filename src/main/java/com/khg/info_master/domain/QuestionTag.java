@@ -9,7 +9,12 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "question_tag")
+@Table(
+    name = "question_tag",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"question_id", "tag_id"})
+    }
+)
 public class QuestionTag {
 
     @Id

@@ -7,26 +7,32 @@ import com.khg.info_master.domain.Tag;
 import com.khg.info_master.repository.MemberRepository;
 import com.khg.info_master.repository.QuestionRepository;
 import com.khg.info_master.repository.TagRepository;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
+import com.khg.info_master.repository.QuestionTagRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@ActiveProfiles("test")   // ★ H2 환경으로 테스트 실행!
+@AutoConfigureMockMvc(addFilters = false) // (Security 있으면 필터 제거)
 class QuestionTagControllerTest {
 
     @Autowired MockMvc mockMvc;
     @Autowired ObjectMapper objectMapper;
 
+    @Autowired QuestionTagRepository questionTagRepository;
     @Autowired QuestionRepository questionRepository;
     @Autowired TagRepository tagRepository;
     @Autowired MemberRepository memberRepository;
@@ -34,9 +40,12 @@ class QuestionTagControllerTest {
     Long questionId;
     Long tagId;
 
+    @PersistenceContext EntityManager em;
+
     @BeforeEach
     void setup() {
-        tagRepository.deleteAll();
+        questionTagRepository.deleteAll();   // 항상 1순위
+        tagRepository.deleteAll();           // 자식 제거 후 부모 제거
         questionRepository.deleteAll();
         memberRepository.deleteAll();
 
