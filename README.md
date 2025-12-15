@@ -21,7 +21,7 @@
 - Java 17
 - Spring Boot 3.5.8
 - Spring Data JPA
-- PostgreSQL
+- PostgreSQL 16
 
 ### Frontend
 - React 19

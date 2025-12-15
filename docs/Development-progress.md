@@ -2,7 +2,7 @@
 ## 📘 InfoMaster Backend Development Progress  
 정보관리기술사 학습 지원 서비스 — 백엔드 개발 진척도 문서  
 
-백엔드 스택: Spring Boot 3 · Java 17 · PostgreSQL · JPA
+백엔드 스택: Spring Boot 3 · Java 17 · PostgreSQL 16 · JPA
 ---
 
 # 1. 프로젝트 초기 설정
@@ -16,7 +16,7 @@
 
 ---
 
-# 2. 데이터베이스 구축 (PostgreSQL)
+# 2. 데이터베이스 구축 (PostgreSQL 16)
 
 ## ✔ DB 기본 설정
 - [X] PostgreSQL 설치 및 실행
@@ -116,9 +116,11 @@
 
 - [x] React 프로젝트 생성
 - [x] Member CRUD 화면
-- [ ] Question CRUD 화면
-- [ ] Answer CRUD 화면
-- [ ] Tag CRUD 화면
+- [x] Question CRUD 화면
+- [x] Answer CRUD 화면
+- [x] Tag CRUD 화면
+- [x] 전체 UI 개선
+- [ ] 문제 <-> 태그 연결
 ---
 
 # 9. 인증/인가 (JWT)
@@ -131,14 +133,14 @@
 
 # 10. 문서 (Docs)
 
-- [ ] DB 스키마 문서 완성
+- [x] DB 스키마 문서 완성
 - [ ] ERD 생성하여 docs에 추가
 - [ ] API 명세서(API Spec) 작성
 - [ ] 개발 로그(Dev Log) 기록
 
 ---
 
-# 현재 진행 상태 (2025.12.08)
+# 현재 진행 상태 (2025.12.15)
 
 | 기능               | 상태      |
 | ---------------- | ------- |
@@ -153,8 +155,8 @@
 | 테스트 구축           | ✔ 완료    |
 | GitHub Actions 구축(CI) | ✔ 완료    |
 | 도커 컨테이너 구축 | ✔ 완료    |
+| React 연동         | ❌ 진행중   |
 | JWT 인증           | ❌ 미완료   |
-| React 연동         | ❌ 미완료   |
 | 문서/ERD           | ❌ 미완료   |
 ---
 
