@@ -20,7 +20,7 @@ export default function QuestionDetailPage() {
 
     AnswerApi.listByQuestion(questionId)
       .then((res) => {
-        setAnswer(res.data.length > 0 ? res.data[0] : null);
+        setAnswer(res.data ?? null);
       })
       .catch(console.error);
   }, [questionId]);

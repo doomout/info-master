@@ -65,7 +65,7 @@ export const AnswerApi = {
 
   // QuestionId 로 조회
   listByQuestion: (questionId: number) =>
-    api.get<Answer[]>(`/api/answers/question/${questionId}`),
+    api.get<Answer>(`/api/answers/question/${questionId}`),
 };
 
 export default api;
