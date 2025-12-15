@@ -26,6 +26,7 @@ export default function AnswerEditPage() {
       .catch(console.error);
   }, [id]);
 
+  // 저장
   const save = async () => {
     if (!text.trim()) {
       alert("답안을 입력하세요!");
@@ -44,6 +45,20 @@ export default function AnswerEditPage() {
     } catch (e) {
       console.error(e);
       alert("수정 중 오류 발생!");
+    }
+  };
+
+  // 삭제
+  const handleDelete = async () => {
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+
+    try {
+      await AnswerApi.delete(answer.id);
+      alert("삭제되었습니다.");
+      nav(`/questions/${answer.questionId}`); // 문제 상세로 이동
+    } catch (e) {
+      console.error(e);
+      alert("삭제 중 오류 발생!");
     }
   };
 
@@ -103,21 +118,48 @@ export default function AnswerEditPage() {
         }}
       />
 
+      <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
+      
       <button
         onClick={save}
         style={{
-          padding: "12px 20px",
-          fontSize: 16,
-          fontWeight: "bold",
-          borderRadius: 6,
-          cursor: "pointer",
-          border: "none",
-          background: "#333",
+          padding: "10px 18px",
+          background: "#007bff",
           color: "white",
+          borderRadius: 6,
+          border: 0,
         }}
       >
-        수정하기
+        저장하기
       </button>
+
+      <button
+        onClick={handleDelete}
+        style={{
+          padding: "10px 18px",
+          background: "#dc3545",
+          color: "white",
+          borderRadius: 6,
+          border: 0,
+        }}
+      >
+        삭제하기
+      </button>
+
+      <button
+        onClick={() => nav(`/questions/${answer.questionId}`)}
+        style={{
+          padding: "10px 18px",
+          background: "#444",
+          color: "white",
+          borderRadius: 6,
+          border: 0,
+        }}
+      >
+        목록으로
+      </button>
+    </div>
+
     </div>
   );
 }

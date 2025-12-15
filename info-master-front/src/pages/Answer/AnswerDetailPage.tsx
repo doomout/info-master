@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AnswerApi, QuestionApi } from "../../api/api";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 export default function AnswerDetailPage() {
   const { id } = useParams();
+  const nav = useNavigate();
+
   const [answer, setAnswer] = useState<any>(null);
   const [question, setQuestion] = useState<any>(null);
 
+  // 답안 상세 화면은 읽기 전용이고, 삭제, 목록 기능만 제공
   useEffect(() => {
     if (!id) return;
 
@@ -20,6 +23,22 @@ export default function AnswerDetailPage() {
       .then((res) => setQuestion(res.data))
       .catch(console.error);
   }, [id]);
+
+  // ============================
+  // 삭제(handleDelete)
+  // ============================
+  const handleDelete = async () => {
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+
+    try {
+      await AnswerApi.delete(answer.id);
+      alert("삭제되었습니다.");
+      nav(`/questions/${answer.questionId}`); // 문제 상세로 이동
+    } catch (e) {
+      console.error(e);
+      alert("삭제 중 오류 발생!");
+    }
+  };
 
   if (!answer || !question) return <div>Loading...</div>;
 
@@ -60,6 +79,9 @@ export default function AnswerDetailPage() {
         </pre>
       </div>
 
+      <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
+        <h3>📝 답안 내용</h3>
+      </div>
       {/* 답안 본문 */}
       <div
         style={{
@@ -74,22 +96,50 @@ export default function AnswerDetailPage() {
         </ReactMarkdown>
       </div>
 
-      {/* 수정 버튼 */}
-      <div style={{ marginTop: 20 }}>
-        <Link
-          to={`/answers/${answer.id}/edit`}
+      <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
+
+        {/* 수정 버튼은 읽기 전용이므로 수정 페이지로 이동 */}
+        <button
+          onClick={() => nav(`/answers/${answer.id}/edit`)}
           style={{
-            padding: "10px 16px",
+            padding: "10px 18px",
             background: "#007bff",
             color: "white",
             borderRadius: 6,
-            textDecoration: "none",
-            fontWeight: "bold",
+            border: 0,
           }}
         >
           수정하기
-        </Link>
-      </div>
-    </div>
+        </button>
+
+        {/* 삭제 버튼은 삭제 가능 */}
+        <button
+          onClick={handleDelete}
+          style={{
+            padding: "10px 18px",
+            background: "#dc3545",
+            color: "white",
+            borderRadius: 6,
+            border: 0,
+          }}
+        >
+          삭제하기
+        </button>
+        
+        {/* 목록 버튼은 답안 목록 페이지로 이동 */}
+        <button
+          onClick={() => nav(`/questions/${answer.questionId}`)}
+          style={{
+            padding: "10px 18px",
+            background: "#444",
+            color: "white",
+            borderRadius: 6,
+            border: 0,
+          }}
+        >
+          답안 상세로
+        </button>
+    </div>    
+  </div>
   );
 }

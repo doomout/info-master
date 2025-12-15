@@ -129,21 +129,35 @@ export default function AnswerCreatePage() {
         />
       </div>
 
-      <button
-        onClick={save}
-        style={{
-          padding: "12px 20px",
-          fontSize: 16,
-          fontWeight: "bold",
-          borderRadius: 6,
-          cursor: "pointer",
-          border: "none",
-          background: "#333",
-          color: "white",
-        }}
-      >
-        저장하기
-      </button>
+      {/* 저장 버튼 */}
+      <div style={{ marginTop: 20, display: "flex", gap: 10 }}>    
+        <button
+          onClick={save}
+          style={{
+            padding: "10px 18px",
+            background: "#007bff",
+            color: "white",
+            borderRadius: 6,
+            border: 0,
+          }}
+        >
+          저장하기
+        </button>
+        
+        {/* 목록 버튼은 문제 목록 페이지로 이동 */}
+        <button
+          onClick={() => nav(`/questions/${question.questionId}`)}
+          style={{
+            padding: "10px 18px",
+            background: "#444",
+            color: "white",
+            borderRadius: 6,
+            border: 0,
+          }}
+        >
+          목록으로
+        </button>
+      </div>
     </div>
   );
 }

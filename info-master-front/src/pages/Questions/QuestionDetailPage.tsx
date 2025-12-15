@@ -89,20 +89,6 @@ export default function QuestionDetailPage() {
               >
                 ✏️ 답안 수정하기
               </button>
-
-              <button
-                onClick={() => nav(`/answers/${answer.id}`)}
-                style={{
-                  padding: "10px 16px",
-                  background: "#6c757d",
-                  color: "white",
-                  borderRadius: 6,
-                  border: 0,
-                  cursor: "pointer",
-                }}
-              >
-                답안 상세보기
-              </button>
             </>
           )}
 
@@ -116,7 +102,7 @@ export default function QuestionDetailPage() {
               textDecoration: "none",
             }}
           >
-            목록
+            문제 목록
           </Link>
         </div>
       </div>
