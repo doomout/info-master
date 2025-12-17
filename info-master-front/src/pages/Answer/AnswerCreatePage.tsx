@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { AnswerApi, QuestionApi } from "../../api/api";
+import { AnswerApi } from "../../api/AnswerApi";
+import { QuestionApi } from "../../api/QuestionApi";
 
 export default function AnswerCreatePage() {
   const nav = useNavigate();

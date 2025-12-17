@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { QuestionApi } from "../../api/api";
+import { QuestionApi } from "../../api/QuestionApi";
 import type { Question } from "../../types/Question";
 import "./QuestionForm.css";
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { TagApi } from "../../api/api";
+import { TagApi } from "../../api/TagApi";
 import type { Tag } from "../../types/Tag";
 import "./tag.css";
 

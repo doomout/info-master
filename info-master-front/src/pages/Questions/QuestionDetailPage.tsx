@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { QuestionApi, AnswerApi } from "../../api/api";
+import { QuestionApi } from "../../api/QuestionApi";
+import { AnswerApi } from "../../api/AnswerApi";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { TagApi } from "../../api/api";
+import { TagApi } from "../../api/TagApi";
 import "./tag.css";
 
 export default function TagCreatePage() {
