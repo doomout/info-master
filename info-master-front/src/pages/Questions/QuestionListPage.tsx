@@ -13,6 +13,23 @@ export default function QuestionListPage() {
       .catch(console.error);
   }, []);
 
+  // 삭제
+  const handleDelete = async (id: number) => {
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+
+    try {
+      await QuestionApi.delete(id);
+
+      // 상태에서 즉시 제거
+      setQuestions((prev) => prev.filter((q) => q.id !== id));
+
+      alert("삭제되었습니다.");
+    } catch (e) {
+      console.error(e);
+      alert("삭제 중 오류 발생!");
+    }
+  };
+
   return (
     <div className="questions-container">
       <div className="questions-header">
@@ -47,7 +64,18 @@ export default function QuestionListPage() {
                 수정
               </Link>
 
-              <button className="btn-delete">삭제</button>
+              <button
+                onClick={() => handleDelete(q.id)}
+                style={{
+                  padding: "10px 18px",
+                  background: "#dc3545",
+                  color: "white",
+                  borderRadius: 6,
+                  border: 0,
+                }}
+              >
+                삭제하기
+              </button>
             </div>
           </div>
         ))}

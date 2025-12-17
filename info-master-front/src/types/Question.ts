@@ -1,5 +1,5 @@
 export interface Question {
-  id?: number;
+  id: number;
   year: number;
   round: number;
   subject: string;
@@ -9,3 +9,5 @@ export interface Question {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export type QuestionCreate = Omit<Question, "id">;

@@ -1,6 +1,6 @@
 // Axios 기본 인스턴스 설정
 import axios from "axios";
-import type { Question } from "../types/Question";
+import type { QuestionCreate } from "../types/Question";
 import type { Tag } from "../types/Tag";
 import type { Answer } from "../types/Answer";
 
@@ -17,9 +17,9 @@ const api = axios.create({
 export const QuestionApi = {
   list: () => api.get("/api/questions"),
   get: (id: number) => api.get(`/api/questions/${id}`),
-  create: (data: Question) => api.post("/api/questions", data),
-  update: (id: number, data: Question) => api.put(`/api/questions/${id}`, data),
-  remove: (id: number) => api.delete(`/api/questions/${id}`),
+  create: (data: QuestionCreate) => api.post("/api/questions", data),
+  update: (id: number, data: QuestionCreate) => api.put(`/api/questions/${id}`, data),
+  delete: (id: number) => api.delete(`/api/questions/${id}`),
 };
 
 // ===============================
