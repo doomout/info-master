@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "./axios";
 import type { Member, CreateMember } from "../types/Member";
 
 export const MemberApi = {

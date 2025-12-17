@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { QuestionApi } from "../../api/QuestionApi";
-import type { Question } from "../../types/Question";
+import { TagApi } from "../../api/TagApi";
+import type { QuestionCreate } from "../../types/Question";
+import type { Tag } from "../../types/Tag";
 import "./QuestionForm.css";
 
 interface CreateQuestion {
@@ -10,9 +12,14 @@ interface CreateQuestion {
   subject: string;
   number: number | "";
   questionText: string;
+  tagIds?: number[];
 }
 
+const YEARS = Array.from({ length: 10 }, (_, i) => 2025 - i);
+
 export default function QuestionCreatePage() {
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<number[]>([]);
   const nav = useNavigate();
 
   const [form, setForm] = useState<CreateQuestion>({
@@ -23,23 +30,32 @@ export default function QuestionCreatePage() {
     questionText: "",
   });
 
-  const change = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  // 태그 불러오기
+  useEffect(() => {
+    TagApi.getAll()
+      .then(res => setTags(res.data))
+      .catch(console.error);
+  }, []);
+
+  const change = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
   };
 
+  // 폼 제출
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 숫자 변환
-    const data: Question = {
-      ...form,
+    const data: QuestionCreate = {
       year: Number(form.year),
       round: Number(form.round),
+      subject: form.subject,
       number: Number(form.number),
-    } as Question;
+      questionText: form.questionText,
+      tagIds: selectedTags,
+    };
 
     try {
       await QuestionApi.create(data);
@@ -51,24 +67,33 @@ export default function QuestionCreatePage() {
     }
   };
 
+  // 태그 선택/해제
+  const toggleTag = (id: number) => {
+    setSelectedTags(prev =>
+      prev.includes(id)
+        ? prev.filter(t => t !== id)
+        : [...prev, id]
+    );
+  };
+
+
   return (
     <div className="question-form-container">
-      <h2 className="page-title">Create Question</h2>
+      <h2 className="page-title">기술사 문제 만들기</h2>
 
       <form onSubmit={submit} className="question-form-card">
         <div className="form-row">
-          <label>연도(Year)</label>
-          <input
-            type="number"
-            name="year"
-            value={form.year}
-            onChange={change}
-            required
-          />
+          <label>연도</label>
+          <select name="year" value={form.year} onChange={change} required>
+            <option value="">연도 선택</option>
+            {YEARS.map((y) => (
+              <option key={y} value={y}>{y}</option>
+            ))}
+          </select>
         </div>
 
         <div className="form-row">
-          <label>회차(Round)</label>
+          <label>회차</label>
           <input
             type="number"
             name="round"
@@ -79,19 +104,23 @@ export default function QuestionCreatePage() {
         </div>
 
         <div className="form-row">
-          <label>과목(Subject)</label>
-          <input
-            type="text"
-            name="subject"
-            value={form.subject}
-            onChange={change}
-            placeholder="예: 정보보안, 데이터베이스 등"
-            required
-          />
+          <label>카테고리</label>
+          <div className="tag-box">
+            {tags.map(tag => (
+              <label key={tag.id} className="tag-item">
+                <input
+                  type="checkbox"
+                  checked={selectedTags.includes(tag.id)}
+                  onChange={() => toggleTag(tag.id)}
+                />
+                {tag.name}
+              </label>
+            ))}
+          </div>
         </div>
 
         <div className="form-row">
-          <label>문제 번호(Number)</label>
+          <label>문제 번호</label>
           <input
             type="number"
             name="number"
@@ -102,19 +131,19 @@ export default function QuestionCreatePage() {
         </div>
 
         <div className="form-row">
-          <label>문제 내용(Question Text)</label>
+          <label>문제</label>
           <textarea
             name="questionText"
             value={form.questionText}
             onChange={change}
-            placeholder="문제 내용을 입력하세요"
+            placeholder="문제을 입력하세요"
             rows={6}
             required
           />
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="btn-save">저장</button>
+          <button type="submit" className="btn-save">생성</button>
           <button type="button" className="btn-cancel" onClick={() => nav("/questions")}>
             취소
           </button>
