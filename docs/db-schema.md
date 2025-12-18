@@ -55,7 +55,7 @@ CREATE TABLE public.tag (
 ```sql
 CREATE TABLE public.question (
     id BIGSERIAL PRIMARY KEY,
-    year INT NOT NULL,
+    exam_year INT NOT NULL,
     round INT NOT NULL,
     number INT NOT NULL,
     question_text TEXT NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE public.question (
 | 컬럼명           | 타입          | 설명              |
 | ------------- | ----------- | --------------- |
 | id            | BIGSERIAL   | 문제 고유 ID        |
-| year          | INT         | 시험 연도 (예: 2024) |
+| exam_year     | INT         | 시험 연도 (예: 2024) |
 | round         | INT         | 시험 회차           |
 | number        | INT         | 문제 번호           |
 | question_text | TEXT        | 문제 본문           |
