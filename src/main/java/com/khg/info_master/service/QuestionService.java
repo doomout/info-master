@@ -2,11 +2,14 @@ package com.khg.info_master.service;
 
 import com.khg.info_master.domain.Question;
 import com.khg.info_master.domain.QuestionTag;
+import com.khg.info_master.domain.Tag;
 import com.khg.info_master.dto.question.QuestionCreateRequestDTO;
 import com.khg.info_master.dto.question.QuestionResponseDTO;
 import com.khg.info_master.dto.question.QuestionUpdateRequestDTO;
 import com.khg.info_master.repository.QuestionRepository;
 import com.khg.info_master.repository.QuestionTagRepository;
+
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,19 +23,23 @@ public class QuestionService {
     private final QuestionTagRepository questionTagRepository;
 
     // CREATE
-    public Question create(QuestionCreateRequestDTO dto) {
-        Question q = Question.builder()
-                .year(dto.getYear())
-                .round(dto.getRound())
-                .subject(dto.getSubject())
-                .number(dto.getNumber())
-                .questionText(dto.getQuestionText())
-                .difficulty(dto.getDifficulty())
-                .build();
+    @Transactional
+    public Long create(QuestionCreateRequestDTO dto) {
 
-        return questionRepository.save(q);
+        Tag tag = tagRepository.findById(dto.getTagId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그"));
+
+        Question question = new Question();
+        question.setExam_Year(dto.getExam_year());
+        question.setRound(dto.getRound());
+        question.setNumber(dto.getNumber());
+        question.setQuestionText(dto.getQuestionText());
+        question.setDifficulty(dto.getDifficulty());
+        question.setTag(tag);
+
+        questionRepository.save(question);
+        return question.getId();
     }
-
 
     // READ
     public Question get(Long id) {

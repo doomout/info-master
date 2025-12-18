@@ -8,6 +8,8 @@ import com.khg.info_master.service.QuestionService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +23,9 @@ public class QuestionController {
 
     // 생성
     @PostMapping
-    public QuestionResponseDTO create(
-            @RequestBody @Valid QuestionCreateRequestDTO dto
-    ) {
-        Question saved = questionService.create(dto);
-        return questionService.toResponseDTO(saved);
+    public ResponseEntity<?> create(@Valid @RequestBody QuestionCreateRequestDTO dto) {
+        Long id = questionService.create(dto);
+        return ResponseEntity.ok(id);
     }
 
 
