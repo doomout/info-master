@@ -1,5 +1,7 @@
 package com.khg.info_master.domain;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,4 +30,7 @@ public class Answer {
 
     private Integer score;
     private String comment;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
