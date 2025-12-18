@@ -5,8 +5,11 @@ import com.khg.info_master.dto.tag.TagCreateRequestDTO;
 import com.khg.info_master.dto.tag.TagResponseDTO;
 import com.khg.info_master.dto.tag.TagUpdateRequestDTO;
 import com.khg.info_master.repository.TagRepository;
+
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -16,24 +19,23 @@ public class TagService {
 
     private final TagRepository tagRepository;
 
-    // CREATE를 DTO 사용하여 처리
-    public TagResponseDTO create(TagCreateRequestDTO dto) {
+    @Transactional(readOnly = true)
+    public List<Tag> findAll() {
+        return tagRepository.findAll(Sort.by("id"));
+    }
 
-        // 1) 중복 체크
-        if (tagRepository.existsByName(dto.getName())) {
-            throw new IllegalArgumentException("이미 존재하는 태그입니다.");
-        }
+    @Transactional
+    public Long create(String name) {
+        tagRepository.findByName(name)
+            .ifPresent(t -> {
+                throw new IllegalArgumentException("이미 존재하는 태그입니다.");
+            });
 
-        // 2) 엔티티 생성
-        Tag tag = Tag.builder()
-                .name(dto.getName())
-                .build();
+        Tag tag = new Tag();
+        tag.setName(name);
+        tagRepository.save(tag);
 
-        // 3) 저장
-        Tag saved = tagRepository.save(tag);
-
-        // 4) DTO 변환
-        return toDTO(saved);
+        return tag.getId();
     }
 
     public Tag get(Long id) {
@@ -59,10 +61,9 @@ public class TagService {
 
     // DTO 변환 메서드
     public TagResponseDTO toDTO(Tag tag) {
-        return TagResponseDTO.builder()
-                .id(tag.getId())
-                .name(tag.getName())
-                .build();
+        return new TagResponseDTO(
+                tag.getId(),
+                tag.getName()
+        );
     }
-
 }
