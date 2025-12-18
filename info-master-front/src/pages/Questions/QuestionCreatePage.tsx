@@ -19,7 +19,7 @@ const YEARS = Array.from({ length: 10 }, (_, i) => 2025 - i);
 
 export default function QuestionCreatePage() {
   const [tags, setTags] = useState<Tag[]>([]);
-  const [selectedTags, setSelectedTags] = useState<number[]>([]);
+  const [selectedTagId, setSelectedTagId] = useState<number | "">(""); // 최초 선택 안 된 상태 유지
   const nav = useNavigate();
 
   const [form, setForm] = useState<CreateQuestion>({
@@ -54,7 +54,7 @@ export default function QuestionCreatePage() {
       subject: form.subject,
       number: Number(form.number),
       questionText: form.questionText,
-      tagIds: selectedTags,
+      tagIds: selectedTagId ? [selectedTagId] : [],
     };
 
     try {
@@ -66,16 +66,6 @@ export default function QuestionCreatePage() {
       alert("문제 생성 중 오류가 발생했습니다.");
     }
   };
-
-  // 태그 선택/해제
-  const toggleTag = (id: number) => {
-    setSelectedTags(prev =>
-      prev.includes(id)
-        ? prev.filter(t => t !== id)
-        : [...prev, id]
-    );
-  };
-
 
   return (
     <div className="question-form-container">
@@ -105,18 +95,18 @@ export default function QuestionCreatePage() {
 
         <div className="form-row">
           <label>카테고리</label>
-          <div className="tag-box">
+          <select
+            value={selectedTagId}
+            onChange={(e) => setSelectedTagId(Number(e.target.value))}
+            required
+          >
+            <option value="">카테고리 선택</option>
             {tags.map(tag => (
-              <label key={tag.id} className="tag-item">
-                <input
-                  type="checkbox"
-                  checked={selectedTags.includes(tag.id)}
-                  onChange={() => toggleTag(tag.id)}
-                />
+              <option key={tag.id} value={tag.id}>
                 {tag.name}
-              </label>
+              </option>
             ))}
-          </div>
+          </select>
         </div>
 
         <div className="form-row">
