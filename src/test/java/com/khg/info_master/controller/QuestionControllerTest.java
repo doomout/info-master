@@ -35,9 +35,8 @@ class QuestionControllerTest {
         questionRepository.deleteAll();
 
         Question q = Question.builder()
-                .year(2024)
+                .exam_year(2024)
                 .round(1)
-                .subject("보안")
                 .number(3)
                 .questionText("SQL Injection 예방 방법은?")
                 .difficulty("중")

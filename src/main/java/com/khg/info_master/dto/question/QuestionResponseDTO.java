@@ -1,24 +1,27 @@
 package com.khg.info_master.dto.question;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 @Getter
-@Builder
+@AllArgsConstructor
 public class QuestionResponseDTO {
 
     private Long id;
-    private Integer year;
+    private Integer exam_year;
     private Integer round;
-    private String subject;
     private Integer number;
     private String questionText;
     private String difficulty;
+
+    // 시스템 메타데이터
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    private List<String> tags;   // 🔥 핵심: 태그 이름 목록
+    // 단일 태그
+    private Long tagId;
+    private String tagName;
 }

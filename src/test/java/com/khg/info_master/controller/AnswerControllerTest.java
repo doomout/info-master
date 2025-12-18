@@ -55,9 +55,8 @@ class AnswerControllerTest {
 
         // 2) Question 생성
         Question q = Question.builder()
-                .year(2024)
+                .exam_year(2024)
                 .round(1)
-                .subject("보안")
                 .number(1)
                 .questionText("XSS 방지 방법은?")
                 .difficulty("중")

@@ -9,20 +9,20 @@ import lombok.Setter;
 @Setter
 public class QuestionUpdateRequestDTO {
 
-    @NotNull(message = "year는 필수입니다.")
-    private Integer year;
+    @NotNull(message = "출제 년도는 필수입니다.")
+    private Integer exam_year;
 
-    @NotNull(message = "round는 필수입니다.")
+    @NotNull(message = "회차는 필수입니다.")
     private Integer round;
 
-    @NotBlank(message = "subject는 비어 있을 수 없습니다.")
-    private String subject;
-
-    @NotNull(message = "number는 필수입니다.")
+    @NotNull(message = "문제 번호는 필수입니다.")
     private Integer number;
 
-    @NotBlank(message = "문제 내용(questionText)은 비어 있을 수 없습니다.")
+    @NotBlank(message = "문제는 비어 있을 수 없습니다.")
     private String questionText;
 
     private String difficulty; // 선택 값
+
+    @NotNull(message = "카테고리는 필수입니다.")
+    private Long tagId;
 }

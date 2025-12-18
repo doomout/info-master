@@ -9,7 +9,8 @@ import java.util.List;
 @Builder
 public class QuestionListDTO {
     private Long id;
-    private String subject;
+    private Integer exam_year;
+    private Integer round;
     private Integer number;
     private List<String> tags;
 }

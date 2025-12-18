@@ -60,11 +60,5 @@ public class QuestionController {
         questionService.delete(id);
         return "deleted";
     }
-
-    // 상세 조회 (태그 포함)
-    @GetMapping("/{id}/detail")
-    public QuestionResponseDTO getDetail(@PathVariable Long id) {
-        return questionService.getQuestionWithTags(id);
-    }
 }
 

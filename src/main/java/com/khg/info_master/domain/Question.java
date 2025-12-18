@@ -1,5 +1,7 @@
 package com.khg.info_master.domain;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,4 +33,7 @@ public class Question {
 
     @OneToOne(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private Answer answer;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
