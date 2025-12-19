@@ -160,3 +160,22 @@
 | 문서/ERD           | ❌ 미완료   |
 ---
 
+# 백엔드 완성 후 도커 명령어
+```docker
+# 기존 도커 이미지, 컨테이너 삭제(도커 데탑에서 마우스로도 가능)
+docker compose down
+docker compose build --no-cache
+docker compose up -d
+
+# 테스트 코드는 제외하고 도커 이미지 생성
+mvn clean package -DskipTests
+
+# 도커 이미지 생성
+docker build -t info-master-backend .
+
+# 컨테이너 실행
+docker run -d -p 8080:8080 --name info-master-backend info-master-backend
+
+# 로그 확인
+docker logs -f info-master-backend
+```
