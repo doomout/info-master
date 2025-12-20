@@ -2,18 +2,25 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { QuestionApi } from "../../api/QuestionApi";
 import { TagApi } from "../../api/TagApi";
-import type { QuestionCreate } from "../../types/Question";
 import type { Tag } from "../../types/Tag";
 import "./QuestionForm.css";
 
 interface CreateQuestion {
-  year: number | "";
+  exam_year: number;
+  round: number;
+  number: number;
+  questionText: string;
+  tagId: number;
+  difficulty?: string;
+}
+
+interface QuestionFormState {
+  exam_year: number | "";
   round: number | "";
-  subject: string;
   number: number | "";
   questionText: string;
-  tagIds?: number[];
 }
+
 
 const YEARS = Array.from({ length: 10 }, (_, i) => 2025 - i);
 
@@ -22,10 +29,9 @@ export default function QuestionCreatePage() {
   const [selectedTagId, setSelectedTagId] = useState<number | "">(""); // 최초 선택 안 된 상태 유지
   const nav = useNavigate();
 
-  const [form, setForm] = useState<CreateQuestion>({
-    year: "",
+  const [form, setForm] = useState<QuestionFormState>({
+    exam_year: "",
     round: "",
-    subject: "",
     number: "",
     questionText: "",
   });
@@ -48,14 +54,20 @@ export default function QuestionCreatePage() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const data: QuestionCreate = {
-      year: Number(form.year),
+    if (!selectedTagId) {
+      alert("카테고리를 선택하세요.");
+      return;
+    }
+
+    const data: CreateQuestion = {
+      exam_year: Number(form.exam_year),
       round: Number(form.round),
-      subject: form.subject,
       number: Number(form.number),
       questionText: form.questionText,
-      tagIds: selectedTagId ? [selectedTagId] : [],
+      tagId: selectedTagId,
     };
+
+    console.log("CREATE QUESTION PAYLOAD", data);
 
     try {
       await QuestionApi.create(data);
@@ -74,7 +86,7 @@ export default function QuestionCreatePage() {
       <form onSubmit={submit} className="question-form-card">
         <div className="form-row">
           <label>연도</label>
-          <select name="year" value={form.year} onChange={change} required>
+          <select name="exam_year" value={form.exam_year} onChange={change} required>
             <option value="">연도 선택</option>
             {YEARS.map((y) => (
               <option key={y} value={y}>{y}</option>
