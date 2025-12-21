@@ -40,11 +40,11 @@ export default function QuestionDetailPage() {
         }}
       >
         <h2>
-          {question.subject} — No.{question.number}
+          {question.subject} 문제 No.{question.number}
         </h2>
 
         <p style={{ color: "#666", marginBottom: 10 }}>
-          {question.year}년 {question.round}회차 &nbsp;|&nbsp; 난이도: {question.difficulty}
+          {question.exam_year}년 {question.round}회차 &nbsp;|&nbsp; 카테고리: {question.tagName}
         </p>
 
         <pre

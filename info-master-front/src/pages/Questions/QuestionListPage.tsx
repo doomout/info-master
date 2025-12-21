@@ -45,9 +45,9 @@ export default function QuestionListPage() {
           <div className="question-card" key={q.id}>
             <div className="question-header">
               <span className="question-year">
-                {q.year}년 / {q.round}회차
+                {q.exam_year}년 / {q.round}회차
               </span>
-              <span className="question-subject">{q.subject}</span>
+              <span className="question-type">{q.tagName}</span>
             </div>
 
             <div className="question-body">
