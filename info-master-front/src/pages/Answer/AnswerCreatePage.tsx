@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AnswerApi } from "../../api/AnswerApi";
 import { QuestionApi } from "../../api/QuestionApi";
+import MarkHelp from "../../components/MarkHelp";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -51,6 +52,8 @@ export default function AnswerCreatePage() {
 
   const [question, setQuestion] = useState<any>(null);
   const [text, setText] = useState("");
+
+  const [showHelp, setShowHelp] = useState(false); // Markdown 도움말 모달 상태
 
   const memberId = 1; // 임시 고정 계정
 
@@ -150,73 +153,58 @@ export default function AnswerCreatePage() {
       </div>
     </div>
 
-    {/* Markdown 사용법 안내 */}
-    <div
+   {/* Markdown 도움말 모달 */}
+    <button
+      onClick={() => setShowHelp(true)}
       style={{
-        background: "#f0f7ff",
-        padding: 15,
-        border: "1px solid #cce0ff",
-        borderRadius: 6,
-        marginBottom: 20,
-        lineHeight: 1.6,
+        background: "transparent",
+        border: "none",
+        color: "#007bff",
+        cursor: "pointer",
+        fontSize: 14
       }}
     >
-      <strong>📘 Markdown 간단 사용법</strong>
-      <ul style={{ marginTop: 8, paddingLeft: 20, fontSize: 14 }}>
-        <li><code># 제목</code> → 큰 제목</li>
-        <li><code>## 제목</code> → 중간 제목</li>
-        <li><code>**굵게**</code>, <code>*기울임*</code></li>
-        <li><code>- 리스트 항목</code></li>
-        <li><code>1. 번호 리스트</code></li>
-        <li>
-          <code>| A | B | C |</code><br />
-          <code>|---|---|---|</code><br />
-          <code>| 1 | 2 | 3 |</code>
-          <br />→ 표 만들기
-        </li>
-        <li>
-          <code>```</code> 코드 작성 <code>```</code> → 코드블럭
-        </li>
-        <li><code>&gt; 인용문</code> → 인용 스타일</li>
-        <li>줄바꿈은 <b>스페이스 두 번</b>!</li>
-      </ul>
-    </div>
+      📘 Markdown 도움말
+    </button>
     
-      {/* 답안 입력 */}
-      <div style={{ marginBottom: 30 }}>
-        <h3>📝 답안 입력</h3>
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          rows={20}
-          style={{
-            width: "100%",
-            padding: 12,
-            border: "1px solid #ccc",
-            borderRadius: 6,
-            fontSize: 15,
-            fontFamily: "Consolas, monospace",
-            resize: "vertical",
-          }}
-        />
-      </div>
+    <MarkHelp open={showHelp} onClose={() => setShowHelp(false)} />
 
-      {/* 미리보기 */}
-      <div>
-        <h3 style={{ marginBottom: 8 }}>👀 미리보기</h3>
-        <div
-          style={{
-            border: "1px solid #ddd",
-            borderRadius: 6,
-            padding: 14,
-            minHeight: 200,
-            background: "#fff",
-            lineHeight: 1.7
-          }}
-        >
-          <MarkdownPreview content={text} />
-        </div>
+    {/* 답안 입력 */}
+    <div style={{ marginBottom: 30 }}>
+      <h3>📝 답안 입력</h3>
+      
+      <textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        rows={20}
+        style={{
+          width: "100%",
+          padding: 12,
+          border: "1px solid #ccc",
+          borderRadius: 6,
+          fontSize: 15,
+          fontFamily: "Consolas, monospace",
+          resize: "vertical",
+        }}
+      />
+    </div>
+
+    {/* 미리보기 */}
+    <div>
+      <h3 style={{ marginBottom: 8 }}>👀 미리보기</h3>
+      <div
+        style={{
+          border: "1px solid #ddd",
+          borderRadius: 6,
+          padding: 14,
+          minHeight: 200,
+          background: "#fff",
+          lineHeight: 1.7
+        }}
+      >
+        <MarkdownPreview content={text} />
       </div>
+    </div>
 
 
 
