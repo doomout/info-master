@@ -2,6 +2,46 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AnswerApi } from "../../api/AnswerApi";
 import { QuestionApi } from "../../api/QuestionApi";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+function MarkdownPreview({ content }: { content: string }) {
+  return (
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      components={{
+        code({ className, children }) {
+          const match = /language-(\w+)/.exec(className || "");
+          const isBlock = Boolean(match);
+
+          return isBlock? (
+            <SyntaxHighlighter
+              style={oneDark}
+              language={match![1]}
+              PreTag="div"
+            >
+              {String(children).replace(/\n$/, "")}
+            </SyntaxHighlighter>
+          ) : (
+            <code
+              style={{
+                background: "#f4f4f4",
+                padding: "2px 4px",
+                borderRadius: 4,
+              }}
+            >
+              {children}
+            </code>
+          );
+        }
+      }}
+    >
+      {content || "_미리보기 내용이 없습니다._"}
+    </ReactMarkdown>
+  );
+}
 
 export default function AnswerCreatePage() {
   const nav = useNavigate();
@@ -44,26 +84,56 @@ export default function AnswerCreatePage() {
 
   if (!question) return <div>Loading...</div>;
 
+ 
+
   return (
     <div style={{ padding: 20, maxWidth: 900, margin: "0 auto" }}>
       <h2 style={{ marginBottom: 15 }}>✍️ 답안 작성</h2>
-
-      {/* 문제 정보 */}
-      <div
-        style={{
-          border: "1px solid #ddd",
-          padding: 15,
-          marginBottom: 25,
-          background: "#fafafa",
-          borderRadius: 8
-        }}
-      >
-        <h3>
-          {question.subject} — No.{question.number}
-        </h3>
-        <p style={{ color: "#666", fontSize: 14 }}>
-          {question.year}년 {question.round}회차
-        </p>
+      <div>
+        {/* 문제 정보 */}
+        <div
+          style={{
+            border: "1px solid #ddd",
+            padding: 15,
+            marginBottom: 25,
+            background: "#fafafa",
+            borderRadius: 8
+          }}
+        >
+      
+          {/* 상단 한 줄 */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 10
+            }}
+          >
+          
+          {/* 왼쪽: 문제 번호 + 연도/회차 */}
+          <div style={{ fontSize: 16, fontWeight: 600 }}>
+            문제 번호 : {question.number} 번
+            <span style={{ marginLeft: 10, color: "#666", fontWeight: 400 }}>
+              ({question.exam_year}년 {question.round}회차)
+            </span>
+          </div>
+          
+          {/* 오른쪽: 태그 */}
+          <div
+            style={{
+              padding: "4px 10px",
+              background: "#e9f2ff",
+              color: "#0056b3",
+              borderRadius: 12,
+              fontSize: 15,
+              fontWeight: 500
+            }}
+          >
+            {question.tagName ?? "미분류"}
+          </div>
+        </div>    
+        {/* 문제 본문 */}
         <pre
           style={{
             whiteSpace: "pre-wrap",
@@ -78,46 +148,47 @@ export default function AnswerCreatePage() {
           {question.questionText}
         </pre>
       </div>
+    </div>
 
-      {/* Markdown 사용법 안내 */}
-      <div
-        style={{
-          background: "#f0f7ff",
-          padding: 15,
-          border: "1px solid #cce0ff",
-          borderRadius: 6,
-          marginBottom: 20,
-          lineHeight: 1.6,
-        }}
-      >
-        <strong>📘 Markdown 간단 사용법</strong>
-        <ul style={{ marginTop: 8, paddingLeft: 20, fontSize: 14 }}>
-          <li><code># 제목</code> → 큰 제목</li>
-          <li><code>## 제목</code> → 중간 제목</li>
-          <li><code>**굵게**</code>, <code>*기울임*</code></li>
-          <li><code>- 리스트 항목</code></li>
-          <li><code>1. 번호 리스트</code></li>
-          <li>
-            <code>| A | B | C |</code><br />
-            <code>|---|---|---|</code><br />
-            <code>| 1 | 2 | 3 |</code>
-            <br />→ 표 만들기
-          </li>
-          <li>
-            <code>```</code> 코드 작성 <code>```</code> → 코드블럭
-          </li>
-          <li><code>&gt; 인용문</code> → 인용 스타일</li>
-          <li>줄바꿈은 <b>Enter 두 번</b>!</li>
-        </ul>
-      </div>
-
+    {/* Markdown 사용법 안내 */}
+    <div
+      style={{
+        background: "#f0f7ff",
+        padding: 15,
+        border: "1px solid #cce0ff",
+        borderRadius: 6,
+        marginBottom: 20,
+        lineHeight: 1.6,
+      }}
+    >
+      <strong>📘 Markdown 간단 사용법</strong>
+      <ul style={{ marginTop: 8, paddingLeft: 20, fontSize: 14 }}>
+        <li><code># 제목</code> → 큰 제목</li>
+        <li><code>## 제목</code> → 중간 제목</li>
+        <li><code>**굵게**</code>, <code>*기울임*</code></li>
+        <li><code>- 리스트 항목</code></li>
+        <li><code>1. 번호 리스트</code></li>
+        <li>
+          <code>| A | B | C |</code><br />
+          <code>|---|---|---|</code><br />
+          <code>| 1 | 2 | 3 |</code>
+          <br />→ 표 만들기
+        </li>
+        <li>
+          <code>```</code> 코드 작성 <code>```</code> → 코드블럭
+        </li>
+        <li><code>&gt; 인용문</code> → 인용 스타일</li>
+        <li>줄바꿈은 <b>스페이스 두 번</b>!</li>
+      </ul>
+    </div>
+    
       {/* 답안 입력 */}
-      <div style={{ marginBottom: 20 }}>
-        <h3 style={{ marginBottom: 8 }}>📝 답안 입력 (Markdown 지원)</h3>
+      <div style={{ marginBottom: 30 }}>
+        <h3>📝 답안 입력</h3>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          rows={16}
+          rows={20}
           style={{
             width: "100%",
             padding: 12,
@@ -129,6 +200,25 @@ export default function AnswerCreatePage() {
           }}
         />
       </div>
+
+      {/* 미리보기 */}
+      <div>
+        <h3 style={{ marginBottom: 8 }}>👀 미리보기</h3>
+        <div
+          style={{
+            border: "1px solid #ddd",
+            borderRadius: 6,
+            padding: 14,
+            minHeight: 200,
+            background: "#fff",
+            lineHeight: 1.7
+          }}
+        >
+          <MarkdownPreview content={text} />
+        </div>
+      </div>
+
+
 
       {/* 저장 버튼 */}
       <div style={{ marginTop: 20, display: "flex", gap: 10 }}>    
@@ -147,7 +237,7 @@ export default function AnswerCreatePage() {
         
         {/* 목록 버튼은 문제 목록 페이지로 이동 */}
         <button
-          onClick={() => nav(`/questions/${question.questionId}`)}
+          onClick={() => nav(`/questions/${question.id}`)}
           style={{
             padding: "10px 18px",
             background: "#444",
@@ -156,7 +246,7 @@ export default function AnswerCreatePage() {
             border: 0,
           }}
         >
-          목록으로
+          문제로 돌아가기
         </button>
       </div>
     </div>

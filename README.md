@@ -1,9 +1,9 @@
 # INFO MASTER 📚  
-정보관리 기술사 준비를 위한 학습/기출 관리 웹 서비스
+정보 관리 기술사 준비를 위한 학습/기출 관리 웹 서비스
 
-이 프로젝트는 정보관리 기술사(ITPE) 공부를 위해  
-기출문제 관리, 답안 작성, 노트 정리 기능을 제공하는  
-**React + Spring Boot 3 + PostgreSQL 기반 웹 서비스**입니다.
+이 프로젝트는 정보 관리 기술사 공부를 위해  
+문제 관리, 답안 작성, 카테고리 기능을 제공하는  
+**React 19 + Spring Boot 3.5 + PostgreSQL 16 기반 웹 서비스**입니다.
 
 ---
 ## 📄 문서
@@ -30,8 +30,10 @@
 
 ### Dev & Tools
 - VS Code
-- GitHub
-- pgAdmin4
-- 도커 데스크탑, 도커 허브
-- Markdown Editor
+- GitHub + GitHub Actions (CI 기능)
+- pgAdmin4 (DB 툴)
+- 도커 데스크탑(테스트용), 도커 허브(CD 전 임시) 
+- react-markdown (답안에 마크다운 방식 채택)
+- remark-gfm (마크 다운 미리 보기)
+- react-syntax-highlighter (코드 하이라이트 기능)
 ---
