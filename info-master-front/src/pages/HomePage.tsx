@@ -16,7 +16,7 @@ export default function HomePage() {
         <Link to="/questions" className="home-btn blue">문제 관리</Link>
         <Link to="/answers" className="home-btn green">답안 관리</Link>
         <Link to="/members" className="home-btn gray">회원 관리</Link>
-        <Link to="/tags" className="home-btn red">태그 관리</Link>
+        <Link to="/tags" className="home-btn red">카테고리 관리</Link>
       </div>
     </div>
   );
