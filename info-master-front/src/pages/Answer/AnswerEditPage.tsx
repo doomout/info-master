@@ -49,20 +49,6 @@ export default function AnswerEditPage() {
     }
   };
 
-  // 삭제
-  const handleDelete = async () => {
-    if (!window.confirm("정말 삭제하시겠습니까?")) return;
-
-    try {
-      await AnswerApi.delete(answer.id);
-      alert("삭제되었습니다.");
-      nav(`/questions/${answer.questionId}`); // 문제 상세로 이동
-    } catch (e) {
-      console.error(e);
-      alert("삭제 중 오류 발생!");
-    }
-  };
-
   if (!answer || !question) return <div>Loading...</div>;
 
   return (
@@ -132,19 +118,6 @@ export default function AnswerEditPage() {
         }}
       >
         저장하기
-      </button>
-
-      <button
-        onClick={handleDelete}
-        style={{
-          padding: "10px 18px",
-          background: "#dc3545",
-          color: "white",
-          borderRadius: 6,
-          border: 0,
-        }}
-      >
-        삭제하기
       </button>
 
       <button
