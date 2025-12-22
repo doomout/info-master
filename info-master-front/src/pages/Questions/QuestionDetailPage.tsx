@@ -2,8 +2,48 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { QuestionApi } from "../../api/QuestionApi";
 import { AnswerApi } from "../../api/AnswerApi";
+
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+function MarkdownPreview({ content }: { content: string }) {
+  return (
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      components={{
+        code({ className, children }) {
+          const match = /language-(\w+)/.exec(className || "");
+          const isBlock = Boolean(match);
+
+          return isBlock? (
+            <SyntaxHighlighter
+              style={oneDark}
+              language={match![1]}
+              PreTag="div"
+            >
+              {String(children).replace(/\n$/, "")}
+            </SyntaxHighlighter>
+          ) : (
+            <code
+              style={{
+                background: "#f4f4f4",
+                padding: "2px 4px",
+                borderRadius: 4,
+              }}
+            >
+              {children}
+            </code>
+          );
+        }
+      }}
+    >
+      {content || "_미리보기 내용이 없습니다._"}
+    </ReactMarkdown>
+  );
+}
+
 
 export default function QuestionDetailPage() {
   const { id } = useParams();
@@ -123,9 +163,7 @@ export default function QuestionDetailPage() {
           <p style={{ color: "#888", padding: 20 }}>아직 답안이 없습니다.</p>
         ) : (
           <div style={{ marginTop: 20 }}>
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {answer.answerText}
-            </ReactMarkdown>
+            <MarkdownPreview content={answer.answerText} />
           </div>
         )}
       </div>
