@@ -206,8 +206,6 @@ export default function AnswerCreatePage() {
       </div>
     </div>
 
-
-
       {/* 저장 버튼 */}
       <div style={{ marginTop: 20, display: "flex", gap: 10 }}>    
         <button
