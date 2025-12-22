@@ -3,46 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AnswerApi } from "../../api/AnswerApi";
 import { QuestionApi } from "../../api/QuestionApi";
 
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import MarkdownPreview from "../../components/markdown/MarkdownViewer";
 
-function MarkdownPreview({ content }: { content: string }) {
-  return (
-    <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
-      components={{
-        code({ className, children }) {
-          const match = /language-(\w+)/.exec(className || "");
-          const isBlock = Boolean(match);
-
-          return isBlock? (
-            <SyntaxHighlighter
-              style={oneDark}
-              language={match![1]}
-              PreTag="div"
-            >
-              {String(children).replace(/\n$/, "")}
-            </SyntaxHighlighter>
-          ) : (
-            <code
-              style={{
-                background: "#f4f4f4",
-                padding: "2px 4px",
-                borderRadius: 4,
-              }}
-            >
-              {children}
-            </code>
-          );
-        }
-      }}
-    >
-      {content || "_미리보기 내용이 없습니다._"}
-    </ReactMarkdown>
-  );
-}
 
 export default function AnswerDetailPage() {
   const { id } = useParams();
