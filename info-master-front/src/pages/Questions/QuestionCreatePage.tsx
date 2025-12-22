@@ -106,6 +106,17 @@ export default function QuestionCreatePage() {
         </div>
 
         <div className="form-row">
+          <label>문제 번호</label>
+          <input
+            type="number"
+            name="number"
+            value={form.number}
+            onChange={change}
+            required
+          />
+        </div>
+
+        <div className="form-row">
           <label>카테고리</label>
           <select
             value={selectedTagId}
@@ -119,17 +130,6 @@ export default function QuestionCreatePage() {
               </option>
             ))}
           </select>
-        </div>
-
-        <div className="form-row">
-          <label>문제 번호</label>
-          <input
-            type="number"
-            name="number"
-            value={form.number}
-            onChange={change}
-            required
-          />
         </div>
 
         <div className="form-row">
