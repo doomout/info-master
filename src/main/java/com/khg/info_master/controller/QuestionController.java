@@ -4,12 +4,15 @@ import com.khg.info_master.domain.Question;
 import com.khg.info_master.dto.question.QuestionCreateRequestDTO;
 import com.khg.info_master.dto.question.QuestionResponseDTO;
 import com.khg.info_master.dto.question.QuestionUpdateRequestDTO;
+
+import com.khg.info_master.security.UserPrincipal;
 import com.khg.info_master.service.QuestionService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,10 +24,13 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    // 생성
+    // 생성 (로그인 체크 추가)
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody QuestionCreateRequestDTO dto) {
-        Long id = questionService.create(dto);
+    public ResponseEntity<?> create(
+            @Valid @RequestBody QuestionCreateRequestDTO dto,
+            @AuthenticationPrincipal UserPrincipal user
+    ) {
+        Long id = questionService.create(dto, user.getId()); 
         return ResponseEntity.ok(id);
     }
 

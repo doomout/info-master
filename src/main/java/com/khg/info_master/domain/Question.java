@@ -36,4 +36,9 @@ public class Question {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    // 작성자 정보 추가
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 }

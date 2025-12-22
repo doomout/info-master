@@ -1,10 +1,14 @@
 package com.khg.info_master.service;
 
+import com.khg.info_master.domain.Member;
 import com.khg.info_master.domain.Question;
 import com.khg.info_master.domain.Tag;
+
 import com.khg.info_master.dto.question.QuestionCreateRequestDTO;
 import com.khg.info_master.dto.question.QuestionResponseDTO;
 import com.khg.info_master.dto.question.QuestionUpdateRequestDTO;
+
+import com.khg.info_master.repository.MemberRepository;
 import com.khg.info_master.repository.QuestionRepository;
 import com.khg.info_master.repository.TagRepository;
 
@@ -20,12 +24,16 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final TagRepository tagRepository;
+    private final MemberRepository memberRepository;
 
     // CREATE
     @Transactional
-    public Long create(QuestionCreateRequestDTO dto) {
-                Tag tag = tagRepository.findById(dto.getTagId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그"));
+    public Long create(QuestionCreateRequestDTO dto, Long memberId) {
+         Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new IllegalArgumentException("member not found"));
+            
+        Tag tag = tagRepository.findById(dto.getTagId())
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그"));
 
         Question question = new Question();
         question.setExam_year(dto.getExam_year());
@@ -34,6 +42,7 @@ public class QuestionService {
         question.setQuestionText(dto.getQuestionText());
         question.setDifficulty(dto.getDifficulty());
         question.setTag(tag);
+        question.setMember(member);
 
         questionRepository.save(question);
         return question.getId();
