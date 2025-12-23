@@ -53,17 +53,21 @@ public class QuestionController {
     @PutMapping("/{id}")
     public QuestionResponseDTO update(
             @PathVariable Long id,
-            @RequestBody QuestionUpdateRequestDTO dto
+            @RequestBody QuestionUpdateRequestDTO dto,
+            @AuthenticationPrincipal UserPrincipal user // 로그인 사용자 정보
     ) {
-        Question updated = questionService.update(id, dto);
+        Question updated = questionService.update(id, dto, user.getId());
         return questionService.toResponseDTO(updated);
     }
 
 
     // 삭제
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Long id) {
-        questionService.delete(id);
+    public String delete(
+        @PathVariable Long id, 
+        @AuthenticationPrincipal UserPrincipal user // 로그인 사용자 정보
+    ) {
+        questionService.delete(id, user.getId());
         return "deleted";
     }
 }

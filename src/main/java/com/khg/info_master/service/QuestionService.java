@@ -59,9 +59,14 @@ public class QuestionService {
     }
 
     // UPDATE
-    public Question update(Long id, QuestionUpdateRequestDTO dto) {
+    public Question update(Long id, QuestionUpdateRequestDTO dto, Long memberId) {
 
         Question q = get(id);
+        
+        // 권한 체크
+        if (!q.getMember().getId().equals(memberId)) {
+            throw new IllegalArgumentException("수정 권한이 없습니다.");
+        }
 
         q.setExam_year(dto.getExam_year());
         q.setRound(dto.getRound());
@@ -74,7 +79,14 @@ public class QuestionService {
 
 
     // DELETE
-    public void delete(Long id) {
+    public void delete(Long id, Long memberId) {
+        Question q = get(id);
+        
+        // 권한 체크
+        if (!q.getMember().getId().equals(memberId)) {
+            throw new IllegalArgumentException("삭제 권한이 없습니다.");
+        }
+        
         questionRepository.deleteById(id);
     }
 

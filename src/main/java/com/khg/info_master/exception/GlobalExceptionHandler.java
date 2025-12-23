@@ -2,8 +2,10 @@ package com.khg.info_master.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice // 모든 컨트롤러에서 발생하는 예외를 잡아 처리
@@ -28,6 +30,13 @@ public class GlobalExceptionHandler {
                 msg
         );
         return ResponseEntity.badRequest().body(error);
+    }
+
+    // 권한 없음 예외 처리 → 403 Forbidden
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public String handleAccessDenied(AccessDeniedException e) {
+        return e.getMessage();
     }
 
     // 모든 예외 잡기 (예상 못한 에러)
