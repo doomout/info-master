@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.springframework.security.test.context.support.WithMockUser;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -60,6 +61,7 @@ class QuestionControllerTest {
 
     // CREATE 테스트
     @Test
+    @WithMockUser(username = "test@test.com")
     void 문제_생성_성공() throws Exception {
                 
         Map<String, Object> dto = Map.of(
@@ -95,6 +97,7 @@ class QuestionControllerTest {
 
     // UPDATE (DTO 적용)
     @Test
+    @WithMockUser(username = "test@test.com")
     void 문제_수정_성공() throws Exception {
 
         Map<String, Object> dto = Map.of(
@@ -114,6 +117,7 @@ class QuestionControllerTest {
 
     // DELETE 테스트
     @Test
+    @WithMockUser(username = "test@test.com")
     void 문제_삭제_성공() throws Exception {
 
         mockMvc.perform(delete("/api/questions/" + questionId))
