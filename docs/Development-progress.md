@@ -29,7 +29,6 @@
 - [X] question 테이블 생성
 - [X] answer 테이블 생성
 - [X] tag 테이블 생성
-- [X] question_tag 테이블 생성
 
 ## ✔ DB 권한 문제 해결
 - [X] search_path 오류 해결
@@ -41,7 +40,7 @@
 
 # 3. 백엔드 도메인 구축 (Domain / Repository / Service / Controller)
 
-## ✔ Member 기능 (CRUD)
+## Member 기능 (CRUD)
 - [X] Member 엔티티 생성
 - [X] MemberRepository 생성
 - [X] MemberService 생성
@@ -49,7 +48,7 @@
 - [X] Postman으로 회원 등록 테스트
 - [X] 회원 조회/수정/삭제 테스트
 
-## ✔ Question 기능 (CRUD)
+## Question 기능 (CRUD)
 - [x] Question 엔티티 생성
 - [x] QuestionRepository 생성
 - [x] QuestionService 생성
@@ -57,16 +56,15 @@
 - [x] Postman으로 문제 등록 테스트
 - [x] 문제 조회/수정/삭제 테스트
 
-## ✔ Answer 기능 (CRUD)
+## Answer 기능 (CRUD)
 - [x] Answer 엔티티 생성
 - [x] AnswerRepository 생성
 - [x] AnswerService 생성
 - [x] AnswerController 생성
 - [x] CRUD 테스트
 
-## ✔ Tag & QuestionTag 기능 (CRUD)
+## Tag 기능 (CRUD)
 - [x] Tag CRUD
-- [x] Question-Tag 매핑 기능
 - [x] Tag 기반 Question 검색 API
 
 ---
@@ -76,7 +74,7 @@
 - [x] DTO 생성
 - [x] Controller에서 Entity ↔ DTO 변환 적용
 - [x] Validation 일부 적용 (@NotBlank, @NotNull)
-- [x] 전체 엔티티 Validation 적용 (미완료)
+- [x] 전체 엔티티 Validation 적용
 
 ---
 
@@ -88,22 +86,8 @@
 - [x] 404, 400, 500 공통 처리 구조 구축
 
 ---
-# 6. 테스트 (Unit / Integration)
 
- - [x] Member CRUD 테스트(C)
- - [x] Question CRUD 테스트(C)
- - [x] Answer CRUD 테스트(C)
- - [x] Tag CRUD 테스트(C)
- - [x] QuestionTag 매핑 테스트(추가/조회/중복)(C)
- - [x] Member Validation 테스트
- - [x] Question Validation 테스트
- - [x] Answer Validation 테스트
- - [x] Tag Validation 테스트
- - [ ] JWT 테스트 (Security 적용 후 진행)
- - [ ] API 통합 테스트 (React 연동 후)
- ---
-
-# 7. CI/CD (CD는 다 완성 후 적용 예정)
+# 6. CI/CD (CD는 다 완성 후 적용 예정)
 
 - [x] 도커 이미지 생성
 - [x] 도커 컨테이너 생성
@@ -112,7 +96,7 @@
 - [ ] 운영서버에 자동 업데이트(CD)
 ---
 
-# 8. 프론트엔드(React) 연동
+# 7. 프론트엔드(React) 연동
 
 - [x] React 프로젝트 생성
 - [x] Member CRUD 화면
@@ -124,23 +108,36 @@
 - [x] DB 변경에 따른 프론트 전체 수정
 ---
 
-# 9. 인증/인가 (JWT)
+# 8. 인증/인가 (JWT)
 - [x] Spring Security 기본 설정
-- [x] JWT 발급
-- [x] JWT 인증 필터
-- [x] SecurityContext에 사용자 주입
-- [ ] 로그인 API 구현
-- [ ] 프론트 로그인 붙이기
-- [ ] Answer 생성 시 memberId 제거
-- [ ] 작성자 권한 체크
-- [ ] 불필요 컬럼 제거
-- [ ] Spring Security 기본 적용
-- [ ] JWT Access Token 발급
-- [ ] 로그인 API
-- [ ] 토큰 검사 기능
-- [ ] 인증 필요한 API 보호
----
+- [x] JWT 라이브러리 의존성 추가
+- [x] SecurityFilterChain 구성
+- [x] JWT 인증 필터 구조 추가
+- [x] UserPrincipal 구현 (Member 기반 UserDetails)
+- [x] @AuthenticationPrincipal로 로그인 사용자 주입
+- [x] Question 생성 시 로그인 필수 적용
+- [x] Question 엔티티에 작성자(Member) 컬럼 추가
+- [x] Question 수정/삭제 시 작성자 권한 체크 로직 구현
+- [x] SecurityContext 직접 주입 방식 테스트 전략 수립
+- [x] 보안 적용 후 QuestionController 테스트 리팩토링
 
+---
+# 9. 테스트 
+
+ - [x] Member CRUD 테스트
+ - [x] Question CRUD 테스트
+ - [x] Answer CRUD 테스트
+ - [x] Tag CRUD 테스트
+ - [x] Member Validation 테스트
+ - [x] Question Validation 테스트
+ - [x] Answer Validation 테스트
+ - [x] Tag Validation 테스트
+ - [x] Question 테스트에 로그인 컨텍스트 적용
+ - [ ] Answer 테스트에 로그인 컨텍스트 적용
+ - [ ] Tag 테스트에 로그인 컨텍스트 적용
+ - [ ] 다른 사용자 접근 시 403 테스트 
+
+---
 # 10. 문서 (Docs)
 
 - [x] DB 스키마 문서 완성
@@ -150,7 +147,33 @@
 
 ---
 
-# 현재 진행 상태 (2025.12.22)
+## ⏭️ 다음 할 일 (우선순위 정리)
+
+### 1단계: 인증 흐름 완성 (핵심)
+- [ ] 로그인 API 구현 (AuthController)
+- [ ] 이메일/비밀번호 인증
+- [ ] JWT Access Token 발급
+- [ ] JWT 검증 로직 완성
+- [ ] JwtAuthenticationFilter 실제 적용 (addFilters = true)
+
+### 2단계: API 정리
+- [ ] Answer 생성 시 memberId 제거 (SecurityContext 기반)
+- [ ] Answer 수정/삭제 작성자 권한 체크
+- [ ] 불필요 컬럼 제거 및 DTO 정리
+
+### 3단계: 권한 확장
+- [ ] Role 개념 도입 (USER / ADMIN)
+- [ ] 태그 생성/수정은 ADMIN만 가능하도록 제한
+- [ ] API 별 접근 권한 분리
+
+### 4단계: 프론트 연동
+- [ ] 로그인 화면 구현
+- [ ] JWT 저장 (localStorage or memory)
+- [ ] 인증 헤더 자동 주입
+- [ ] 인증 실패 시 UX 처리
+
+---
+# 현재 진행 상태 (2025.12.24)
 
 | 기능               | 상태      |
 | ---------------- | ------- |
