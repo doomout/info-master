@@ -9,7 +9,6 @@ import com.khg.info_master.repository.QuestionRepository;
 import com.khg.info_master.repository.TagRepository;
 import com.khg.info_master.security.UserPrincipal;
 
-import org.checkerframework.checker.units.qual.m;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
 import java.util.Map;
