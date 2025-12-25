@@ -1,11 +1,15 @@
 package com.khg.info_master.controller;
 
 import com.khg.info_master.domain.Question;
+import com.khg.info_master.dto.answer.AnswerCreateRequestDTO;
+import com.khg.info_master.dto.answer.AnswerResponseDTO;
 import com.khg.info_master.dto.question.QuestionCreateRequestDTO;
 import com.khg.info_master.dto.question.QuestionResponseDTO;
 import com.khg.info_master.dto.question.QuestionUpdateRequestDTO;
 
 import com.khg.info_master.security.UserPrincipal;
+import com.khg.info_master.service.AnswerService;
+import com.khg.info_master.service.MemberService;
 import com.khg.info_master.service.QuestionService;
 
 import jakarta.validation.Valid;
@@ -23,6 +27,8 @@ import java.util.List;
 public class QuestionController {
 
     private final QuestionService questionService;
+    private final AnswerService answerService;
+    private final MemberService memberService;
 
     // 생성 (로그인 체크 추가)
     @PostMapping
@@ -69,6 +75,20 @@ public class QuestionController {
     ) {
         questionService.delete(id, user.getId());
         return "deleted";
+    }
+
+    // 답안 생성 / 수정 (upsert)
+    @PutMapping("/{questionId}/answer")
+    public AnswerResponseDTO upsertAnswer(
+            @PathVariable Long questionId,
+            @Valid @RequestBody AnswerCreateRequestDTO dto,
+            @AuthenticationPrincipal UserPrincipal user
+    ) {
+        return answerService.upsertAnswer(
+                questionId,
+                dto.getAnswerText(),
+                user.getId()
+        );
     }
 }
 
