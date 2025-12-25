@@ -9,7 +9,6 @@ import com.khg.info_master.dto.question.QuestionUpdateRequestDTO;
 
 import com.khg.info_master.security.UserPrincipal;
 import com.khg.info_master.service.AnswerService;
-import com.khg.info_master.service.MemberService;
 import com.khg.info_master.service.QuestionService;
 
 import jakarta.validation.Valid;
@@ -28,7 +27,6 @@ public class QuestionController {
 
     private final QuestionService questionService;
     private final AnswerService answerService;
-    private final MemberService memberService;
 
     // 생성 (로그인 체크 추가)
     @PostMapping

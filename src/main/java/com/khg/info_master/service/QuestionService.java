@@ -3,7 +3,7 @@ package com.khg.info_master.service;
 import com.khg.info_master.domain.Member;
 import com.khg.info_master.domain.Question;
 import com.khg.info_master.domain.Tag;
-
+import com.khg.info_master.dto.answer.AnswerResponseDTO;
 import com.khg.info_master.dto.question.QuestionCreateRequestDTO;
 import com.khg.info_master.dto.question.QuestionResponseDTO;
 import com.khg.info_master.dto.question.QuestionUpdateRequestDTO;
@@ -92,6 +92,18 @@ public class QuestionService {
 
     // DTO 변환 (기본)
     public QuestionResponseDTO toResponseDTO(Question q) {
+        AnswerResponseDTO answerDto = null;
+
+        if (q.getAnswer() != null) {
+            answerDto = AnswerResponseDTO.builder()
+                    .id(q.getAnswer().getId())
+                    .answerText(q.getAnswer().getAnswerText())
+                    .score(q.getAnswer().getScore())
+                    .comment(q.getAnswer().getComment())
+                    .createdAt(q.getAnswer().getCreatedAt())
+                    .build();
+        }
+
         return new QuestionResponseDTO(
             q.getId(),
             q.getExam_year(),
@@ -102,7 +114,8 @@ public class QuestionService {
             q.getCreatedAt(),
             q.getUpdatedAt(),
             q.getTag().getId(),
-            q.getTag().getName()
+            q.getTag().getName(),
+            answerDto           // ✅ 마지막 파라미터 추가
         );
     }
 

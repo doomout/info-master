@@ -5,6 +5,8 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+import com.khg.info_master.dto.answer.AnswerResponseDTO;
+
 
 @Getter
 @AllArgsConstructor
@@ -24,4 +26,7 @@ public class QuestionResponseDTO {
     // 단일 태그
     private Long tagId;
     private String tagName;
+
+     // 🔥 추가
+    private AnswerResponseDTO answer;
 }
