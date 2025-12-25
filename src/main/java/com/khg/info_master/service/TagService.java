@@ -1,7 +1,6 @@
 package com.khg.info_master.service;
 
 import com.khg.info_master.domain.Tag;
-import com.khg.info_master.dto.tag.TagCreateRequestDTO;
 import com.khg.info_master.dto.tag.TagResponseDTO;
 import com.khg.info_master.dto.tag.TagUpdateRequestDTO;
 import com.khg.info_master.repository.TagRepository;

@@ -48,6 +48,11 @@ public class MemberService {
         memberRepository.deleteById(id);
     }
 
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+    }
+
     // DTO 변환 메서드
     public MemberResponseDTO toDTO(Member member) {
         return MemberResponseDTO.builder()
