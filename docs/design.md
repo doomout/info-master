@@ -36,7 +36,7 @@ Member (1) ── (N) Question (1) ── (1) Answer
 | Answer 단독 수정 | ❌ 없음                  |
 | Answer 생성    | Question 하위에서만        |
 | Answer 수정    | Question 하위에서만        |
-| Answer 삭제    | Question 삭제 시 cascade |
+| Answer 삭제    | Question 삭제 시 cascade 삭제 |
 
 ---
 
@@ -108,14 +108,18 @@ controller
 ## 7.1 QuestionService
 - Question CRUD
 - 소유자 검증
-- Question 삭제 시 Answer cascade 삭제
+- Question 삭제 시 Answer cascade 삭제(Service 계층에서 제어)
 
 ---
 
 ## 7.2 AnswerService
 
 - 역할: Answer upsert
+- Upsert란:
+  - 해당 Question에 Answer가 없으면 생성
+  - 이미 존재하면 동일 리소스를 수정
 - AnswerRepository 직접 사용 ❌
+    (Aggregate 무결성 유지를 위해 Question을 통해서만 접근)
 - QuestionRepository를 통해 Answer 관리
 ```java
 PUT /api/questions/{id}/answer
@@ -156,3 +160,11 @@ delete(questionId, userId)
 - AnswerController 제거
 - Question 중심 Aggregate 구조 확정
 ---
+
+# 11. 테스트 전략
+
+- Answer는 단독 테스트하지 않는다.
+- Question + Answer 통합 테스트로 검증한다.
+- Answer 생성/수정은 동일 API(Upsert)로 검증한다.
+- Security 테스트와 도메인 테스트는 분리한다.
+--- 

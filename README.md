@@ -11,6 +11,9 @@
 - **Database Schema (DDL)**  
   → [`DB 구조`](docs/db-schema.md)
 
+- **설계 문서**
+  → [`설계 문서`](docs/design.md) 
+
 - **프로젝트 진행사항**  
   → [`프로젝트 진행`](docs/Development-progress.md)
 ---

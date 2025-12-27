@@ -133,7 +133,7 @@
  - [x] Answer Validation 테스트
  - [x] Tag Validation 테스트
  - [x] Question 테스트에 로그인 컨텍스트 적용
- - [ ] Answer 테스트에 로그인 컨텍스트 적용
+ - [x] Answer 테스트에 로그인 컨텍스트 적용
  - [ ] Tag 테스트에 로그인 컨텍스트 적용
  - [ ] 다른 사용자 접근 시 403 테스트 
 
