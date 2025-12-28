@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import AnswerEditor from "./AnswerEditor";
 import { QuestionApi } from "../../api/QuestionApi";
-import { AnswerApi } from "../../api/AnswerApi";
-
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -47,24 +46,27 @@ function MarkdownPreview({ content }: { content: string }) {
 
 export default function QuestionDetailPage() {
   const { id } = useParams();
-  const nav = useNavigate();
-
   const [question, setQuestion] = useState<any>(null);
-  const [answer, setAnswer] = useState<any>(null);
+  const [editing, setEditing] = useState(false);
   const questionId = Number(id);
+  // Answer 는 question 안에 포함되어 있음
+  const answer = question?.answer;
+  // AnswerEditor 컴포넌트에서 답안을 저장하면 reload 함수를 호출하여 다시 불러옴
+  const reload = async () => {
+    const res = await QuestionApi.get(questionId);
+    setQuestion(res.data);
+    setEditing(false);
+  };
 
   // 문제 + 답안 가져오기
   useEffect(() => {
     if (!questionId) return;
 
-    QuestionApi.get(questionId).then((res) => setQuestion(res.data));
-
-    AnswerApi.listByQuestion(questionId)
-      .then((res) => {
-        setAnswer(res.data ?? null);
-      })
+    QuestionApi.get(questionId)
+      .then((res) => setQuestion(res.data))
       .catch(console.error);
   }, [questionId]);
+
 
   if (!question) return <div>Loading...</div>;
 
@@ -102,35 +104,13 @@ export default function QuestionDetailPage() {
         {/* 버튼 영역 */}
         <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
           {!answer ? (
-            <button
-              onClick={() => nav(`/answers/new?questionId=${questionId}`)}
-              style={{
-                padding: "10px 16px",
-                background: "#007bff",
-                color: "white",
-                borderRadius: 6,
-                border: 0,
-                cursor: "pointer",
-              }}
-            >
+            <button onClick={() => setEditing(true)}>
               ✍️ 답안 작성하기
             </button>
           ) : (
-            <>
-              <button
-                onClick={() => nav(`/answers/${answer.id}/edit`)}
-                style={{
-                  padding: "10px 16px",
-                  background: "#007bff",
-                  color: "white",
-                  borderRadius: 6,
-                  border: 0,
-                  cursor: "pointer",
-                }}
-              >
-                ✏️ 답안 수정하기
-              </button>
-            </>
+            <button onClick={() => setEditing(true)}>
+              ✏️ 답안 수정하기
+            </button>
           )}
 
           <Link
@@ -148,6 +128,16 @@ export default function QuestionDetailPage() {
         </div>
       </div>
 
+      {/* ===== 답안 편집 영역 ===== */}
+      {editing && (
+        <AnswerEditor
+          questionId={questionId}
+          initialValue={answer?.answerText}
+          onSaved={reload}
+          onCancel={() => setEditing(false)}
+        />
+      )}
+
       {/* ===== 답안 표시 영역 ===== */}
       <div
         style={{
@@ -157,15 +147,16 @@ export default function QuestionDetailPage() {
           background: "white",
         }}
       >
-        <h3>📘 작성된 답안</h3>
+      <h3>📘 작성된 답안</h3>
 
-        {!answer ? (
-          <p style={{ color: "#888", padding: 20 }}>아직 답안이 없습니다.</p>
+      {!answer ? (
+        <p style={{ color: "#888", padding: 20 }}>아직 답안이 없습니다.</p>
         ) : (
-          <div style={{ marginTop: 20 }}>
+          <div id="answer-view" style={{ marginTop: 20 }}>
             <MarkdownPreview content={answer.answerText} />
           </div>
-        )}
+        )
+      }
       </div>
     </div>
   );
