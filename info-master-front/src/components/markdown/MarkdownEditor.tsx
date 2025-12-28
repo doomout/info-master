@@ -1,13 +1,13 @@
 import { useState } from "react";
-import MarkdownViewer from "./MarkdownViewer";
 import MarkHelp from "./MarkHelp";
 
 type Props = {
   value: string;
   onChange: (value: string) => void;
+  showHelpButton?: boolean;
 };
 
-export default function MarkdownEditor({ value, onChange }: Props) {
+export default function MarkdownEditor({ value, onChange, showHelpButton = true }: Props) {
   const [showHelp, setShowHelp] = useState(false);
 
   return (
@@ -21,18 +21,20 @@ export default function MarkdownEditor({ value, onChange }: Props) {
         }}
       >
         <h3>📝 답안 내용</h3>
-        <button
-          onClick={() => setShowHelp(true)}
-          style={{
-            background: "transparent",
-            border: "none",
-            color: "#007bff",
-            cursor: "pointer",
-            fontSize: 14
-          }}
-        >
-          📘 Markdown 도움말
-        </button>
+        {showHelpButton && (
+          <button
+            onClick={() => setShowHelp(true)}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "#007bff",
+              cursor: "pointer",
+              fontSize: 14
+            }}
+          >
+            📘 Markdown 도움말
+          </button>
+        )}
       </div>
 
       <textarea
@@ -48,19 +50,6 @@ export default function MarkdownEditor({ value, onChange }: Props) {
           marginBottom: 20
         }}
       />
-
-      <h3>👀 미리보기</h3>
-      <div
-        style={{
-          border: "1px solid #ddd",
-          borderRadius: 6,
-          padding: 14,
-          background: "#fff",
-          lineHeight: 1.7
-        }}
-      >
-        <MarkdownViewer content={value} />
-      </div>
 
       <MarkHelp
         open={showHelp}
