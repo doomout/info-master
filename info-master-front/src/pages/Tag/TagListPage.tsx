@@ -8,7 +8,10 @@ export default function TagListPage() {
   const [tags, setTags] = useState<Tag[]>([]);
 
   useEffect(() => {
-    TagApi.getAll().then(res => setTags(res.data));
+    TagApi.getAll().then(res => {
+      console.log("TAG API RESPONSE:", res.data);
+      setTags(res.data)
+    });
   }, []);
 
   const remove = (id: number) => {
