@@ -4,7 +4,10 @@ import com.khg.info_master.dto.tag.TagCreateRequestDTO;
 import com.khg.info_master.dto.tag.TagResponseDTO;
 import com.khg.info_master.dto.tag.TagUpdateRequestDTO;
 import com.khg.info_master.service.TagService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +32,7 @@ public class TagController {
     }
 
     @PostMapping
-    public TagResponseDTO create(@RequestBody TagCreateRequestDTO dto) {
+    public TagResponseDTO create(@Valid @RequestBody TagCreateRequestDTO dto) {
         Long id = tagService.create(dto.getName()); // create(String) 호출
         return tagService.toDTO(tagService.get(id));
     }
