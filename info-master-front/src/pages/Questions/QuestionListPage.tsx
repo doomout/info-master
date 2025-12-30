@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { QuestionApi } from "../../api/QuestionApi";
 import type { Question } from "../../types/Question";
 import "./QuestionListPage.css";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function QuestionListPage() {
   const [questions, setQuestions] = useState<Question[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     QuestionApi.list()
-      .then((res) => setQuestions(res.data))
+      .then(({ data }) => setQuestions(data))
       .catch(console.error);
   }, []);
 
   // 삭제
-  const handleDelete = async (id: number) => {
+  const deleteQuestion = async (id: number) => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
     try {
@@ -35,6 +36,7 @@ export default function QuestionListPage() {
       <div className="questions-header">
         <h2>문제</h2>
 
+        {/* 관리자 전용 */}
         <Link to="/questions/create" className="btn-create">
           + 문제 생성
         </Link>
@@ -42,7 +44,10 @@ export default function QuestionListPage() {
 
       <div className="questions-grid">
         {questions.map((q) => (
-          <div className="question-card" key={q.id}>
+          <div className="question-card" 
+              key={q.id} 
+              onClick={() => navigate(`/questions/${q.id}`)}
+          >
             <div className="question-header">
               <span className="question-year">
                 {q.exam_year}년 / {q.round}회차
@@ -60,12 +65,18 @@ export default function QuestionListPage() {
                 상세보기
               </Link>
 
-              <Link to={`/questions/${q.id}/edit`} className="btn-edit">
+              <Link to={`/questions/${q.id}/edit`} 
+                className="btn-edit" 
+                onClick={(e) => e.stopPropagation()}
+              >
                 수정
               </Link>
 
               <button
-                onClick={() => handleDelete(q.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteQuestion(q.id);
+                }}
                 style={{
                   padding: "10px 18px",
                   background: "#dc3545",
