@@ -134,7 +134,7 @@
  - [x] Tag Validation 테스트
  - [x] Question 테스트에 로그인 컨텍스트 적용
  - [x] Answer 테스트에 로그인 컨텍스트 적용
- - [ ] Tag 테스트에 로그인 컨텍스트 적용
+ - [x] Tag 테스트에 로그인 컨텍스트 적용
  - [ ] 다른 사용자 접근 시 403 테스트 
 
 ---
@@ -149,31 +149,21 @@
 
 ## ⏭️ 다음 할 일 (우선순위 정리)
 
-### 1단계: 인증 흐름 완성 (핵심)
-- [ ] 로그인 API 구현 (AuthController)
-- [ ] 이메일/비밀번호 인증
-- [ ] JWT Access Token 발급
-- [ ] JWT 검증 로직 완성
-- [ ] JwtAuthenticationFilter 실제 적용 (addFilters = true)
+### 1단계: 프론트 화면 UX 
+- [ ] 관리자 화면 개발
+- [ ] 홈 화면 변경
+- [ ] 세부 UI 개선
 
-### 2단계: API 정리
-- [ ] Answer 생성 시 memberId 제거 (SecurityContext 기반)
-- [ ] Answer 수정/삭제 작성자 권한 체크
-- [ ] 불필요 컬럼 제거 및 DTO 정리
+### 2단계: 서버 설정 운영
+- [ ] 라즈베리파이 4 환경 설정
+- [ ] 라즈베리파이 서버에 CD 적용
 
-### 3단계: 권한 확장
-- [ ] Role 개념 도입 (USER / ADMIN)
-- [ ] 태그 생성/수정은 ADMIN만 가능하도록 제한
-- [ ] API 별 접근 권한 분리
-
-### 4단계: 프론트 연동
-- [ ] 로그인 화면 구현
-- [ ] JWT 저장 (localStorage or memory)
-- [ ] 인증 헤더 자동 주입
-- [ ] 인증 실패 시 UX 처리
+### 3단계: 전체 테스트
+- [ ] 외부 접속 테스트
+- [ ] 관리자만 CUD 되는지 테스트
 
 ---
-# 현재 진행 상태 (2025.12.24)
+# 현재 진행 상태 (2025.12.30)
 
 | 기능               | 상태      |
 | ---------------- | ------- |
@@ -189,7 +179,7 @@
 | GitHub Actions 구축(CI) | ✔ 완료    |
 | 도커 컨테이너 구축 | ✔ 완료    |
 | React 연동         | ✔ 완료  |
-| 인증/인가 (JWT)    | ❌ 진행 중   |
+| 인증/인가 (JWT)    | ✔ 완료  |
 | 문서/ERD           | ❌ 미완료   |
 ---
 
@@ -201,7 +191,7 @@ docker compose build --no-cache
 docker compose up -d
 
 # 테스트 코드는 제외하고 도커 이미지 생성
-mvn clean package -DskipTests
+.\mvnw clean package -DskipTests
 
 # 도커 이미지 생성
 docker build -t info-master-backend .
