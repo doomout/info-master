@@ -1,6 +1,6 @@
 .header {
-  background: #333;
-  color: white;
+  background: #addab1;
+  color: rgb(135, 130, 206);
   padding: 10px 0;
 }
 
@@ -21,11 +21,26 @@
 }
 
 .nav a {
-  margin-left: 15px;
-  color: white;
+  margin-left: 24px;
+  color: rgb(179, 38, 38);
   text-decoration: none;
 }
 
 .nav a:hover {
   text-decoration: underline;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-badge {
+  font-size: 12px;
+  padding: 4px 8px;
+  background: #dc3545;
+  color: white;
+  border-radius: 6px;
+  font-weight: bold;
 }
