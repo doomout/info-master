@@ -1,22 +1,30 @@
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 
+/* 관리자 페이지 */
+import AdminHomePage from "./pages/Admin/AdminHomePage";
+import AdminQuestionDetailPage from "./pages/Admin/AdminQuestionDetailPage";
+
+/* 사용자 페이지 */
+import PublicQuestionDetailPage from "./pages/Public/PublicQuestionDetailPage";
+import QuestionCreatePage from "./pages/Questions/QuestionCreatePage";
+import QuestionEditPage from "./pages/Questions/QuestionEditPage";
+
+import AdminTagListPage from "./pages/Admin/AdminTagListPage";
+import AdminTagCreatePage from "./pages/Admin/AdminTagCreatePage";
+import AdminTagEditPage from "./pages/Admin/AdminTagEditPage";
+
+/* Layout */
+import Header from "./components/Header";
+import Container from "./components/Container";
+import PublicQuestionListPage from "./pages/Public/PublicQuestionListPage";
+import AdminQuestionListPage from "./pages/Admin/AdminQuestionListPage";
+
+/* 회원 가입은 곧 사라질 페이지 */
 import MemberListPage from "./pages/Members/MemberListPage";
 import MemberCreatePage from "./pages/Members/MemberCreatePage";
 import MemberDetailPage from "./pages/Members/MemberDetailPage";
 import MemberEditPage from "./pages/Members/MemberEditPage";
-
-import QuestionListPage from "./pages/Questions/QuestionListPage";
-import QuestionCreatePage from "./pages/Questions/QuestionCreatePage";
-import QuestionDetailPage from "./pages/Questions/QuestionDetailPage";
-import QuestionEditPage from "./pages/Questions/QuestionEditPage";
-
-import TagListPage from "./pages/Tag/TagListPage";
-import TagCreatePage from "./pages/Tag/TagCreatepage";
-import TagEditPage from "./pages/Tag/TagEditPage";
-
-import Header from "./components/Header";
-import Container from "./components/Container";
 
 export default function App() {
   return (
@@ -24,31 +32,30 @@ export default function App() {
       <Header />
 
       <Routes>
+        {/* Public  */}
         <Route path="/" element={<HomePage />} />
+        <Route path="/questions" element={<PublicQuestionListPage  />} />
+        <Route path="/questions/:id" element={<PublicQuestionDetailPage  />} />
 
-        {/* Member Routes */}
-        <Route path="/members" element={<MemberListPage />} />
-        <Route path="/members/create" element={<MemberCreatePage />} />
-        <Route path="/members/:id" element={<MemberDetailPage />} />
-        <Route path="/members/:id/edit" element={<MemberEditPage />} />
+        {/* Admin  */}
+        <Route path="/admin" element={<AdminHomePage />} />
 
-        {/* Question Routes */}
-        <Route path="/questions" element={<QuestionListPage />} />
-        <Route path="/questions/create" element={<QuestionCreatePage />} />
-        <Route path="/questions/:id" element={<QuestionDetailPage />} />
-        <Route path="/questions/:id/edit" element={<QuestionEditPage />} />
+        {/* Question Admin */}
+        <Route path="/admin/questions/:id" element={<AdminQuestionDetailPage />} />
+        <Route path="/admin/questions" element={<AdminQuestionListPage />} />
+        <Route path="/admin/questions/create" element={<QuestionCreatePage />} />
+        <Route path="/admin/questions/:id/edit" element={<QuestionEditPage />} />
 
-        {/* Tag Routes */}
-        <Route path="/tags" element={<TagListPage />} />
-        <Route path="/tags/new" element={<TagCreatePage />} />
-        <Route path="/tags/:id" element={<TagEditPage />} />
-        
-        {/* Question */}
-        <Route path="/questions" element={<QuestionListPage />} />
-        <Route path="/questions/:id" element={<QuestionDetailPage />} />
-        <Route path="/questions/:id/edit" element={<QuestionEditPage />} />
-        <Route path="/questions/new" element={<QuestionCreatePage />} />
+        {/* Member Admin */}
+        <Route path="/admin/members" element={<MemberListPage />} />
+        <Route path="/admin/members/create" element={<MemberCreatePage />} />
+        <Route path="/admin/members/:id" element={<MemberDetailPage />} />
+        <Route path="/admin/members/:id/edit" element={<MemberEditPage />} />
 
+        {/* Tag Admin */}
+        <Route path="/admin/tags" element={<AdminTagListPage />} />
+        <Route path="/admin/tags/new" element={<AdminTagCreatePage />} />
+        <Route path="/admin/tags/:id/edit" element={<AdminTagEditPage />} />
       </Routes>
     </Container>
   );
