@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { TagApi } from "../../api/TagApi";
 import type { Tag } from "../../types/Tag";
-import "./tag.css";
 
-export default function AminTagEditPage() {
+export default function AdminTagEditPage() {
   const { id } = useParams();
   const nav = useNavigate();
   const [form, setForm] = useState<Tag | null>(null);

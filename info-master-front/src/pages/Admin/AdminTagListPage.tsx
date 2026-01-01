@@ -2,57 +2,80 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { TagApi } from "../../api/TagApi";
 import type { Tag } from "../../types/Tag";
-import "./tag.css";
+import "./AdminTagListPage.css";
 
-export default function AminTagListPage() {
+export default function AdminTagListPage() {
   const [tags, setTags] = useState<Tag[]>([]);
 
   useEffect(() => {
-    TagApi.getAll().then(res => {
-      console.log("TAG API RESPONSE:", res.data);
-      setTags(res.data)
-    });
+    TagApi.getAll().then(res => setTags(res.data));
   }, []);
 
   const remove = (id: number) => {
     if (!window.confirm("정말 삭제할까요?")) return;
-    TagApi.delete(id).then(() => setTags(tags.filter(t => t.id !== id)));
+    TagApi.delete(id).then(() =>
+      setTags(prev => prev.filter(t => t.id !== id))
+    );
   };
 
   return (
-    <div className="tag-page">
-      <div className="page-title">태그 관리</div>
+    <div className="admin-page">
+      {/* 헤더 */}
+      <div className="admin-header">
+        <div>
+          <h2>카테고리 관리</h2>
+          <p className="desc">문제 분류에 사용되는 내부 카테고리입니다.</p>
+        </div>
 
-      <Link to="/admin/tags/new" className="btn btn-primary">
-        + 새 태그
-      </Link>
+        <Link to="/admin/tags/new" className="btn-primary">
+          + 새 카테고리
+        </Link>
+      </div>
 
-      <table className="tag-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>태그 이름</th>
-            <th>관리</th>
-          </tr>
-        </thead>
+      {/* 카드 영역 */}
+      <div className="admin-card">
+        {tags.length === 0 ? (
+          <div className="empty">
+            아직 등록된 카테고리가 없습니다.
+          </div>
+        ) : (
+          <table className="tag-table">
+            <thead>
+              <tr>
+                <th style={{ width: 80 }}>ID</th>
+                <th>카테고리 이름</th>
+                <th style={{ width: 160 }}>관리</th>
+              </tr>
+            </thead>
 
-        <tbody>
-          {tags.map(tag => (
-            <tr key={tag.id}>
-              <td>{tag.id}</td>
-              <td>{tag.name}</td>
-              <td>
-                <Link to={`/tags/${tag.id}`} className="btn">
-                  수정
-                </Link>
-                <button onClick={() => remove(tag.id)} className="btn btn-danger">
-                  삭제
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            <tbody>
+              {tags.map(tag => (
+                <tr key={tag.id}>
+                  <td>{tag.id}</td>
+                  <td className="tag-name">{tag.name}</td>
+                  <td>
+                    <div className="actions">
+                      <Link
+                        to={`/admin/tags/${tag.id}/edit`}
+                        className="btn-sm"
+                      >
+                        수정
+                      </Link>
+
+                      <button
+                        onClick={() => remove(tag.id)}
+                        className="btn-sm danger"
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }
