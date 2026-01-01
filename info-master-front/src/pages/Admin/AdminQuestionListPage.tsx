@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { QuestionApi } from "../../api/QuestionApi";
 import type { Question } from "../../types/Question";
-import "./QuestionListPage.css";
+import "../Questions/QuestionListPage.css";
 
 export default function AdminQuestionListPage() {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -57,6 +57,21 @@ export default function AdminQuestionListPage() {
             {/* 관리자 액션 */}
             <div className="question-actions">
               <Link
+                to={`/admin/questions/${q.id}`}
+                className="btn-primary"
+              >
+                {q.answer ? "답안 수정" : "답안 작성"}
+              </Link>
+
+              <Link
+                to={`/admin/questions/${q.id}/edit`}
+                className="btn-edit"
+              >
+                문제 수정
+              </Link>
+
+              {/* 사용자 화면 확인용 */}
+              <Link
                 to={`/questions/${q.id}`}
                 className="btn-view"
                 target="_blank"
@@ -64,18 +79,12 @@ export default function AdminQuestionListPage() {
                 사용자 화면 보기
               </Link>
 
-              <Link
-                to={`/admin/questions/${q.id}/edit`}
-                className="btn-edit"
-              >
-                수정
-              </Link>
-
+              {/* 문제 삭제 */}
               <button
                 className="btn-delete"
                 onClick={() => deleteQuestion(q.id)}
               >
-                삭제
+                문제 삭제
               </button>
             </div>
           </div>

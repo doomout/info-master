@@ -1,4 +1,5 @@
-// 서버에서 내려오는 도메인 객체로써 확장될 가능성이 있어서 인터페이스로 정의
+import type  { Answer } from "./Answer";
+
 // 서버에서 내려오는 응답 DTO
 export interface Question {
   id: number;
@@ -10,6 +11,9 @@ export interface Question {
 
   tagId: number;
   tagName: string;
+
+  // 🔥 추가: 답안 (없을 수도 있음)
+  answer?: Answer | null;
 
   createdAt?: string;
   updatedAt?: string;
