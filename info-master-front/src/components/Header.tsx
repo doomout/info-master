@@ -20,8 +20,7 @@ export default function Header() {
           {isAdmin && (
             <>
               <Link to="/admin">관리자 홈</Link>
-              <Link to="/questions">문제 관리</Link>
-              <Link to="/tags">카테고리 관리</Link>
+              <Link to="/questions">문제 보기</Link>
             </>
           )}
         </nav>

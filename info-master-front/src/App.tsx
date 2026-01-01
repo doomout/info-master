@@ -4,15 +4,14 @@ import HomePage from "./pages/HomePage";
 /* 관리자 페이지 */
 import AdminHomePage from "./pages/Admin/AdminHomePage";
 import AdminQuestionDetailPage from "./pages/Admin/AdminQuestionDetailPage";
-
-/* 사용자 페이지 */
-import PublicQuestionDetailPage from "./pages/Public/PublicQuestionDetailPage";
-import QuestionCreatePage from "./pages/Questions/QuestionCreatePage";
-import QuestionEditPage from "./pages/Questions/QuestionEditPage";
-
+import AdminQuestionCreatePage from "./pages/Admin/AdminQuestionCreatePage";
+import AdminQuestionEditPage from "./pages/Admin/AdminQuestionEditPage";
 import AdminTagListPage from "./pages/Admin/AdminTagListPage";
 import AdminTagCreatePage from "./pages/Admin/AdminTagCreatePage";
 import AdminTagEditPage from "./pages/Admin/AdminTagEditPage";
+
+/* 사용자 페이지 */
+import PublicQuestionDetailPage from "./pages/Public/PublicQuestionDetailPage";
 
 /* Layout */
 import Header from "./components/Header";
@@ -43,8 +42,8 @@ export default function App() {
         {/* Question Admin */}
         <Route path="/admin/questions/:id" element={<AdminQuestionDetailPage />} />
         <Route path="/admin/questions" element={<AdminQuestionListPage />} />
-        <Route path="/admin/questions/create" element={<QuestionCreatePage />} />
-        <Route path="/admin/questions/:id/edit" element={<QuestionEditPage />} />
+        <Route path="/admin/questions/create" element={<AdminQuestionCreatePage />} />
+        <Route path="/admin/questions/:id/edit" element={<AdminQuestionEditPage />} />
 
         {/* Member Admin */}
         <Route path="/admin/members" element={<MemberListPage />} />
