@@ -136,7 +136,7 @@ export default function QuestionForm({ mode, initialData }: Props) {
       }
 
       // 작업 완료 후 목록으로 이동
-      nav("/questions");
+      nav("/admin/questions");
     } catch (err) {
       console.error(err);
       alert("저장 중 오류 발생");
@@ -231,7 +231,7 @@ export default function QuestionForm({ mode, initialData }: Props) {
           <button
             type="button"
             className="btn-cancel"
-            onClick={() => nav("/questions")}
+            onClick={() => nav("/admin/questions")}
           >
             취소
           </button>
