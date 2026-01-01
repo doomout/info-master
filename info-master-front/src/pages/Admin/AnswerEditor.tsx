@@ -17,12 +17,9 @@ export default function AnswerEditor({
   onSaved,
   onCancel,
 }: Props) {
-  // ===== 상태 =====
   const [text, setText] = useState(initialValue);
   const [loading, setLoading] = useState(false);
-  const [preview, setPreview] = useState(false);
 
-  // ===== 저장 =====
   const save = async () => {
     if (!text.trim()) {
       alert("답안을 입력하세요!");
@@ -32,11 +29,8 @@ export default function AnswerEditor({
     try {
       setLoading(true);
       await AnswerApi.upsert(questionId, { answerText: text });
-
-      // 부모에게 "저장 끝났어" 알림
       onSaved();
 
-      // 저장 후 답안 위치로 스크롤
       setTimeout(() => {
         document
           .getElementById("answer-view")
@@ -50,7 +44,6 @@ export default function AnswerEditor({
     }
   };
 
-  // ===== 화면 =====
   return (
     <div
       style={{
@@ -76,40 +69,27 @@ export default function AnswerEditor({
         ✏️ 답안 작성 / 수정 중
       </div>
 
-      {/* 편집 / 미리보기 토글 */}
-      <div style={{ marginBottom: 10 }}>
-        <button
-          onClick={() => setPreview(!preview)}
-          style={{
-            padding: "6px 12px",
-            background: "#666",
-            color: "white",
-            borderRadius: 6,
-            border: 0,
-            cursor: "pointer",
-          }}
-        >
-          {preview ? "✏️ 편집하기" : "👀 미리보기"}
-        </button>
-      </div>
+      {/* 🔹 편집 영역 */}
+      <MarkdownEditor value={text} onChange={setText} />
 
-      {/* 본문 */}
-      {preview ? (
-        <div
-          style={{
-            padding: 15,
-            background: "white",
-            borderRadius: 6,
-            border: "1px solid #eee",
-          }}
-        >
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {text || "_미리보기 내용이 없습니다._"}
-          </ReactMarkdown>
+      {/* 🔹 미리보기 */}
+      <div
+        style={{
+          marginTop: 20,
+          padding: 15,
+          background: "white",
+          borderRadius: 6,
+          border: "1px solid #eee",
+        }}
+      >
+        <div style={{ marginBottom: 10, fontWeight: 600 }}>
+          👀 미리보기
         </div>
-      ) : (
-        <MarkdownEditor value={text} onChange={setText} />
-      )}
+
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {text || "_미리보기 내용이 없습니다._"}
+        </ReactMarkdown>
+      </div>
 
       {/* 버튼 */}
       <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
