@@ -11,11 +11,24 @@ export default function AdminTagListPage() {
     TagApi.getAll().then(res => setTags(res.data));
   }, []);
 
-  const remove = (id: number) => {
+  const remove = async (id: number) => {
     if (!window.confirm("정말 삭제할까요?")) return;
-    TagApi.delete(id).then(() =>
-      setTags(prev => prev.filter(t => t.id !== id))
-    );
+
+    try {
+      await TagApi.delete(id);
+
+      setTags(prev => prev.filter(t => t.id !== id));
+      alert("카테고리가 삭제되었습니다.");
+    } catch (err: any) {
+      console.error(err);
+
+      // 서버에서 내려준 메시지가 있으면 우선 사용
+      const message =
+        "이 카테고리는 이미 문제에 사용 중이라 삭제할 수 없습니다.\n" +
+        "먼저 해당 문제의 카테고리를 변경하세요."
+
+      alert(message);
+    }
   };
 
   return (
