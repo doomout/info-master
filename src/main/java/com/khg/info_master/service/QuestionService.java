@@ -25,7 +25,7 @@ public class QuestionService {
 
     // CREATE
     @Transactional
-    public Long create(QuestionCreateRequestDTO dto, Long memberId) {
+    public Long create(QuestionCreateRequestDTO dto) {
         Tag tag = tagRepository.findById(dto.getTagId())
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그"));
 
@@ -52,21 +52,21 @@ public class QuestionService {
     }
 
     // UPDATE
-    public Question update(Long id, QuestionUpdateRequestDTO dto, Long memberId) {
-
+    public Question update(Long id, QuestionUpdateRequestDTO dto) {
         Question q = get(id);
+
         q.setExam_year(dto.getExam_year());
         q.setRound(dto.getRound());
         q.setNumber(dto.getNumber());
         q.setQuestionText(dto.getQuestionText());
         q.setDifficulty(dto.getDifficulty());
 
-        return questionRepository.save(q);
+        return q;
     }
 
 
     // DELETE
-    public void delete(Long id, Long memberId) {
+    public void delete(Long id) {
         questionRepository.deleteById(id);
     }
 
@@ -95,7 +95,7 @@ public class QuestionService {
             q.getUpdatedAt(),
             q.getTag().getId(),
             q.getTag().getName(),
-            answerDto           // ✅ 마지막 파라미터 추가
+            answerDto           
         );
     }
 

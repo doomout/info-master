@@ -23,8 +23,7 @@ public class AnswerService {
     @Transactional
     public AnswerResponseDTO upsertAnswer(
             Long questionId,
-            String answerText,
-            Long memberId
+            String answerText
     ) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 문제입니다."));
