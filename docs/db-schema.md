@@ -1,20 +1,33 @@
-📘 Database Schema — infomaster (v3)
+📘 Database Schema — infomaster (v4)
 
-이 문서는 자격증 기출 문제 학습 서비스를 위한
-infomaster 데이터베이스의 스키마(v3) 입니다.
+이 문서는 블로그형 기술사 기출 문제 관리 서비스를 위한  
+infomaster 데이터베이스 스키마 v4입니다.  
+  
+관리자 단일 운영, 일반 사용자는 조회(Read) 전용  
+로그인 / 회원 기능 없음 을 전제로 설계되었습니다.  
+---
+🔄 v4 변경 사항 요약 (2026.01)  
+❌ 제거
 
-## 🔄 v3 변경 사항 요약(2025.12.22)
+Member 테이블 제거  
+Question / Answer의 작성자(member_id) 제거  
+로그인/인증 기반 설계 제거  
 
-- Question 테이블에 작성자(member_id) 추가
-- 문제 생성 시 로그인 사용자 기준으로 작성자 저장
-- 향후 문제 수정/삭제 권한 체크를 위한 설계 기반 마련
+✅ 변경  
+관리자는 시스템 운영자 개념으로만 존재  
+Question–Answer 관계를 1:1 Aggregate로 명확화  
+Answer는 Question에 완전히 종속됨  
 
+🎯 설계 방향  
+단일 관리자 CMS 구조  
+인증은 향후 확장 가능성만 열어둔 상태  
+현재는 URL(/admin) 기준 관리자 접근  
 
-⚠️ 비밀번호 등 민감 정보는 포함하지 않습니다.
-⚠️ PostgreSQL 기준입니다.
+⚠️ 비밀번호 등 민감 정보는 포함하지 않습니다.  
+⚠️ PostgreSQL 16 기준입니다.  
 ---
 ## 1. Member 테이블
-- 사용자 정보 및 인증
+- 관리자 계정 저장
 ```sql
 CREATE TABLE public.member (
     id BIGSERIAL PRIMARY KEY,
@@ -77,7 +90,9 @@ CREATE TABLE public.question (
 | updated_at    | TIMESTAMP   | 수정 시각           |
 ---
 ## 4. Answer 테이블
-- 문제에 대한 사용자 답안 (문제당 1개)
+- 문제에 대한 관리자 작성 해설
+- 문제당 1개
+- Question에 완전히 종속됨
 ```sql
 CREATE TABLE public.answer (
     id BIGSERIAL PRIMARY KEY,
@@ -103,18 +118,24 @@ CREATE TABLE public.answer (
 ---
 ## 5. 📐 테이블 관계 요약
 ```text
-Member   1 ─── N   Question
-Member   1 ─── N   Answer
 Question 1 ─── 1   Answer
 Question 1 ─── 1   Tag
 ```
+- Answer는 Question 없이는 존재할 수 없음
+- Question 삭제 시 Answer 자동 삭제 (CASCADE)
 ---
 ## 6. 설계 의도 요약
+- 블로그형 정보 관리 서비스에 최적화
+- 관리자 단일 운영 전제 → 불필요한 사용자 도메인 제거
+- Question을 Aggregate Root로 설정
+- Answer는 독립 CRUD를 갖지 않음
+- 도메인 단순화를 통해 유지보수 비용 최소화
+---
+## 7. 향후 확장 고려 (비구현)
 
-- 기출 문제 학습이라는 명확한 도메인에 맞춰 단순화
+- 관리자 로그인 도입 시:
+    - 별도 Admin 엔티티 또는 Auth 도메인 추가
+    - 기존 Question / Answer 스키마 변경 없이 확장 가능
 
-- 불필요한 N:N 관계 제거
-
-- 설계 변경 시 영향 범위를 최소화하는 구조
-
-- 실제 사용 시나리오에 맞는 제약을 DB 레벨에서 강제
+- 감사 로그(audit) 필요 시:
+    - created_by, updated_by 컬럼 추가 가능
