@@ -21,10 +21,6 @@ public class Answer {
     @JoinColumn(name = "question_id", nullable = false, unique = true)
     private Question question;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
-
     @Column(nullable = false, columnDefinition = "TEXT")
     private String answerText;
 

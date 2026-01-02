@@ -12,11 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.MediaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.khg.info_master.domain.Member;
 import com.khg.info_master.domain.Question;
 import com.khg.info_master.domain.Tag;
 import com.khg.info_master.dto.answer.AnswerCreateRequestDTO;
-import com.khg.info_master.repository.MemberRepository;
 import com.khg.info_master.repository.QuestionRepository;
 import com.khg.info_master.repository.TagRepository;
 
@@ -32,7 +30,6 @@ class QuestionAnswerTest {
     @Autowired MockMvc mockMvc;
     @Autowired ObjectMapper objectMapper;
 
-    @Autowired MemberRepository memberRepository;
     @Autowired QuestionRepository questionRepository;
     @Autowired TagRepository tagRepository;
 
@@ -44,14 +41,6 @@ class QuestionAnswerTest {
 
         questionRepository.deleteAll();
         tagRepository.deleteAll();
-        memberRepository.deleteAll();
-
-        // 회원
-        Member m = new Member();
-            m.setEmail("test@test.com");
-            m.setPassword("1234");
-            m.setName("tester");
-        memberId = memberRepository.save(m).getId();
 
         // 태그
         Tag tag = new Tag();
@@ -66,7 +55,6 @@ class QuestionAnswerTest {
             q.setQuestionText("XSS 방지 방법은?");
             q.setDifficulty("중");
             q.setTag(tag);
-            q.setMember(m); 
 
         questionId = questionRepository.save(q).getId();
     }
@@ -124,18 +112,4 @@ class QuestionAnswerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.answer.answerText").value("정답입니다."));
     }
-
-    // @Test
-    // void 답안_작성_인증없으면_실패() throws Exception {
-
-    //     AnswerCreateRequestDTO dto = new AnswerCreateRequestDTO();
-    //     dto.setAnswerText("인증 없음");
-
-    //     mockMvc.perform(put("/api/questions/{id}/answer", questionId)
-    //             .contentType(MediaType.APPLICATION_JSON)
-    //             .content(objectMapper.writeValueAsString(dto)))
-    //             .andExpect(status().isUnauthorized());
-    // }
-
-
 }

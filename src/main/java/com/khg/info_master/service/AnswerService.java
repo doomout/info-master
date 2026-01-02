@@ -1,10 +1,8 @@
 package com.khg.info_master.service;
 
 import com.khg.info_master.domain.Answer;
-import com.khg.info_master.domain.Member;
 import com.khg.info_master.domain.Question;
 import com.khg.info_master.dto.answer.AnswerResponseDTO;
-import com.khg.info_master.repository.MemberRepository;
 import com.khg.info_master.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class AnswerService {
 
     private final QuestionRepository questionRepository;
-    private final MemberRepository memberRepository;
 
     /**
      * 답안 생성 또는 수정 (upsert)
@@ -32,17 +29,12 @@ public class AnswerService {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 문제입니다."));
         
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
-
-
         Answer answer = question.getAnswer();
 
         if (answer == null) {
             // CREATE
             answer = new Answer();
             answer.setQuestion(question);
-            answer.setMember(member);
             answer.setAnswerText(answerText);
 
             // 🔥 연관관계 설정 (Question이 Aggregate Root)
@@ -61,7 +53,6 @@ public class AnswerService {
     private AnswerResponseDTO toDTO(Answer answer) {
         return AnswerResponseDTO.builder()
                 .id(answer.getId())
-                .memberId(answer.getMember().getId())
                 .questionId(answer.getQuestion().getId())
                 .answerText(answer.getAnswerText())
                 .score(answer.getScore())
