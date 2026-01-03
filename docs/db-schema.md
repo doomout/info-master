@@ -26,26 +26,22 @@ Answer는 Question에 완전히 종속됨
 ⚠️ 비밀번호 등 민감 정보는 포함하지 않습니다.  
 ⚠️ PostgreSQL 16 기준입니다.  
 ---
-## 1. Member 테이블
+## 1. admin 테이블
 - 관리자 계정 저장
 ```sql
-CREATE TABLE public.member (
+CREATE TABLE admin (
     id BIGSERIAL PRIMARY KEY,
-    email VARCHAR(200) UNIQUE NOT NULL,
+    username VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(200) NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP DEFAULT NOW()
 );
 ```
-| 컬럼명        | 타입           | 설명            |
+| 컬럼명     | 타입          | 설명            |
 | ---------- | ------------ | ------------- |
 | id         | BIGSERIAL    | 회원 고유 ID      |
-| email      | VARCHAR(200) | 로그인 이메일 (유니크) |
+| username   | VARCHAR(200) | 관리자 아이디 (유니크) |
 | password   | VARCHAR(200) | 암호 (해시 저장)    |
-| name       | VARCHAR(100) | 사용자 이름        |
 | created_at | TIMESTAMP    | 생성 시각         |
-| updated_at | TIMESTAMP    | 수정 시각         |
 ---
 ## 2. Tag 테이블
 - 문제 분류용 태그 (문제당 1개)
