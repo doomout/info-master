@@ -25,7 +25,7 @@
 - [X] 계정에 스키마/테이블/시퀀스 권한 부여
 
 ## ✔ DB 테이블 생성
-- [X] member 테이블 생성
+- [X] admin 테이블 생성
 - [X] question 테이블 생성
 - [X] answer 테이블 생성
 - [X] tag 테이블 생성
@@ -39,14 +39,6 @@
 ---
 
 # 3. 백엔드 도메인 구축 (Domain / Repository / Service / Controller)
-
-## Member 기능 (CRUD)
-- [X] Member 엔티티 생성
-- [X] MemberRepository 생성
-- [X] MemberService 생성
-- [X] MemberController 생성
-- [X] Postman으로 회원 등록 테스트
-- [X] 회원 조회/수정/삭제 테스트
 
 ## Question 기능 (CRUD)
 - [x] Question 엔티티 생성
@@ -123,12 +115,8 @@
 
 ---
 # 9. 테스트 
-
- - [x] Member CRUD 테스트
  - [x] Question CRUD 테스트
- - [x] Answer CRUD 테스트
  - [x] Tag CRUD 테스트
- - [x] Member Validation 테스트
  - [x] Question Validation 테스트
  - [x] Answer Validation 테스트
  - [x] Tag Validation 테스트
@@ -152,7 +140,8 @@
 - [x] 관리자 화면 개발
 - [x] 홈 화면 변경
 - [x] 관리자 모드 세부 UI 개선
-- [ ] 사용자 모드 세부 UI 개선
+- [x] 사용자 모드 세부 UI 개선
+- [ ] 관리자 로그인 화면
 
 ### 2단계: 서버 설정 운영
 - [ ] 라즈베리파이 4 환경 설정
@@ -163,15 +152,13 @@
 - [x] 관리자만 CUD 되는지 테스트
 
 ---
-# 현재 진행 상태 (2026.01.01)
+# 현재 진행 상태 (2026.01.06)
 
 | 기능               | 상태      |
 | ---------------- | ------- |
-| Member CRUD      | ✔ 완료    |
 | Question CRUD    | ✔ 완료    |
 | Answer CRUD      | ✔ 완료    |
 | Tag CRUD         | ✔ 완료    |
-| Question-Tag 매핑  | ✔ 완료    |
 | DTO 적용           | ✔ 완료    |
 | DTO Validation   | ✔ 완료 |
 | Global Exception | ✔ 완료    |
@@ -179,6 +166,7 @@
 | GitHub Actions 구축(CI) | ✔ 완료    |
 | 도커 컨테이너 구축 | ✔ 완료    |
 | React 연동         | ✔ 완료  |
+| 관리자 로그인 기능  | 개발 중  |
 | 문서/ERD           | ❌ 미완료   |
 ---
 
