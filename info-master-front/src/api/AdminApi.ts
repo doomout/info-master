@@ -8,6 +8,12 @@ export const AdminApi = {
       withCredentials: true, // ⭐ 세션 기반 로그인 대비
     });
   },
+  
+  me() {
+    return axios.get("/admin/me", {
+      withCredentials: true,
+    });
+  },
 
   logout() {
     return axios.post(`${BASE_URL}/logout`, {}, {
