@@ -12,7 +12,7 @@ export default function AdminLoginPage() {
       await AdminApi.login({ username, password });
       navigate("/admin");
     } catch {
-      alert("로그인 실패");
+      // 로그인 실패
     }
   };
 
