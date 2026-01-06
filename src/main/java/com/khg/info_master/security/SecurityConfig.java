@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity   // ✅ 이걸 써야 함
+@EnableWebSecurity   
 public class SecurityConfig {
 
     @Bean
@@ -30,7 +30,7 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/admin/login").permitAll()
-                .requestMatchers("/admin/**").authenticated()
+                .requestMatchers("/admin/**").permitAll() // ⭐ Security는 관여 안 함
                 .anyRequest().permitAll()
             )
 
