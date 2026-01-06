@@ -1,23 +1,22 @@
 import axios from "axios";
 
-const BASE_URL = "/admin"; // proxy 기준
+/* 전역 설정 (한 번만) */
+axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.withCredentials = true;
+axios.defaults.headers.common["Content-Type"] = "application/json";
+
+const BASE_URL = "/admin";
 
 export const AdminApi = {
   login(data: { username: string; password: string }) {
-    return axios.post(`${BASE_URL}/login`, data, {
-      withCredentials: true, // ⭐ 세션 기반 로그인 대비
-    });
+    return axios.post(`${BASE_URL}/login`, data);
   },
-  
+
   me() {
-    return axios.get("/admin/me", {
-      withCredentials: true,
-    });
+    return axios.get(`${BASE_URL}/me`);
   },
 
   logout() {
-    return axios.post(`${BASE_URL}/logout`, {}, {
-      withCredentials: true,
-    });
+    return axios.post(`${BASE_URL}/logout`);
   },
 };

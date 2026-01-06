@@ -28,25 +28,31 @@ export default function App() {
       {/* 🌐 일반 사용자 */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/questions" element={<PublicQuestionListPage />} />
-        <Route path="/questions/:id" element={<PublicQuestionDetailPage />} />
+        <Route path="questions" element={<PublicQuestionListPage />} />
+        <Route path="questions/:id" element={<PublicQuestionDetailPage />} />
       </Route>
 
       {/* 🔐 관리자 */}
-      <Route path="/admin" element={<AdminRouteGuard />}>
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminHomePage />} />
+      <Route path="admin">
+        {/* 로그인 페이지는 Guard 밖 */}
+        {/* <Route path="login" element={<AdminLoginPage />} /> */}
 
-          {/* 문제 관리 */}
-          <Route path="questions" element={<AdminQuestionListPage />} />
-          <Route path="questions/create" element={<AdminQuestionCreatePage />} />
-          <Route path="questions/:id" element={<AdminQuestionDetailPage />} />
-          <Route path="questions/:id/edit" element={<AdminQuestionEditPage />} />
+        {/* 보호 영역 */}
+        <Route element={<AdminRouteGuard />}>
+          <Route element={<AdminLayout />}>
+            <Route index element={<AdminHomePage />} />
 
-          {/* 카테고리 관리 */}
-          <Route path="tags" element={<AdminTagListPage />} />
-          <Route path="tags/new" element={<AdminTagCreatePage />} />
-          <Route path="tags/:id/edit" element={<AdminTagEditPage />} />
+            {/* 문제 관리 */}
+            <Route path="questions" element={<AdminQuestionListPage />} />
+            <Route path="questions/create" element={<AdminQuestionCreatePage />} />
+            <Route path="questions/:id" element={<AdminQuestionDetailPage />} />
+            <Route path="questions/:id/edit" element={<AdminQuestionEditPage />} />
+
+            {/* 카테고리 관리 */}
+            <Route path="tags" element={<AdminTagListPage />} />
+            <Route path="tags/new" element={<AdminTagCreatePage />} />
+            <Route path="tags/:id/edit" element={<AdminTagEditPage />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

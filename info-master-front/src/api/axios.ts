@@ -3,6 +3,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://localhost:8080",
+  withCredentials: true,            // 🔥 세션 필수
   headers: {
     "Content-Type": "application/json",
   },
