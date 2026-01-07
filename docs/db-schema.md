@@ -59,17 +59,15 @@ CREATE TABLE public.tag (
 ## 3. Question 테이블
 - 기출 문제 정보
 ```sql
-CREATE TABLE public.question (
+CREATE TABLE question (
     id BIGSERIAL PRIMARY KEY,
     exam_year INT NOT NULL,
     round INT NOT NULL,
     number INT NOT NULL,
     question_text TEXT NOT NULL,
     difficulty VARCHAR(20),
-    tag_id BIGINT NOT NULL REFERENCES public.tag(id),
-    member_id BIGINT NOT NULL REFERENCES public.member(id),
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
+    tag_id BIGINT NOT NULL,
+    CONSTRAINT fk_question_tag FOREIGN KEY (tag_id) REFERENCES tag(id)
 );
 ```
 | 컬럼명        | 타입         | 설명              |
@@ -81,24 +79,18 @@ CREATE TABLE public.question (
 | question_text | TEXT        | 문제 본문           |
 | difficulty    | VARCHAR(20) | 난이도 (상/중/하)    |
 | tag_id        | BIGINT      | 문제 분류 태그 (FK) |
-| member_id     | BIGINT      | 회원 ID(FK)        |
-| created_at    | TIMESTAMP   | 생성 시각           |
-| updated_at    | TIMESTAMP   | 수정 시각           |
 ---
 ## 4. Answer 테이블
-- 문제에 대한 관리자 작성 해설
 - 문제당 1개
 - Question에 완전히 종속됨
 ```sql
-CREATE TABLE public.answer (
+CREATE TABLE answer (
     id BIGSERIAL PRIMARY KEY,
-    question_id BIGINT NOT NULL UNIQUE REFERENCES public.question(id) ON DELETE CASCADE,
-    member_id BIGINT NOT NULL REFERENCES public.member(id) ON DELETE CASCADE,
+    question_id BIGINT NOT NULL UNIQUE,
     answer_text TEXT NOT NULL,
     score INT,
     comment TEXT,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
+    CONSTRAINT fk_answer_question FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
 );
 ```
 | 컬럼명         | 타입        | 설명                  |
@@ -109,13 +101,14 @@ CREATE TABLE public.answer (
 | answer_text | TEXT      | 답안 본문               |
 | score       | INT       | 점수                  |
 | comment     | TEXT      | 코멘트                 |
-| created_at  | TIMESTAMP | 생성 시각               |
-| updated_at  | TIMESTAMP | 수정 시각               |
 ---
 ## 5. 📐 테이블 관계 요약
 ```text
-Question 1 ─── 1   Answer
-Question 1 ─── 1   Tag
+admin      (인증 전용, 도메인과 분리)
+
+tag        1 ─── N   question
+question   1 ─── 1   answer
+
 ```
 - Answer는 Question 없이는 존재할 수 없음
 - Question 삭제 시 Answer 자동 삭제 (CASCADE)
@@ -127,11 +120,3 @@ Question 1 ─── 1   Tag
 - Answer는 독립 CRUD를 갖지 않음
 - 도메인 단순화를 통해 유지보수 비용 최소화
 ---
-## 7. 향후 확장 고려 (비구현)
-
-- 관리자 로그인 도입 시:
-    - 별도 Admin 엔티티 또는 Auth 도메인 추가
-    - 기존 Question / Answer 스키마 변경 없이 확장 가능
-
-- 감사 로그(audit) 필요 시:
-    - created_by, updated_by 컬럼 추가 가능
