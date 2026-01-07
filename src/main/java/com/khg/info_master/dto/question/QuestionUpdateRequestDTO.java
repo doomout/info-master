@@ -10,7 +10,7 @@ import lombok.Setter;
 public class QuestionUpdateRequestDTO {
 
     @NotNull(message = "출제 년도는 필수입니다.")
-    private Integer exam_year;
+    private Integer examYear;
 
     @NotNull(message = "회차는 필수입니다.")
     private Integer round;

@@ -26,7 +26,4 @@ public class Answer {
 
     private Integer score;
     private String comment;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

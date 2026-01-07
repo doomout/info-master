@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 public class QuestionListDTO {
     private Long id;
-    private Integer exam_year;
+    private Integer examYear;
     private Integer round;
     private Integer number;
     private List<String> tags;

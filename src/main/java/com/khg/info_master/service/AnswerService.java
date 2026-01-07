@@ -56,7 +56,6 @@ public class AnswerService {
                 .answerText(answer.getAnswerText())
                 .score(answer.getScore())
                 .comment(answer.getComment())
-                .createdAt(answer.getCreatedAt())
                 .build();
     }
 }

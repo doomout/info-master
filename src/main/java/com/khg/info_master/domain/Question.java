@@ -18,7 +18,8 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer exam_year;
+    @Column(name = "exam_year", nullable = false)
+    private Integer examYear;
     private Integer round;
     private Integer number;
 
@@ -33,7 +34,4 @@ public class Question {
 
     @OneToOne(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private Answer answer;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

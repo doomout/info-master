@@ -3,8 +3,6 @@ package com.khg.info_master.dto.answer;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Builder
 public class AnswerResponseDTO {
@@ -14,5 +12,4 @@ public class AnswerResponseDTO {
     private String answerText;  // 답변 내용
     private Integer score; 
     private String comment;
-    private LocalDateTime createdAt;
 }

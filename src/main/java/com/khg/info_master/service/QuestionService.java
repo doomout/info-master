@@ -27,15 +27,16 @@ public class QuestionService {
     @Transactional
     public Long create(QuestionCreateRequestDTO dto) {
         Tag tag = tagRepository.findById(dto.getTagId())
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그"));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 태그입니다."));
 
-        Question question = new Question();
-        question.setExam_year(dto.getExam_year());
-        question.setRound(dto.getRound());
-        question.setNumber(dto.getNumber());
-        question.setQuestionText(dto.getQuestionText());
-        question.setDifficulty(dto.getDifficulty());
-        question.setTag(tag);
+        Question question = Question.builder()
+                .examYear(dto.getExamYear())
+                .round(dto.getRound())
+                .number(dto.getNumber())
+                .questionText(dto.getQuestionText())
+                .difficulty(dto.getDifficulty())
+                .tag(tag)
+                .build();
 
         questionRepository.save(question);
         return question.getId();
@@ -52,10 +53,11 @@ public class QuestionService {
     }
 
     // UPDATE
+    @Transactional
     public Question update(Long id, QuestionUpdateRequestDTO dto) {
         Question q = get(id);
 
-        q.setExam_year(dto.getExam_year());
+        q.setExamYear(dto.getExamYear());
         q.setRound(dto.getRound());
         q.setNumber(dto.getNumber());
         q.setQuestionText(dto.getQuestionText());
@@ -64,14 +66,14 @@ public class QuestionService {
         return q;
     }
 
-
     // DELETE
     public void delete(Long id) {
         questionRepository.deleteById(id);
     }
 
-    // DTO 변환 (기본)
+    // DTO 변환
     public QuestionResponseDTO toResponseDTO(Question q) {
+
         AnswerResponseDTO answerDto = null;
 
         if (q.getAnswer() != null) {
@@ -80,23 +82,19 @@ public class QuestionService {
                     .answerText(q.getAnswer().getAnswerText())
                     .score(q.getAnswer().getScore())
                     .comment(q.getAnswer().getComment())
-                    .createdAt(q.getAnswer().getCreatedAt())
                     .build();
         }
 
-        return new QuestionResponseDTO(
-            q.getId(),
-            q.getExam_year(),
-            q.getRound(),
-            q.getNumber(),
-            q.getQuestionText(),
-            q.getDifficulty(),
-            q.getCreatedAt(),
-            q.getUpdatedAt(),
-            q.getTag().getId(),
-            q.getTag().getName(),
-            answerDto           
-        );
+        return QuestionResponseDTO.builder()
+                .id(q.getId())
+                .examYear(q.getExamYear())
+                .round(q.getRound())
+                .number(q.getNumber())
+                .questionText(q.getQuestionText())
+                .difficulty(q.getDifficulty())
+                .tagId(q.getTag().getId())
+                .tagName(q.getTag().getName())
+                .answer(answerDto)
+                .build();
     }
-
 }
