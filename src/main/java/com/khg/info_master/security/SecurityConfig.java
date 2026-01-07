@@ -8,6 +8,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity   
@@ -23,20 +24,24 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
 
-            // ⭐ 세션 기반 인증 명시
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             )
 
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/admin/login").permitAll()
-                .requestMatchers("/admin/**").permitAll() // ⭐ Security는 관여 안 함
+                .requestMatchers("/admin/**").permitAll() // 필터에서 직접 검사
                 .anyRequest().permitAll()
             )
 
-            // 기본 로그인 폼 사용 안 함
+            .addFilterBefore(
+                new AdminSessionFilter(),
+                UsernamePasswordAuthenticationFilter.class
+            )
+
             .formLogin(form -> form.disable());
 
         return http.build();
     }
+
 }

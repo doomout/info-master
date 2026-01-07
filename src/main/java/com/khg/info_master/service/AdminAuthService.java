@@ -30,19 +30,6 @@ public class AdminAuthService {
             throw new AuthenticationException("비밀번호 불일치");
         }
 
-        
-        // 🔥 인증 객체 생성
-        UsernamePasswordAuthenticationToken auth =
-            new UsernamePasswordAuthenticationToken(
-                admin.getUsername(),
-                null,
-                Collections.emptyList()
-            );
-
-        // 🔥 SecurityContext에 등록 (이게 로그인이다)
-        SecurityContextHolder.getContext().setAuthentication(auth);
-
-
         return admin;
     }
 }

@@ -30,23 +30,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(error);
     }
 
-    // 모든 예외 잡기 (예상 못한 에러)
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception e) {
-        ErrorResponse error = new ErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "서버 오류가 발생했습니다."
-        );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    public ResponseEntity<?> handle(Exception e) {
+        e.printStackTrace(); // 🔥 이거 하나면 끝
+        return ResponseEntity.status(500).build();
     }
 
-    // AuthenticationException → 401 Unauthorized
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ErrorResponse> handleAuth(AuthenticationException e) {
-        ErrorResponse error = new ErrorResponse(
-            HttpStatus.UNAUTHORIZED.value(),
-            e.getMessage()
-        );
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-    }
+
+    // 모든 예외 잡기 (예상 못한 에러)
+    // @ExceptionHandler(Exception.class)
+    // public ResponseEntity<ErrorResponse> handleException(Exception e) {
+    //     ErrorResponse error = new ErrorResponse(
+    //             HttpStatus.INTERNAL_SERVER_ERROR.value(),
+    //             "서버 오류가 발생했습니다."
+    //     );
+    //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    // }
 }
