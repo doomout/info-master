@@ -14,17 +14,21 @@
 
 ### 2.1 엔티티 관계
 ```text
-Admin (1) ── (N) Question (1) ── (1) Answer
-         │
-         └─ (N) Tag
+Admin (인증 주체, 도메인과 분리)
+
+Tag (1) ── (N) Question (1) ── (1) Answer
 ```
+- Admin은 인증 주체로만 존재하며 Question 도메인과 직접적인 연관관계를 갖지 않는다.
+
+- Question은 콘텐츠 도메인의 Aggregate Root이다.
+
 - Admin은 여러 Question을 생성·관리한다.
 
 - Question은 최대 1개의 Answer를 가진다.
 
 - Answer는 Question에 종속된다.
 
-- Question은 하나 이상의 Tag와 연결될 수 있다.
+- Question은 하나의 Tag와 연결된다.
 
 - 현재 단계에서는 Admin은 고정 계정(Seed Data)으로만 존재한다.
 ---
@@ -57,10 +61,6 @@ Admin (1) ── (N) Question (1) ── (1) Answer
 ### 4.1 Question API
 | 항목           | 결정                    |
 | ------------ | --------------------- |
-| Answer 단독 조회 | ❌ 없음                  |
-| Answer 단독 생성 | ❌ 없음                  |
-| Answer 단독 수정 | ❌ 없음                  |
-| Answer 단독 삭제 | ❌ 없음                  |
 | Answer 생성/수정 | Question 하위 Upsert    |
 | Answer 삭제    | Question 삭제 시 cascade |
 
@@ -92,20 +92,22 @@ Admin (1) ── (N) Question (1) ── (1) Answer
 
 - Admin은 DB에 사전 생성된다.
 
-- 회원가입 / 로그인 / 인증 로직은 없다.
+- 관리자는 단일 계정으로 운영된다.
+
+- 관리자 로그인은 세션 기반 인증으로 처리된다.
+
+- 관리자 권한은 URL이 아닌 서버 필터에서 검증된다.
 
 - 관리자 ID는 고정 값으로 관리된다.
-```java
-AdminContext.getAdminId()를 통해 관리자 ID를 사용한다.
-```
-- AdminContext는 임시 보안 대체 수단이며, 향후 Spring Security 도입 시 제거 예정이다.
 
 ## 6. Controller 설계 원칙
 ### 6.1 Controller 책임
 
 - Controller는 요청 데이터 전달만 담당한다.
 
-- 권한 및 도메인 판단은 Service 계층에서 처리한다.
+- 인증 및 관리자 여부 판단은 서버 필터에서 처리
+
+- 도메인 규칙 및 행위 검증은 Service 계층에서 처리
 ```java
 PathVariable → 대상 리소스
 AdminContext → 행위자(관리자)
@@ -161,9 +163,9 @@ update(questionId, adminId)
 
 ## 9.향후 확장 계획
 
-- Spring Security 도입
+- Spring Security 기반 인증 구조로 전환
 
-- 관리자 로그인 기능 추가
+- Role 기반 권한 모델 확장 (ADMIN / USER)
 
 - Role 기반 권한 모델 확장
 
