@@ -5,13 +5,13 @@ infomaster 데이터베이스 스키마 v4입니다.
   
 관리자 단일 운영, 일반 사용자는 조회(Read) 전용  
 로그인 / 회원 기능 없음 을 전제로 설계되었습니다.  
----
-🔄 v4 변경 사항 요약 (2026.01)  
+
+🔄 v4 변경 사항 요약 (2026.01.09)  
 ❌ 제거
 
 Member 테이블 제거  
 Question / Answer의 작성자(member_id) 제거  
-로그인/인증 기반 설계 제거  
+일반 사용자 로그인/회원 인증 설계 제거  
 
 ✅ 변경  
 관리자는 시스템 운영자 개념으로만 존재  
@@ -21,7 +21,8 @@ Answer는 Question에 완전히 종속됨
 🎯 설계 방향  
 단일 관리자 CMS 구조  
 인증은 향후 확장 가능성만 열어둔 상태  
-현재는 URL(/admin) 기준 관리자 접근  
+관리자 접근은 /admin 경로를 기준으로 하되  
+세션 기반 인증과 서버 필터를 통해 제어
 
 ⚠️ 비밀번호 등 민감 정보는 포함하지 않습니다.  
 ⚠️ PostgreSQL 16 기준입니다.  
@@ -97,7 +98,6 @@ CREATE TABLE answer (
 | ----------- | --------- | ------------------- |
 | id          | BIGSERIAL | 답안 고유 ID            |
 | question_id | BIGINT    | 문제 ID (1:1, UNIQUE) |
-| member_id   | BIGINT    | 작성자 ID              |
 | answer_text | TEXT      | 답안 본문               |
 | score       | INT       | 점수                  |
 | comment     | TEXT      | 코멘트                 |
