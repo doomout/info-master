@@ -1,7 +1,17 @@
 import { Link } from "react-router-dom";
 import "./AdminPage.css";
+import { useEffect } from "react";
+import { AdminApi } from "../../api/AdminApi";
 
 export default function AdminHomePage() {
+  useEffect(() => {
+    console.log("🔥 calling me from page");
+
+    AdminApi.me()
+      .then(() => console.log("✅ me success"))
+      .catch(e => console.log("❌ me error", e));
+  }, []);
+
   return (
     <div className="admin-container">
       <h2 className="admin-title">관리자 대시보드</h2>

@@ -3,15 +3,26 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { AdminApi } from "../api/AdminApi";
 
 export default function AdminRoute() {
+  console.log("🔥 AdminRouteGuard rendered");
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
+    console.log("🔥 before axios");
     AdminApi.me()
-      .then(() => setAuthenticated(true))
-      .catch(() => setAuthenticated(false))
-      .finally(() => setLoading(false));
+      .then(() => {
+        console.log("✅ me success");
+        setAuthenticated(true)
+      })
+      .catch((e) => {
+        console.log("❌ me error", e);
+        setAuthenticated(false)
+      })
+      .finally(() => {
+        console.log("🔚 finally");
+        setLoading(false)
+      });
   }, [location.pathname]);
 
   if (loading) return <div>확인 중...</div>;

@@ -40,7 +40,7 @@ export default function App() {
         <Route path="login" element={<AdminLogin />} />
 
         {/* 보호 영역 */}
-        <Route element={<AdminRouteGuard />}>
+        <Route path="/admin/*" element={<AdminRouteGuard />}>
           <Route element={<AdminLayout />}>
             <Route index element={<AdminHomePage />} />
 
