@@ -22,6 +22,8 @@ import AdminTagListPage from "./pages/Admin/AdminTagListPage";
 import AdminTagCreatePage from "./pages/Admin/AdminTagCreatePage";
 import AdminTagEditPage from "./pages/Admin/AdminTagEditPage";
 
+import AdminLogin from "./pages/Admin/AdminLogin";
+
 export default function App() {
   return (
     <Routes>
@@ -35,7 +37,7 @@ export default function App() {
       {/* 🔐 관리자 */}
       <Route path="admin">
         {/* 로그인 페이지는 Guard 밖 */}
-        {/* <Route path="login" element={<AdminLoginPage />} /> */}
+        <Route path="login" element={<AdminLogin />} />
 
         {/* 보호 영역 */}
         <Route element={<AdminRouteGuard />}>
