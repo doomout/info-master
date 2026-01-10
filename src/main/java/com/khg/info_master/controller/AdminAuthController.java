@@ -25,13 +25,20 @@ public class AdminAuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<Void> me(HttpSession session) {
+    public ResponseEntity<Void> me(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return ResponseEntity.status(401).build();
+        }
+
         Object v = session.getAttribute(SESSION_KEY);
         if (!(v instanceof Boolean) || !((Boolean) v)) {
             return ResponseEntity.status(401).build();
         }
+
         return ResponseEntity.ok().build();
     }
+
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest request) {
