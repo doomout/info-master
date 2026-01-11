@@ -3,13 +3,10 @@ package com.khg.info_master.service;
 import com.khg.info_master.domain.Admin;
 import com.khg.info_master.repository.AdminRepository;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.khg.info_master.exception.AuthenticationException;
-import java.util.Collections;
 
 @Service
 public class AdminAuthService {
