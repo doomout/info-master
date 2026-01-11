@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.khg.info_master.security.jwt.JwtAuthenticationFilter;
 
@@ -33,25 +34,37 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // 1️⃣ CSRF 비활성 (JWT는 쿠키 안 씀)
-            .csrf(csrf -> csrf.disable())
+            // 1. CSRF 비활성 (JWT는 쿠키 안 씀)
+            .csrf(csrf -> csrf.disable()) 
+            
+            // 2. CORS 설정
+            .cors(cors -> {}) 
 
-            // 2️⃣ CORS 활성화
-            .cors(cors -> {})
-
-            // 3️⃣ 세션 완전 비활성
+            // 3. 세션 완전 비활성
             .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)  
             )
 
-            // 4️⃣ 인가 규칙
+            // 4인가 규칙
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/admin/login").permitAll() // 로그인만 허용
                 .requestMatchers("/admin/**").authenticated() // 관리자 API 보호
                 .anyRequest().permitAll()
             )
+            // 5. 예외 처리
+            .exceptionHandling(exception -> exception
+                // 인증 안 된 경우 → 401
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                })
 
-            // 5️⃣ JWT 필터 등록
+                // 권한 없는 경우 → 403
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                })
+            )
+
+            // 6. JWT 필터 등록
             .addFilterBefore(
                 jwtAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class
