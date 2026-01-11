@@ -13,9 +13,17 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.khg.info_master.security.jwt.JwtAuthenticationFilter;
+
 @Configuration
-@EnableWebSecurity   
+@EnableWebSecurity
 public class SecurityConfig {
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -25,42 +33,48 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            // 1️⃣ CSRF 비활성 (JWT는 쿠키 안 씀)
             .csrf(csrf -> csrf.disable())
-            .cors(cors -> {})   // 🔥 이 줄 추가
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+
+            // 2️⃣ CORS 활성화
+            .cors(cors -> {})
+
+            // 3️⃣ 세션 완전 비활성
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
 
+            // 4️⃣ 인가 규칙
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/admin/login").permitAll()
-                .requestMatchers("/admin/**").permitAll() // 필터에서 직접 검사
+                .requestMatchers("/admin/login").permitAll() // 로그인만 허용
+                .requestMatchers("/admin/**").authenticated() // 관리자 API 보호
                 .anyRequest().permitAll()
             )
 
+            // 5️⃣ JWT 필터 등록
             .addFilterBefore(
-                new AdminSessionFilter(),
+                jwtAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class
             )
 
+            // 6️⃣ 기본 로그인 폼 비활성
             .formLogin(form -> form.disable());
 
         return http.build();
     }
 
-    // 🌐 CORS 설정 Bean (여기가 핵심)
+    // 🌐 CORS 설정
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowCredentials(true); // 세션 쿠키 허용
+        config.setAllowCredentials(false); // JWT는 쿠키 안 씀
         config.addAllowedOrigin("http://localhost:5173");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-
         return source;
     }
-
 }
