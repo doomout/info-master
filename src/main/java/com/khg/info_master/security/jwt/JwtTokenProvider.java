@@ -6,12 +6,19 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
 public class JwtTokenProvider {
 
     private final Key key;
     private final long expirationMs;
 
-    public JwtTokenProvider(String secret, long expirationMs) {
+    public JwtTokenProvider(
+        @Value("${jwt.secret}") String secret,
+        @Value("${jwt.expiration}") long expirationMs
+    ) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.expirationMs = expirationMs;
     }
