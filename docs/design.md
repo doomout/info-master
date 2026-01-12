@@ -175,6 +175,16 @@ update(questionId, adminId)
 
 - 세션 + 쿠기 구조에서 JWT 방식으로 변경
 
+## 10. 보안
+
+1. POST /admin/login
+2. AdminAuthService에서 인증
+3. JwtTokenProvider.createToken()
+4. accessToken 응답
+5. 프론트에서 localStorage 저장
+6. 이후 요청 시 Authorization 헤더에 Bearer 토큰 포함
+7. JwtAuthenticationFilter에서 검증
+8. SecurityContext에 Authentication 주입
 
 ## 11. 테스트 전략
 
