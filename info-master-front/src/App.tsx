@@ -11,7 +11,7 @@ import PublicQuestionDetailPage from "./pages/Public/PublicQuestionDetailPage";
 
 /* Admin Pages */
 import AdminHomePage from "./pages/Admin/AdminHomePage";
-import AdminRouteGuard from "./pages/Admin/AdminRouteGuard";
+import AdminRouteGuard from "./routes/AdminRoute";
 
 import AdminQuestionListPage from "./pages/Admin/AdminQuestionListPage";
 import AdminQuestionDetailPage from "./pages/Admin/AdminQuestionDetailPage";
