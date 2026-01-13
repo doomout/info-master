@@ -1,12 +1,16 @@
-// Axios 기본 인스턴스 설정
+// src/api/axios.ts
 import axios from "axios";
 
-const api = axios.create({
+const instance = axios.create({
   baseURL: "http://localhost:8080",
-  withCredentials: true,            // 🔥 세션 필수
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
-export default api;
+instance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("adminToken");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export default instance;
