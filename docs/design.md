@@ -173,7 +173,7 @@ update(questionId, adminId)
 
 - Aggregate 구조 단순화
 
-- 세션 + 쿠기 구조에서 JWT 방식으로 변경
+- 세션 + 쿠키 -> JWT 방식으로 변경
 
 ## 10. 보안
 
