@@ -27,7 +27,7 @@ type Props = {
  * number | "" 형태로 정의함
  */
 interface FormState {
-  exam_year: number | "";
+  examYear: number | "";
   round: number | "";
   number: number | "";
   questionText: string;
@@ -66,7 +66,7 @@ export default function QuestionForm({ mode, initialData }: Props) {
    * create 모드면 빈 값으로 시작
    */
   const [form, setForm] = useState<FormState>({
-    exam_year: initialData?.exam_year ?? "",
+    examYear: initialData?.examYear ?? "",
     round: initialData?.round ?? "",
     number: initialData?.number ?? "",
     questionText: initialData?.questionText ?? "",
@@ -117,7 +117,7 @@ export default function QuestionForm({ mode, initialData }: Props) {
      * form 값은 string일 수 있으므로 Number로 변환
      */
     const payload = {
-      exam_year: Number(form.exam_year),
+      examYear: Number(form.examYear),
       round: Number(form.round),
       number: Number(form.number),
       questionText: form.questionText,
@@ -156,8 +156,8 @@ export default function QuestionForm({ mode, initialData }: Props) {
         <div className="form-row">
           <label>연도</label>
           <select
-            name="exam_year"
-            value={form.exam_year}
+            name="examYear"
+            value={form.examYear}
             onChange={change}
             required
           >

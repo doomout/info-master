@@ -44,7 +44,7 @@ export default function AdminQuestionListPage() {
           <div className="question-card admin" key={q.id}>
             <div className="question-header">
               <span className="question-year">
-                {q.exam_year}년 / {q.round}회차
+                {q.examYear}년 / {q.round}회차
               </span>
               <span className="question-type">{q.tagName}</span>
             </div>
