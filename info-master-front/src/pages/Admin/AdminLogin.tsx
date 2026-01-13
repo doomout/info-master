@@ -34,9 +34,7 @@ export default function AdminLogin() {
           <input
             placeholder="아이디"
             value={username}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setUsername(e.target.value)
-            }
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
 
@@ -45,9 +43,7 @@ export default function AdminLogin() {
             type="password"
             placeholder="비밀번호"
             value={password}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setPassword(e.target.value)
-            }
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
