@@ -16,6 +16,7 @@ export const AdminApi = {
   },
 
   logout() {
-    return axios.post(`${BASE_URL}/logout`);
+    localStorage.removeItem("adminToken");
+    return Promise.resolve();
   },
 };

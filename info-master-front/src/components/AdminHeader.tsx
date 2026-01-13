@@ -1,17 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AdminApi } from "../api/AdminApi";
 import "./Header.css";
 
 export default function AdminHeader() {
-
+  const navigate = useNavigate();
   const handleLogout = async () => {
     if (!confirm("로그아웃 하시겠습니까?")) return;
 
     try {
       await AdminApi.logout();
 
-      // 🔥 SPA 흐름 끊고 완전 리로드
-      window.location.href = "/admin/login";
+      navigate("/admin/login", { replace: true });
     } catch (e) {
       console.error(e);
       alert("로그아웃 실패");
