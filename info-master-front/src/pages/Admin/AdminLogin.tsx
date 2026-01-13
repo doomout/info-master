@@ -13,7 +13,12 @@ export default function AdminLogin() {
     setError("");
 
     try {
-      await AdminApi.login({ username, password });
+      const res = await AdminApi.login({ username, password });
+
+      // JWT 저장
+      localStorage.setItem("adminToken", res.data.accessToken);
+
+      // 관리자 페이지로 이동
       navigate("/admin", { replace: true });
     } catch {
       setError("아이디 또는 비밀번호가 올바르지 않습니다.");
