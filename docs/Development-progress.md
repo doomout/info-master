@@ -196,3 +196,11 @@ docker run -d -p 8080:8080 --name info-master-backend info-master-backend
 # 로그 확인
 docker logs -f info-master-backend
 ```
+- 운영용(라즈베리파이4)
+```docker
+# 개발 PC에서 buildx 사용
+docker buildx create --use
+
+# ARM64 + AMD64 동시에 빌드 + 푸쉬(도커 허브로)
+docker buildx build --platform linux/amd64,linux/arm64 -t doomout/info-master:latest --push .
+```
