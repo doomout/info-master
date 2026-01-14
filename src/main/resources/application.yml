@@ -3,19 +3,19 @@ spring:
     import: optional:application-secret.yml
   application:
     name: info-master
-  datasource:
+  #datasource:
     # url: jdbc:postgresql://localhost:5432/infomaster # 로컬 개발용
-    url: jdbc:postgresql://host.docker.internal:5432/infomaster # 도커 컨테이너용
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    # url: jdbc:postgresql://host.docker.internal:5432/infomaster # 도커 컨테이너용
+    # username: ${DB_USERNAME}
+    # password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
-      ddl-auto:  none   # 개발 단계만 create
+      ddl-auto:  validate  # 개발 단계만 create
     properties:
       hibernate:
         format_sql: true
-    show-sql: true
+    show-sql: false
   
   jwt:
     secret: ${JWT_SECRET}
