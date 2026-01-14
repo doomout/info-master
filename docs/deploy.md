@@ -13,35 +13,42 @@
 - 운영 환경: SPRING_PROFILES_ACTIVE=prod (실행 시 외부에서 주입)
 - 운영 모드는 application.yml에서 직접 지정하지 않는다.
 
-
-
 ## 1. 개발 환경 (Local Development)
-- DB는 로컬 PC에 구축되어 있고 이 DB에 연결해서 사용한다.
-- 도커 컨테이너는 운영 환경 테스트용으로 만든다.
+- DB는 로컬 PC에 구축되어 있으며, 백엔드 컨테이너는 이 DB에 연결하여 사용한다.
+
+- 백엔드는 Docker 이미지 기반으로 실행하며, 운영 환경과 유사한 방식으로 개발한다.
+
+- 개발 중에는 프론트엔드(UI) 개발에 집중하고, 백엔드 코드는 변경 시에만 재빌드한다.
+
 - 목적
-    - 빠른 코드 수정
-    - 로컬 테스트
-    - 디버깅
+    - 프론트엔드 UI 개발
+    - 로컬 환경에서의 기능 테스트
+    - 운영 환경과 유사한 실행 방식 유지
+
 - 환경
     - 개발 PC (Windows 10)
     - 아키텍처: amd64
     - Docker Desktop 사용
+    - 로컬 PostgreSQL 사용
+
 ```bash
-# 0. 기존 컨테이너 정리
-docker stop info-master-dev
-docker rm info-master-dev
+# 0. 개발용 환경 변수(DB, JWT 정보)
+.env.dev 
 
-# 1. 개발용 빌드(로컬 PC에서만 사용, 운영 서버에서 사용 금지)
+# 1. 개발용 이미지 빌드(백엔드 코드 수정 시에만)
 ./mvnw clean package -DskipTests
-
-# 2. 개발용 이미지 생성
 docker build -t info-master-dev .
+# 백엔드 코드가 변경되지 않았다면 이 단계는 생략한다.
 
-# 3. 개발용 실행 (컨테이너 생성)
-docker run -d -p 8080:8080 --env-file .env.dev --name info-master-dev info-master-dev
+# 2. 개발용 컨테이너 실행(주 사용)
+docker compose -f docker-compose.dev.yml up -d
 
-# 4. 컨테이너 확인
+# 3. 개발 중단 시(전체 정리)
+docker compose -f docker-compose.dev.yml down
+
+# 4. 컨테이너 상태 확인
 docker ps
+docker logs -f info-master-dev
 ```
 
 ## 2. 운영 환경 (Production)
