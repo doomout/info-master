@@ -193,3 +193,31 @@ update(questionId, adminId)
 - Answer 단독 테스트 없음
 
 - Tag CRUD 별도 테스트
+
+## 12. 운영/개발 구조
+- 파일 분리
+```text
+application.yml
+  └─ 공통 설정
+  └─ application-secret.yml import
+
+application-dev.yml
+  └─ 개발 DB 설정
+
+application-prod.yml
+  └─ 운영 DB 설정
+
+SPRING_PROFILES_ACTIVE
+  └─ Docker / IDE 실행 환경에서 지정
+```
+- 개발 = PC / 서버 = 라즈베리파이 4
+```text
+[개발 PC]
+1. Maven 빌드 (jar 생성)
+2. 운영용 Docker 이미지 생성
+3. 이미지 전달 (Docker Hub or scp)
+
+[라즈베리파이]
+4. 이미지 pull 또는 load
+5. docker-compose.prod.yml 실행
+```
