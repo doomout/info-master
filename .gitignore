@@ -60,6 +60,4 @@ dist/
 build/
 
 # environment
-.env
-.env.local
-.env.*.local
+.env.dev

@@ -8,9 +8,16 @@
 - 운영 서버(Raspberry Pi)에서는 docker build 를 수행하지 않는다.
 - 운영 서버는 이미지를 실행(run)하는 용도로만 사용한다.
 
+## Profile 사용 규칙
+- 개발 환경: spring.profiles.default=dev
+- 운영 환경: SPRING_PROFILES_ACTIVE=prod (실행 시 외부에서 주입)
+- 운영 모드는 application.yml에서 직접 지정하지 않는다.
+
+
 
 ## 1. 개발 환경 (Local Development)
-
+- DB는 로컬 PC에 구축되어 있고 이 DB에 연결해서 사용한다.
+- 도커 컨테이너는 운영 환경 테스트용으로 만든다.
 - 목적
     - 빠른 코드 수정
     - 로컬 테스트
@@ -20,19 +27,21 @@
     - 아키텍처: amd64
     - Docker Desktop 사용
 ```bash
-# 개발용 빌드(로컬 PC에서만 사용, 운영 서버에서 사용 금지)
-./mvnw clean package -DskipTests
-docker build -t info-master-dev .
-
-# 개발용 실행
-docker run -d -p 8080:8080 --name info-master-dev info-master-dev
-
-# 개발 중 컨테이너 정리
+# 0. 기존 컨테이너 정리
 docker stop info-master-dev
 docker rm info-master-dev
 
-docker images
-docker ps -a
+# 1. 개발용 빌드(로컬 PC에서만 사용, 운영 서버에서 사용 금지)
+./mvnw clean package -DskipTests
+
+# 2. 개발용 이미지 생성
+docker build -t info-master-dev .
+
+# 3. 개발용 실행 (컨테이너 생성)
+docker run -d -p 8080:8080 --env-file .env.dev --name info-master-dev info-master-dev
+
+# 4. 컨테이너 확인
+docker ps
 ```
 
 ## 2. 운영 환경 (Production)
@@ -47,10 +56,11 @@ docker ps -a
     - 아키텍처: arm64
     - Docker Engine only (Docker Desktop ❌)
 
-- 운영용 이미지 빌드 (CI 또는 개발 PC, 운영 서버에서 수행하지 않는다)
+- 운영용 이미지 빌드 (GitHub Actions CI에서 수행, 운영 서버에서는 절대 수행하지 않는다)
+
 ```bash
 # 멀티 아키텍처 빌드 & 배포
-# 이 명령어는 이미지를 로컬에 저장하지 않고 Dcoker Hub로 직접 push 한다.
+# 이 명령어는 이미지를 로컬에 저장하지 않고 Docker Hub로 직접 push 한다.
 docker buildx build --platform linux/amd64,linux/arm64 -t doomout/info-master:latest --push .
 ```
 ✔ Docker Hub로 직접 push  
@@ -60,16 +70,19 @@ docker buildx build --platform linux/amd64,linux/arm64 -t doomout/info-master:la
 - Raspberry Pi는 이미지를 빌드하지 않으며 실행 전용 서버로 사용한다.
 
 ```bash
-# 이미지 다운로드
+# 1. 도커 허브에 있는 이미지 다운로드
 docker pull doomout/info-master:latest
 
-# 컨테이너 실행
+# 2. 컨테이너 실행
 docker compose -f docker-compose.prod.yml up -d
 ```
 - 재배포(수동 CD)
 ```bash
 docker pull doomout/info-master:latest
-docker compose down
+
+# ⚠️ docker compose down/up 명령어는 반드시 해당 docker-compose 파일이 있는 디렉터리에서 실행한다.
+cd ~/docker/backend
+docker compose -f docker-compose.prod.yml down
 docker compose up -d
 ```
 - 운영상태 확인

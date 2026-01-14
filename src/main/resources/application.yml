@@ -3,11 +3,9 @@ spring:
     import: optional:application-secret.yml
   application:
     name: info-master
-  #datasource:
-    # url: jdbc:postgresql://localhost:5432/infomaster # 로컬 개발용
-    # url: jdbc:postgresql://host.docker.internal:5432/infomaster # 도커 컨테이너용
-    # username: ${DB_USERNAME}
-    # password: ${DB_PASSWORD}
+
+  profiles:
+    default: dev # 개발 모드
 
   jpa:
     hibernate:
