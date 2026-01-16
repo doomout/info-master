@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import AnswerEditor from "./AnswerEditor";
+import "../Questions/QuestionDetailPage.css";
 
 function MarkdownPreview({ content }: { content: string }) {
   return (
@@ -72,64 +73,37 @@ export default function AminQuestionDetailPage() {
   if (!question) return <div>Loading...</div>;
 
   return (
-    <div style={{ padding: 20, maxWidth: 900, margin: "0 auto" }}>
-      <div
-        style={{
-          border: "1px solid #ddd",
-          padding: 20,
-          borderRadius: 10,
-          background: "white",
-          marginBottom: 30,
-        }}
-      >
-        <h2>
+    <div className="question-detail-container admin">
+      {/* ===== 문제 영역 ===== */}
+      <div className="question-card-detail">
+        <h2 className="question-title">
           {question.subject} 문제 No.{question.number}
         </h2>
 
-        <p style={{ color: "#666", marginBottom: 10 }}>
-          {question.exam_year}년 {question.round}회차 &nbsp;|&nbsp; 카테고리: {question.tagName}
+        <p className="question-meta">
+          {question.examYear}년 {question.round}회차 · {question.tagName}
         </p>
 
-        <pre
-          style={{
-            whiteSpace: "pre-wrap",
-            background: "#fafafa",
-            padding: 15,
-            borderRadius: 6,
-            border: "1px solid #eee",
-          }}
-        >
+        <div className="question-content">
           {question.questionText}
-        </pre>
+        </div>
 
         {/* 버튼 영역 */}
-        <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
-          {!answer ? (
-            <button onClick={() => setEditing(true)}>
-              ✍️ 답안 작성하기
-            </button>
-          ) : (
-            <button onClick={() => setEditing(true)}>
-              ✏️ 답안 수정하기
-            </button>
-          )}
-
-          <Link
-            to="/questions"
-            style={{
-              padding: "10px 16px",
-              background: "#444",
-              color: "white",
-              borderRadius: 6,
-              textDecoration: "none",
-            }}
+        <div className="admin-detail-actions">
+          <button
+            className="btn primary"
+            onClick={() => setEditing(true)}
           >
+            {answer ? "✏️ 답안 수정하기" : "✍️ 답안 작성하기"}
+          </button>
+
+          <Link to="/questions" className="btn dark">
             문제 목록
           </Link>
         </div>
       </div>
 
-      {/* ===== 답안 편집 영역 ===== */}
+      {/* ===== 답안 편집 ===== */}
       {editing && (
         <AnswerEditor
           questionId={questionId}
@@ -139,26 +113,109 @@ export default function AminQuestionDetailPage() {
         />
       )}
 
-      {/* ===== 답안 표시 영역 ===== */}
-      <div
-        style={{
-          border: "1px solid #ddd",
-          padding: 20,
-          borderRadius: 10,
-          background: "white",
-        }}
-      >
-      <h3>📘 작성된 답안</h3>
+      {/* ===== 답안 표시 ===== */}
+      <div className="answer-card admin">
+        <h3 className="answer-title">📘 작성된 답안</h3>
 
-      {!answer ? (
-        <p style={{ color: "#888", padding: 20 }}>아직 답안이 없습니다.</p>
+        {!answer ? (
+          <p className="answer-empty">아직 답안이 없습니다.</p>
         ) : (
-          <div id="answer-view" style={{ marginTop: 20 }}>
+          <div id="answer-view">
             <MarkdownPreview content={answer.answerText} />
           </div>
-        )
-      }
+        )}
       </div>
     </div>
   );
+
+  // return (
+  //   <div style={{ padding: 20, maxWidth: 900, margin: "0 auto" }}>
+  //     <div
+  //       style={{
+  //         border: "1px solid #ddd",
+  //         padding: 20,
+  //         borderRadius: 10,
+  //         background: "white",
+  //         marginBottom: 30,
+  //       }}
+  //     >
+  //       <h2>
+  //         {question.subject} 문제 No.{question.number}
+  //       </h2>
+
+  //       <p style={{ color: "#666", marginBottom: 10 }}>
+  //         {question.examYear}년 {question.round}회차 &nbsp;|&nbsp; 카테고리: {question.tagName}
+  //       </p>
+
+  //       <pre
+  //         style={{
+  //           whiteSpace: "pre-wrap",
+  //           background: "#fafafa",
+  //           padding: 15,
+  //           borderRadius: 6,
+  //           border: "1px solid #eee",
+  //         }}
+  //       >
+  //         {question.questionText}
+  //       </pre>
+
+  //       {/* 버튼 영역 */}
+  //       <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
+  //         {!answer ? (
+  //           <button onClick={() => setEditing(true)}>
+  //             ✍️ 답안 작성하기
+  //           </button>
+  //         ) : (
+  //           <button onClick={() => setEditing(true)}>
+  //             ✏️ 답안 수정하기
+  //           </button>
+  //         )}
+
+  //         <Link
+  //           to="/questions"
+  //           style={{
+  //             padding: "10px 16px",
+  //             background: "#444",
+  //             color: "white",
+  //             borderRadius: 6,
+  //             textDecoration: "none",
+  //           }}
+  //         >
+  //           문제 목록
+  //         </Link>
+  //       </div>
+  //     </div>
+
+  //     {/* ===== 답안 편집 영역 ===== */}
+  //     {editing && (
+  //       <AnswerEditor
+  //         questionId={questionId}
+  //         initialValue={answer?.answerText}
+  //         onSaved={reload}
+  //         onCancel={() => setEditing(false)}
+  //       />
+  //     )}
+
+  //     {/* ===== 답안 표시 영역 ===== */}
+  //     <div
+  //       style={{
+  //         border: "1px solid #ddd",
+  //         padding: 20,
+  //         borderRadius: 10,
+  //         background: "white",
+  //       }}
+  //     >
+  //     <h3>📘 작성된 답안</h3>
+
+  //     {!answer ? (
+  //       <p style={{ color: "#888", padding: 20 }}>아직 답안이 없습니다.</p>
+  //       ) : (
+  //         <div id="answer-view" style={{ marginTop: 20 }}>
+  //           <MarkdownPreview content={answer.answerText} />
+  //         </div>
+  //       )
+  //     }
+  //     </div>
+  //   </div>
+  // );
 }
