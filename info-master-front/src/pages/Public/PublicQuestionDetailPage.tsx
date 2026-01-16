@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import "../Questions/QuestionDetailPage.css";
 
 function MarkdownPreview({ content }: { content: string }) {
   return (
@@ -51,27 +52,32 @@ export default function PublicQuestionDetailPage() {
   const answer = question.answer;
 
   return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: 20 }}>
-      <h2>
+    <div className="question-detail-container">
+      <h2 className="question-title">
         {question.subject} 문제 No.{question.number}
       </h2>
 
-      <p style={{ color: "#666" }}>
-        {question.exam_year}년 {question.round}회차 | 카테고리: {question.tagName}
+      <p className="question-meta">
+        {question.examYear} 년, {question.round} 회차, 카테고리 : {question.tagName}
       </p>
 
-      <pre style={{ whiteSpace: "pre-wrap", background: "#fafafa", padding: 15 }}>
+      <div className="question-content">
         {question.questionText}
-      </pre>
+      </div>
 
-      <h3 style={{ marginTop: 40 }}>📘 해설</h3>
+      <h3 className="answer-title">📘 해설</h3>
+
       {answer ? (
-        <MarkdownPreview content={answer.answerText} />
+        <div className="answer-content">
+          <MarkdownPreview content={answer.answerText} />
+        </div>
       ) : (
-        <p style={{ color: "#888" }}>아직 답안이 등록되지 않았습니다.</p>
+        <p className="answer-empty">아직 답안이 등록되지 않았습니다.</p>
       )}
 
-      <Link to="/questions">← 문제 목록</Link>
+      <Link to="/questions" className="back-link">
+        ← 문제 목록
+      </Link>
     </div>
   );
 }
