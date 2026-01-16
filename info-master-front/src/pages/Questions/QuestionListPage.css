@@ -97,3 +97,90 @@
 .btn-view-only::after {
   content: " →";
 }
+
+/* =========================
+   관리자 모드 전용 스타일
+   ========================= */
+
+/* 문제 생성 버튼 */
+.btn-create {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #2563eb;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.btn-create:hover {
+  text-decoration: underline;
+}
+
+/* 관리자 카드 하단 액션 영역 */
+.question-card.admin .question-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+/* 공통 버튼 베이스 */
+.question-actions a,
+.question-actions button {
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+/* hover 공통 */
+.question-actions a:hover,
+.question-actions button:hover {
+  background: #f3f4f6;
+}
+
+/* 답안 작성 / 수정 (주요 액션) */
+.question-actions .btn-primary {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+.question-actions .btn-primary:hover {
+  background: #1e40af;
+}
+
+/* 문제 수정 */
+.question-actions .btn-edit {
+  background: #ffffff;
+}
+
+/* 사용자 화면 보기 */
+.question-actions .btn-view {
+  background: #f9fafb;
+  color: #374151;
+}
+
+/* 삭제 (위험 액션) */
+.question-actions .btn-delete {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.question-actions .btn-delete:hover {
+  background: #fecaca;
+}
+
+/* 모바일 대응 */
+@media (max-width: 600px) {
+  .question-card.admin .question-actions {
+    justify-content: flex-start;
+  }
+}
