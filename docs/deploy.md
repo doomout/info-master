@@ -13,6 +13,35 @@
 - 운영 환경: SPRING_PROFILES_ACTIVE=prod (실행 시 외부에서 주입)
 - 운영 모드는 application.yml에서 직접 지정하지 않는다.
 
+## Git 브랜치 & CI/CD 전략
+
+본 프로젝트는 개발과 배포를 Git 브랜치 단위로 명확히 분리한다.
+- main
+    - 개발 전용 브랜치
+    - 기능 구현, UI 수정, 실험, 리팩토링
+    - GitHub Actions 실행 ❌
+    - Docker 이미지 빌드 ❌
+
+- release
+    - 운영 배포 전용 브랜치
+    - 검증된 코드만 병합
+    - GitHub Actions 실행 ⭕
+    - 멀티 아키텍처 Docker 이미지 빌드 & Docker Hub push
+
+- 브랜치 사용 규칙
+```text
+개발 작업        → main 브랜치
+운영 배포 트리거 → release 브랜치
+```
+- 운영 배포 흐름
+```bash
+# 개발 완료 후
+git checkout release
+git merge main
+git push origin release
+```
+
+
 ## 1. 개발 환경 (Local Development)
 - DB는 로컬 PC에 구축되어 있으며, 백엔드 컨테이너는 이 DB에 연결하여 사용한다.
 
@@ -113,10 +142,16 @@ docker logs -f info-master-backend
 ## 5. CI/CD 흐름 요약
 ```text
 [개발]
-git push
+git push (main)
+  ↓
+❌ GitHub Actions 실행 안 됨
+
+[배포]
+git merge main → release
+git push (release)
   ↓
 [GitHub Actions - CI]
-Docker buildx
+Docker buildx (amd64 / arm64)
 Docker Hub push
   ↓
 [운영 서버 - CD]
