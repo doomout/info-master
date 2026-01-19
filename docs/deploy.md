@@ -179,6 +179,7 @@ docker compose up -d
 - 5432 : PostgreSQL
 
 ### 최종 구조
+```text
 [Browser]
    ↓
 [Nginx Frontend :80]
@@ -186,3 +187,4 @@ docker compose up -d
 [Backend API :8080]
    ↓
 [PostgreSQL :5432]
+```
