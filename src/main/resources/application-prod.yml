@@ -1,0 +1,11 @@
+# 라즈베리 파이4 운영 전용 환경 설정(DB 접속 정보 등)
+spring:
+  datasource:
+    url: jdbc:postgresql://192.168.45.76:5432/infomaster
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none   # 운영 환경에서는 validate 또는 none 권장
