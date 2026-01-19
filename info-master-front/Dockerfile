@@ -1,0 +1,12 @@
+FROM nginx:alpine
+
+# 기존 설정 제거
+RUN rm /etc/nginx/conf.d/default.conf
+
+# 커스텀 nginx 설정 복사
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# 빌드 결과물 복사
+COPY dist /usr/share/nginx/html
+
+EXPOSE 80
