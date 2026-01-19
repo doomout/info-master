@@ -165,3 +165,24 @@ docker compose up -d
 운영용 Docker 명령어는 "안정성"을 목표로 한다.
 두 환경의 명령어를 절대 섞어 쓰지 않는다.
 ```
+
+## 7. Raspberry Pi 운영 배포 결과
+
+### 실행 중인 컨테이너
+- PostgreSQL (DB)
+- Spring Boot Backend
+- Nginx Frontend
+
+### 포트 구성
+- 80   : Frontend (Nginx)
+- 8080 : Backend (Spring Boot)
+- 5432 : PostgreSQL
+
+### 최종 구조
+[Browser]
+   ↓
+[Nginx Frontend :80]
+   ↓
+[Backend API :8080]
+   ↓
+[PostgreSQL :5432]
