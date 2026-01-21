@@ -163,19 +163,12 @@ docker compose up -d
 docker pull doomout/info-master:latest
 
 # 2. 컨테이너 실행
-docker compose -f docker-compose.prod.yml up -d
-```
-- 재배포(수동 CD)
-```bash
-docker pull doomout/info-master:latest
-
 # ⚠️ docker compose down/up 명령어는 반드시 해당 docker-compose 파일이 있는 디렉터리에서 실행한다.
 cd ~/docker/backend
 docker compose -f docker-compose.prod.yml down
-docker compose up -d
-```
-- 운영상태 확인
-```bash
+docker compose -f docker-compose.prod.yml up -d
+
+# 3. 운영상태 확인
 docker ps
 docker logs -f info-master-backend
 ```
