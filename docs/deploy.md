@@ -102,7 +102,60 @@ docker buildx build --platform linux/amd64,linux/arm64 -t doomout/info-master:la
 ✔ Docker Hub로 직접 push  
 ✔ amd64 / arm64 자동 분기
 
-## 3. 운영 서버 배포 (Raspberry Pi 4)
+## 3. 개발 vs 운영 명령어 비교표
+| 구분 | 개발(Dev) | 운영(Prod) |
+|----|----|----|
+| 빌드 위치 | 로컬 PC | CI 또는 개발 PC |
+| docker build | ⭕ | ❌ |
+| docker buildx | ❌ | ⭕ |
+| 이미지 저장 | 로컬 | Docker Hub |
+| 실행 위치 | 로컬 PC | Raspberry Pi |
+| docker run | ⭕ | ❌ |
+| docker compose | dev용 | prod용 |
+| 아키텍처 | amd64 | amd64 + arm64 |
+
+## 4. CI/CD 흐름 요약
+```text
+[개발]
+git push (main)
+  ↓
+❌ GitHub Actions 실행 안 됨
+
+[배포]
+git merge main → release
+git push (release)
+  ↓
+[GitHub Actions - CI]
+Docker buildx (amd64 / arm64)
+Docker Hub push
+  ↓
+[운영 서버 - CD]
+docker pull
+docker compose up -d
+```
+## 5. Raspberry Pi 운영 현황
+
+### 실행 중인 컨테이너
+- PostgreSQL (DB)
+- Spring Boot Backend
+- Nginx Frontend
+
+### 포트 구성
+- 80   : Frontend (Nginx)
+- 8080 : Backend (Spring Boot)
+- 5432 : PostgreSQL
+
+### 최종 구조
+```text
+[Browser]
+   ↓
+[Nginx Frontend :80]
+   ↓
+[Backend API :8080]
+   ↓
+[PostgreSQL :5432]
+```
+## 6. 백엔드 배포 방법
 - Raspberry Pi는 이미지를 빌드하지 않으며 실행 전용 서버로 사용한다.
 
 ```bash
@@ -127,64 +180,35 @@ docker ps
 docker logs -f info-master-backend
 ```
 
-## 4. 개발 vs 운영 명령어 비교표
-| 구분 | 개발(Dev) | 운영(Prod) |
-|----|----|----|
-| 빌드 위치 | 로컬 PC | CI 또는 개발 PC |
-| docker build | ⭕ | ❌ |
-| docker buildx | ❌ | ⭕ |
-| 이미지 저장 | 로컬 | Docker Hub |
-| 실행 위치 | 로컬 PC | Raspberry Pi |
-| docker run | ⭕ | ❌ |
-| docker compose | dev용 | prod용 |
-| 아키텍처 | amd64 | amd64 + arm64 |
+## 7. 프론트 배포 방법
 
-## 5. CI/CD 흐름 요약
-```text
-[개발]
-git push (main)
-  ↓
-❌ GitHub Actions 실행 안 됨
-
-[배포]
-git merge main → release
-git push (release)
-  ↓
-[GitHub Actions - CI]
-Docker buildx (amd64 / arm64)
-Docker Hub push
-  ↓
-[운영 서버 - CD]
-docker pull
-docker compose up -d
+- 프론트 프로젝트 구성(필수 파일)
+```bash
+info-master-frontend/
+ ├─ Dockerfile
+ ├─ nginx.conf
+ ├─ package.json
+ ├─ src/
+ └─ dist/           # build 결과 (배포 시 생성)
 ```
 
-## 6. 요약
-```text
-개발용 Docker 명령어는 "빠름"을 목표로 하고,
-운영용 Docker 명령어는 "안정성"을 목표로 한다.
-두 환경의 명령어를 절대 섞어 쓰지 않는다.
+- 프론트 빌드 & 이미미 생성
+```bash
+# 1. React 빌드
+npm install
+npm run build
+
+# 2. 멀티 아키텍처 이미지 빌드 & Docker Hub 푸시
+docker buildx build --platform linux/amd64,linux/arm64 -t doomout/info-master-frontend:1.0 --push .
 ```
 
-## 7. Raspberry Pi 운영 배포 결과
+- 운영 서버 실행 명령
+```bash
+cd ~/docker/backend
 
-### 실행 중인 컨테이너
-- PostgreSQL (DB)
-- Spring Boot Backend
-- Nginx Frontend
+# 기존 컨테이너 정리
+docker compose -f docker-compose.prod.yml down
 
-### 포트 구성
-- 80   : Frontend (Nginx)
-- 8080 : Backend (Spring Boot)
-- 5432 : PostgreSQL
-
-### 최종 구조
-```text
-[Browser]
-   ↓
-[Nginx Frontend :80]
-   ↓
-[Backend API :8080]
-   ↓
-[PostgreSQL :5432]
+# 최신 이미지 실행
+docker compose -f docker-compose.prod.yml up -d
 ```
