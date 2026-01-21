@@ -199,7 +199,7 @@ npm install
 npm run build
 
 # 2. 멀티 아키텍처 이미지 빌드 & Docker Hub 푸시
-docker buildx build --platform linux/amd64,linux/arm64 -t doomout/info-master-frontend:1.0 --push .
+docker buildx build --platform linux/amd64,linux/arm64 -t doomout/info-master-frontend:latest --push .
 ```
 
 - 운영 서버 실행 명령
@@ -211,4 +211,26 @@ docker compose -f docker-compose.prod.yml down
 
 # 최신 이미지 실행
 docker compose -f docker-compose.prod.yml up -d
+```
+
+## 8. 깃 명령어
+- 전체적 흐름 
+릴리즈로 커밋 -> 깃허브 푸쉬 -> 깃허브 액션 자동 빌드 -> 도커 허브로 이미지를 전송 -> 서버에서 컨테이너 생성
+```bash
+# 1. 현재 브랜치 확인 (release 에 있다면 OK)
+git branch
+
+# 2. main 에 있다면
+git checkout release
+git pull origin release
+
+# 3. main 브랜치로 이동
+git checkout main
+git pull origin main 
+
+# 4. release -> main 병합
+git merge release
+
+# 5. main 브랜치 푸시
+git push origin main
 ```
