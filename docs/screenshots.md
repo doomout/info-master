@@ -4,7 +4,7 @@
 ![Question List](https://github.com/user-attachments/assets/fc60828a-2c8e-4af0-92cc-dcb93865e951)
 
 ## 답안
-![Answer](ttps://github.com/user-attachments/assets/ccc76ca4-a472-468f-9000-1f2685971969)
+![Answer](https://github.com/user-attachments/assets/ccc76ca4-a472-468f-9000-1f2685971969)
 
 ## 관리자 대시보드
 ![Admin](https://github.com/user-attachments/assets/1a7cf98b-83b4-4bf2-8d4a-5de26aded8ed)
