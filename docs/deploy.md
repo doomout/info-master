@@ -185,15 +185,7 @@ info-master-frontend/
  └─ dist/           # build 결과 (배포 시 생성)
 ```
 
-- 프론트 빌드 & 이미미 생성
-```bash
-# 1. React 빌드
-npm install
-npm run build
-
-# 2. 멀티 아키텍처 이미지 빌드 & Docker Hub 푸시
-docker buildx build --platform linux/amd64,linux/arm64 -t doomout/info-master-frontend:latest --push .
-```
+- 빌드는 깃허브 액션, 이미지 생성은 도커 허브에 함
 
 - 운영 서버 실행 명령
 ```bash
