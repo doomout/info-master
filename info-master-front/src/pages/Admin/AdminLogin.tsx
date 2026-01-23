@@ -18,6 +18,9 @@ export default function AdminLogin() {
       // JWT 저장
       localStorage.setItem("adminToken", res.data.accessToken);
 
+      // 로그인 성공시 입력 필드 초기화
+      setPassword("");
+
       // 관리자 페이지로 이동
       navigate("/admin", { replace: true });
     } catch {
@@ -34,6 +37,7 @@ export default function AdminLogin() {
           <input
             placeholder="아이디"
             value={username}
+            autoComplete="username"
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
@@ -43,6 +47,7 @@ export default function AdminLogin() {
             type="password"
             placeholder="비밀번호"
             value={password}
+            autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
