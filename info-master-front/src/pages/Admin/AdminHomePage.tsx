@@ -5,8 +5,6 @@ import { AdminApi } from "../../api/AdminApi";
 
 export default function AdminHomePage() {
   useEffect(() => {
-    console.log("🔥 calling me from page");
-
     AdminApi.me()
       .then(() => console.log("✅ me success"))
       .catch(e => console.log("❌ me error", e));
