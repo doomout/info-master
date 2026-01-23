@@ -1,8 +1,10 @@
-name: Build & Push Production Image
+name: Build & Push Backend Image
 
 on:
   push:
     branches: [ "release" ]
+    paths:
+      - "backend/**"
 
 jobs:
   build:
@@ -20,5 +22,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build & Push (multi-arch)
-        run: docker buildx build --platform linux/amd64,linux/arm64 -t doomout/info-master:latest -t doomout/info-master:prod --push .
+      - name: Build & Push Backend
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            -f backend/Dockerfile \
+            -t doomout/info-master:latest \
+            -t doomout/info-master:${{ github.sha }} \
+            --push backend
