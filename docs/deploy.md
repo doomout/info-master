@@ -197,13 +197,18 @@ docker buildx build --platform linux/amd64,linux/arm64 -t doomout/info-master-fr
 
 - 운영 서버 실행 명령
 ```bash
+# 1. 도커 허브에 있는 이미지 다운로드
+docker pull doomout/info-master-frontend:latest
+
+# 2. 컨테이너 실행
+# ⚠️ docker compose down/up 명령어는 반드시 해당 docker-compose 파일이 있는 디렉터리에서 실행한다.
 cd ~/docker/backend
-
-# 기존 컨테이너 정리
 docker compose -f docker-compose.prod.yml down
-
-# 최신 이미지 실행
 docker compose -f docker-compose.prod.yml up -d
+
+# 3. 운영상태 확인
+docker ps
+docker logs -f info-master-backend
 ```
 
 ## 8. 깃 명령어
