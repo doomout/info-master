@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { QuestionApi } from "../../api/QuestionApi";
 import type { Question } from "../../types/Question";
 import "../Questions/QuestionListPage.css";
+import QuestionCardSkeleton from "../Skeleton/QuestionCardSkeleton";
 
 export default function PublicQuestionListPage() {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -41,12 +42,11 @@ export default function PublicQuestionListPage() {
 
       {/* 리스트 */}
       <div className="questions-grid">
-        {/* 렌더링 분기 */}
-        {loading && (
-          <div className="loading">
-            📡 문제 불러오는 중입니다...
-          </div>
-        )}
+        {/* Skeleton 로딩 추가 */}
+        {loading && 
+          Array.from({ length: 6 }).map((_, i) => (
+            <QuestionCardSkeleton key={i} /> 
+        ))}
 
         {!loading && questions.length === 0 && (
           <div className="empty">
