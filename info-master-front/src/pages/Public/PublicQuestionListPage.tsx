@@ -6,12 +6,27 @@ import "../Questions/QuestionListPage.css";
 
 export default function PublicQuestionListPage() {
   const [questions, setQuestions] = useState<Question[]>([]);
+  // 문제 로딩 상태 
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
+    let cancelled = false;
+
     QuestionApi.list()
-      .then(({ data }) => setQuestions(data))
-      .catch(console.error);
+      .then(({ data }) => {
+        if (!cancelled) setQuestions(data);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (
@@ -26,7 +41,20 @@ export default function PublicQuestionListPage() {
 
       {/* 리스트 */}
       <div className="questions-grid">
-        {questions.map((q) => (
+        {/* 렌더링 분기 */}
+        {loading && (
+          <div className="loading">
+            📡 문제 불러오는 중입니다...
+          </div>
+        )}
+
+        {!loading && questions.length === 0 && (
+          <div className="empty">
+            아직 등록된 문제가 없습니다.
+          </div>
+        )}
+
+        {!loading && questions.map((q) => (
           <div
             key={q.id}
             className="question-card public"
