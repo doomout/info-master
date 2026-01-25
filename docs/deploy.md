@@ -37,7 +37,7 @@ SPRING_PROFILES_ACTIVE=prod
 
 - 운영 배포 흐름
 ```bash
-# 개발 완료 후
+# 개발 완료 후(main에서 완료 후 release 모드로 배포한다.)
 git checkout release
 git merge main
 git push origin release
