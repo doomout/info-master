@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnswerApi } from "../../api/AnswerApi";
 import MarkdownEditor from "../../components/markdown/MarkdownEditor";
 import ReactMarkdown from "react-markdown";
@@ -19,7 +19,29 @@ export default function AnswerEditor({
 }: Props) {
   const [text, setText] = useState(initialValue);
   const [loading, setLoading] = useState(false);
+  // 자동 저장용 상태(1분마다 임시 자동 저장)
+  const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
+  const [autoSaving, setAutoSaving] = useState(false);
+  const [dirty, setDirty] = useState(false); // 변경 여부
 
+  // 자동 저장 함수(1분마다 호출)
+  const autoSave = async () => {
+    if (!dirty) return;
+    if (!text.trim()) return;
+
+    try {
+      setAutoSaving(true);
+      await AnswerApi.upsert(questionId, { answerText: text });
+      setLastSavedAt(new Date());
+      setDirty(false);
+    } catch (e) {
+      console.error("자동 저장 실패", e);
+    } finally {
+      setAutoSaving(false);
+    }
+  };
+
+  // 수동 저장 함수(저장 버튼 클릭 시)
   const save = async () => {
     if (!text.trim()) {
       alert("답안을 입력하세요!");
@@ -44,6 +66,26 @@ export default function AnswerEditor({
     }
   };
 
+  // 1분 자동 저장(한 번만)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      autoSave();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // 입력 멈춤 감지(5초)
+  useEffect(() => {
+    if (!dirty) return;
+
+    const timeout = setTimeout(() => {
+      autoSave();
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [text]);
+
   return (
     <div
       style={{
@@ -66,11 +108,19 @@ export default function AnswerEditor({
           fontWeight: 500,
         }}
       >
-        ✏️ 답안 작성 / 수정 중
+        {autoSaving 
+          ? "💾 자동 저장 중..." : lastSavedAt
+          ? `✔ 임시 저장됨 (${lastSavedAt.toLocaleTimeString()})`
+          : "✏️ 답안 작성 중"
+        }
       </div>
 
       {/* 🔹 편집 영역 */}
-      <MarkdownEditor value={text} onChange={setText} />
+      <MarkdownEditor value={text} onChange={(v) => {
+        setText(v); 
+        setDirty(true);
+        }} 
+      />
 
       {/* 🔹 미리보기 */}
       <div
