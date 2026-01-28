@@ -44,6 +44,13 @@ export default function MarkdownEditor({ value, onChange, showHelpButton = true 
         }}
       >
         <h3>📝 답안 내용</h3>
+
+        <div style={{ display: "flex", gap: 8 }}>
+          <button onClick={() => setTableOpen(true)}>
+            📊 표 삽입
+          </button>
+        </div>
+
         {showHelpButton && (
           <button
             onClick={() => setShowHelp(true)}
@@ -60,11 +67,6 @@ export default function MarkdownEditor({ value, onChange, showHelpButton = true 
         )}
       </div>
 
-      <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
-        <button onClick={() => setTableOpen(true)}>
-          📊 표 삽입
-        </button>
-      </div>
       {tableOpen && (
         <div
           style={{
