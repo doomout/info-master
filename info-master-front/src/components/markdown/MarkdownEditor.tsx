@@ -49,22 +49,22 @@ export default function MarkdownEditor({ value, onChange, showHelpButton = true 
           <button onClick={() => setTableOpen(true)}>
             📊 표 삽입
           </button>
-        </div>
 
-        {showHelpButton && (
-          <button
-            onClick={() => setShowHelp(true)}
-            style={{
-              background: "transparent",
-              border: "none",
-              color: "#007bff",
-              cursor: "pointer",
-              fontSize: 14
-            }}
-          >
-            📘 Markdown 도움말
-          </button>
-        )}
+          {showHelpButton && (
+            <button
+              onClick={() => setShowHelp(true)}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "#007bff",
+                cursor: "pointer",
+                fontSize: 14
+              }}
+            >
+              📘 Markdown 도움말
+            </button>
+          )}
+        </div>
       </div>
 
       {tableOpen && (
