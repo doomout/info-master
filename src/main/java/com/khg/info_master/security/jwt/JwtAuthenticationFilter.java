@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // ✅ 관리자 로그인 요청은 JWT 검증을 하지 않고 바로 통과
         // (로그인 자체가 토큰을 발급하는 단계이기 때문)
-        if (path.equals("/admin/login")) {
+        if (path.equals("/api/admin/login")) {
             filterChain.doFilter(request, response);
             return;
         }

@@ -48,8 +48,8 @@ public class SecurityConfig {
 
             // 4인가 규칙
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/admin/login").permitAll() // 로그인만 허용
-                .requestMatchers("/admin/**").authenticated() // 관리자 API 보호
+                .requestMatchers("/api/admin/login").permitAll() // 로그인만 허용
+                .requestMatchers("/api/admin/**").authenticated() // 관리자 API 보호
                 .anyRequest().permitAll()
             )
             // 5. 예외 처리
