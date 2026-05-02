@@ -1,14 +1,11 @@
-## 0. 기본 원칙 (절대 규칙)
+## 0. 현재 운영 구조 (로컬 x86 서버)
 
-- 운영 서버(Raspberry Pi)에서는 docker build / buildx 금지
+- 현재 Windows PC에서 Docker Desktop으로 실행
+- GitHub Actions / Docker Hub 배포는 현재 사용하지 않음
+- backend / frontend 이미지는 로컬에서 build
+- PostgreSQL도 Docker container 사용
+- docker-compose 파일 1개로 관리
 
-- Docker 이미지는 GitHub Actions(CI) 에서만 생성
-
-- Raspberry Pi는 이미지 pull + 실행(CD) 전용
-
-- Frontend / Backend는 서로 다른 Docker 이미지
-
-- docker-compose 파일은 운영 기준 1개만 유지
 
 ## 1. Profile & Environment 규칙
 - 개발 환경
@@ -25,15 +22,12 @@ SPRING_PROFILES_ACTIVE=prod
 
 ## 2. Git 브랜치 전략
 - main
-    - 개발 전용
-    - 기능 구현/UI 수정/리팩토링
-    - GitHub Actions 실행 ❌
-    - Docker 이미지 빌드 ❌
+  - 기능 개발
+  - 로컬 테스트
+  - docker compose 로 실행
 
 - release
-    - 운영 배포 전용 브랜치
-    - GitHub Actions 실행
-    - 멀티 아키텍처 Docker 이미지 빌드 & Docker Hub push
+  - 향후 실제 외부 서버 운영 시 사용 예정 (현재 미사용)
 
 - 운영 배포 흐름
 ```bash
@@ -47,14 +41,17 @@ git push origin release
 
 ## 3. CI/CD 구조(레포 1개, 워크플로우 2개)
 ```text
-info-master (GitHub Repo)
-├─ backend/
-│  └─ Dockerfile
-├─ frontend/
-│  └─ Dockerfile
-└─ .github/workflows/
-   ├─ backend.yml    # backend/** 변경 시
-   └─ frontend.yml   # frontend/** 변경 시
+## 3. 현재 실행 구조
+
+info-master
+├─ backend Dockerfile
+├─ frontend Dockerfile
+├─ docker-compose.yml
+├─ .env
+└─ .env.example
+
+실행:
+docker compose up -d --build
 ```
 - Docker Hub 이미지  
 
@@ -65,24 +62,18 @@ info-master (GitHub Repo)
 
 ## 4. 개발 환경
 ```bash
-# 개발용 환경 변수
-.env.dev
-
-# 백엔드 변경 시에만 빌드
-./mvnw clean package -DskipTests
-docker build -t info-master-dev .
-
-# 개발용 실행
-docker compose -f docker-compose.dev.yml up -d
-
+# 실행
+docker compose up -d --build
 # 종료
-docker compose -f docker-compose.dev.yml down
+docker compose down
 ```
 
-## 5. 운영 환경(라즈베리 파이4 서버)
-- 🚨 운영 서버에서 하는 일은 딱 하나
+## 5. 향후 운영 계획
 
-- “최신 이미지를 pull 해서 컨테이너를 재생성”
+- 새 PC 구매 예정
+- 현재 PC를 Linux 서버로 전환 예정
+- 현재 docker-compose 구조 그대로 이관 가능
+- x86 환경이라 ARM 멀티 빌드 불필요
 
 ## 6. 운영 docker-compose(단일 파일 유지)
 ```yaml
@@ -123,40 +114,20 @@ docker compose -f docker-compose.prod.yml up -d --pull always --force-recreate
     - backend 이미지가 바뀌었으면 → backend만 재생성
     - 둘 다 바뀌면 → 둘 다 재생성
 
-## 8. 배포 시나리오 정리
-- 프론트만 수정시
+
+## 8. 주의사항
+
+❌ .env GitHub 업로드 금지
+❌ JWT_SECRET 하드코딩 금지
+❌ POSTGRES_PASSWORD 하드코딩 금지
+❌ 로컬 PostgreSQL과 Docker PostgreSQL 포트 혼동 금지
+
+## 9. 최종 구조 요약
 ```text
-frontend 코드 변경
-→ git push release
-→ frontend.yml 실행
-→ frontend 이미지 갱신
-→ 서버에서 compose up
-```
+## Docker DB 접속 주의
 
-- 백엔드만 수정시
-```text
-backend 코드 변경
-→ git push release
-→ backend.yml 실행
-→ backend 이미지 갱신
-→ 서버에서 compose up
-```
+- backend → db:5432 사용
+- pgAdmin → localhost:5433 사용
 
-- 둘 다 수정시 : 워크플로우 2개 모두 실행됨
-
-## 9. 절대 하지 말아야 할 것
-❌ 운영 서버에서 docker build  
-❌ 운영 서버에서 docker push  
-❌ docker pull 개별 실행  
-❌ frontend / backend compose 분리 
-
-## 10. 최종 구조 요약
-```text
-[Browser]
-   ↓
-[Nginx Frontend :80]
-   ↓
-[Spring Boot Backend :8080]
-   ↓
-[PostgreSQL :5432]
+로컬 PostgreSQL과 포트 충돌 방지
 ```
