@@ -1,0 +1,9 @@
+.git
+.github
+.vscode
+docs
+target
+node_modules
+info-master-front/node_modules
+info-master-front/dist
+*.log

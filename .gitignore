@@ -58,4 +58,9 @@ dist/
 build/
 
 # environment
+.env
+.env.*
+!.env.example
 .env.dev
+
+# Docker
