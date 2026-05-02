@@ -41,8 +41,10 @@
 - VS Code
 - GitHub + GitHub Actions
 - pgAdmin4 (DB 툴)
-- 도커 데스크탑(테스트용), 도커 허브, 라즈베라파이 4(운영서버) 
+- (현)도커 데스크탑(운영서버) 
+- (예전)도커 허브, 라즈베라파이 4(운영서버) 
 - react-markdown (답안에 마크다운 방식 채택)
 - remark-gfm (마크 다운 미리 보기)
 - react-syntax-highlighter (코드 하이라이트 기능)
+- codex (전체적인 테스트 및 버그 수정)
 ---
