@@ -33,8 +33,7 @@ Answer는 Question에 완전히 종속됨
 CREATE TABLE admin (
     id BIGSERIAL PRIMARY KEY,
     username VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(200) NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW()
+    password VARCHAR(200) NOT NULL
 );
 ```
 | 컬럼명     | 타입          | 설명            |
@@ -42,7 +41,6 @@ CREATE TABLE admin (
 | id         | BIGSERIAL    | 회원 고유 ID      |
 | username   | VARCHAR(200) | 관리자 아이디 (유니크) |
 | password   | VARCHAR(200) | 암호 (해시 저장)    |
-| created_at | TIMESTAMP    | 생성 시각         |
 ---
 ## 2. Tag 테이블
 - 문제 분류용 태그 (문제당 1개)
