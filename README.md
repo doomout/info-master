@@ -18,6 +18,8 @@
 
 - **개발/운영 배포 문서** → [`개발/운영 배포`](docs/deploy.md)
 
+- **예전 라즈베리 파이 서버 운영 문서**[`라즈베리파이 서버 운영`](docs/raspberry-pi-deployment.md)
+
 - **프로그램 화면** -> [`스크린 샷`](docs/screenshots.md)
 
 ---
