@@ -3,6 +3,7 @@ package com.khg.info_master.service;
 import com.khg.info_master.domain.Answer;
 import com.khg.info_master.domain.Question;
 import com.khg.info_master.dto.answer.AnswerResponseDTO;
+import com.khg.info_master.repository.AnswerRepository;
 import com.khg.info_master.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AnswerService {
 
+    private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
 
     /**
@@ -36,15 +38,14 @@ public class AnswerService {
             answer.setQuestion(question);
             answer.setAnswerText(answerText);
 
-            // 🔥 연관관계 설정 (Question이 Aggregate Root)
+            // 연관관계 설정
             question.setAnswer(answer);
+            answerRepository.save(answer);
         } else {
             // UPDATE
             answer.setAnswerText(answerText);
+            answerRepository.save(answer);
         }
-
-        // AnswerRepository.save() 호출 ❌
-        // → Question이 영속 상태이므로 cascade로 자동 처리
 
         return toDTO(answer);
     }

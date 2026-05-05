@@ -13,6 +13,9 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
+jwt:
+  secret: testSecretKey
+
 logging:
   level:
     org.hibernate.SQL: debug
