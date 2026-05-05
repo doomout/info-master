@@ -3,7 +3,7 @@
 
 이 프로젝트는 정보 관리 기술사 공부를 위해  
 문제 관리, 답안 작성, 카테고리 기능을 제공하는  
-**React 19 + Spring Boot 3.5 + PostgreSQL 16 기반 웹 서비스**입니다.
+**React 19 + Spring Boot 4.0.6 + PostgreSQL 16 기반 웹 서비스**입니다.
 
 ---
 ## 📄 문서
@@ -27,8 +27,8 @@
 ## 🛠 기술 스택
 
 ### Backend
-- Java 17
-- Spring Boot 3.5.8
+- Java 21
+- Spring Boot 4.0.6
 - Spring Data JPA
 - PostgreSQL 16
 
