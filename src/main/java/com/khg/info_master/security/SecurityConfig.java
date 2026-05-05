@@ -3,6 +3,7 @@ package com.khg.info_master.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -49,6 +50,10 @@ public class SecurityConfig {
             // 4인가 규칙
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/admin/login").permitAll() // 로그인만 허용
+                .requestMatchers(HttpMethod.GET, "/api/questions/**", "/api/tags/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/questions/**", "/api/tags/**").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/questions/**", "/api/tags/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/questions/**", "/api/tags/**").authenticated()
                 .requestMatchers("/api/admin/**").authenticated() // 관리자 API 보호
                 .anyRequest().permitAll()
             )

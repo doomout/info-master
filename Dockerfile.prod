@@ -1,7 +1,10 @@
 # 1단계: Run only (운영용)
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:21-jre
 
 WORKDIR /app
+
+ENV JWT_SECRET=default_jwt_secret_123456789012345678901234
+ENV JWT_EXPIRATION=3600000
 
 # 운영용 JAR만 복사
 COPY target/info-master-*.jar app.jar

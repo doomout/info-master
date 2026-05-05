@@ -7,8 +7,8 @@ spring:
       ddl-auto:  none  # 개발 단계만 create
 
   jwt:
-    secret: ${JWT_SECRET}
-    expiration: ${JWT_EXPIRATION}
+    secret: ${JWT_SECRET:default_jwt_secret_123456789012345678901234}
+    expiration: ${JWT_EXPIRATION:3600000}
 
 server:
   port: 8080

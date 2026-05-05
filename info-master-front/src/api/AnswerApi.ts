@@ -8,5 +8,5 @@ export type AnswerUpsertRequest = {
 export const AnswerApi = {
   // ✅ 답안 생성 / 수정 (upsert)
   upsert: (questionId: number, data: AnswerUpsertRequest) =>
-    api.put(`/api/questions/${questionId}/answer`, data),
+    api.put(`/questions/${questionId}/answer`, data),
 };

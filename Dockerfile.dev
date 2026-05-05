@@ -1,6 +1,9 @@
-FROM eclipse-temurin:17-jdk
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
+
+ENV JWT_SECRET=default_jwt_secret_123456789012345678901234
+ENV JWT_EXPIRATION=3600000
 
 # 로컬 코드를 컨테이너에서 사용하도록
 # JAR 빌드 없이 직접 실행하는 dev 환경
