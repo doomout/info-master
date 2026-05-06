@@ -68,7 +68,6 @@
 }
 
 .question-text {
-  display: inline;
   font-size: 1rem;
   color: #111827;
   line-height: 1.6;
@@ -124,13 +123,18 @@
   display: inline-block;
 }
 
+.questions-table .question-text-cell {
+  max-width: 400px;
+}
+
 .questions-table .question-text {
-  color: #111827;
-  line-height: 1.5;
+  display: block;
   max-width: 400px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: #111827;
+  line-height: 1.5;
 }
 
 .questions-table .question-actions {

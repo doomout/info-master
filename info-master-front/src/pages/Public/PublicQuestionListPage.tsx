@@ -121,14 +121,15 @@ export default function PublicQuestionListPage() {
                   {q.examYear}년 / {q.round}회차
                 </td>
 
-                <td className="question-text">{q.questionText}</td>
-
+                <td className="question-text-cell">
+                  <span className="question-text">{q.questionText}</span>
+                </td>
                 <td>
                   <span className="question-type">{q.tagName}</span>
                 </td>
 
                 <td className="question-actions">
-                  <span className="btn-view-only">자세히 보기 →</span>
+                  <span className="btn-view-only">자세히 보기</span>
                 </td>
               </tr>
             ))}
