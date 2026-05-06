@@ -1,3 +1,7 @@
+/* =============================
+   공통 스타일
+   ============================= */
+
 /* 전체 컨테이너 */
 .questions-container {
   max-width: 1200px;
@@ -53,38 +57,6 @@
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-/* 리스트 그리드 (카드형용, 유지) */
-.questions-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-}
-
-/* 카드 */
-.question-card {
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 20px;
-  background-color: #ffffff;
-  cursor: pointer;
-  transition: box-shadow 0.2s ease, transform 0.15s ease;
-}
-
-.question-card:hover {
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
-}
-
-/* 카드 상단 */
-.question-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.85rem;
-  color: #6b7280;
-  margin-bottom: 12px;
-}
-
 /* 카테고리 태그 */
 .question-type {
   background-color: #eef2ff;
@@ -95,19 +67,6 @@
   font-weight: 500;
 }
 
-/* 본문 */
-.question-body {
-  margin-bottom: 14px;
-}
-
-.question-number {
-  display: inline-block;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #2563eb;
-  margin-right: 6px;
-}
-
 .question-text {
   display: inline;
   font-size: 1rem;
@@ -115,30 +74,19 @@
   line-height: 1.6;
 }
 
-/* 하단 액션 */
-.question-actions {
-  text-align: right;
-}
+/* =============================
+   테이블 스타일
+   ============================= */
 
-.btn-view-only {
-  font-size: 0.9rem;
-  color: #2563eb;
-  font-weight: 500;
-}
-
-.btn-view-only::after {
-  content: " →";
-}
-
-/* 게시판형 테이블 */
 .questions-table {
   width: 100%;
-  border-collapse: collapse;
   margin-top: 20px;
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .questions-table th,
@@ -157,11 +105,13 @@
 
 .questions-table tbody tr:hover {
   background-color: #f3f4f6;
+  cursor: pointer;
 }
 
 .questions-table .question-year {
   font-size: 0.85rem;
   color: #6b7280;
+  width: 120px;
 }
 
 .questions-table .question-type {
@@ -172,11 +122,6 @@
   font-size: 0.75rem;
   font-weight: 500;
   display: inline-block;
-}
-
-.questions-table .question-number {
-  font-weight: 700;
-  color: #2563eb;
 }
 
 .questions-table .question-text {
@@ -190,50 +135,26 @@
 
 .questions-table .question-actions {
   text-align: right;
+  width: 120px;
 }
 
-.questions-table .btn-primary,
-.questions-table .btn-edit,
-.questions-table .btn-view,
-.questions-table .btn-delete {
-  margin-left: 8px;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-}
-
-.questions-table .btn-primary {
-  background-color: #2563eb;
-  color: white;
-}
-
-.questions-table .btn-edit {
-  background-color: #dc2626;
-  color: white;
-  font-weight: 600;
-}
-
-.questions-table .btn-view {
-  background-color: #10b981;
-  color: white;
-}
-
-.questions-table .btn-delete {
-  background-color: #ef4444;
-  color: white;
-}
-
-.questions-table .btn-view-only {
+.btn-view-only {
+  font-size: 0.9rem;
   color: #2563eb;
   font-weight: 500;
   cursor: pointer;
 }
 
-.btn-create {
+.btn-view-only::after {
+  content: " →";
+}
+
+/* =============================
+   관리자 모드 전용 스타일
+   ============================= */
+
+/* 문제 생성 버튼 */
+.admin-mode .btn-create {
   background-color: #2563eb;
   color: white;
   padding: 10px 20px;
@@ -243,95 +164,90 @@
   font-size: 0.95rem;
   display: inline-block;
   transition: background-color 0.2s ease;
+  border: none;
+  cursor: pointer;
 }
 
-.btn-create:hover {
+.admin-mode .btn-create:hover {
   background-color: #1d4ed8;
 }
 
-/* =========================
-   관리자 모드 전용 스타일
-   ========================= */
-
-/* 문제 생성 버튼 */
-.btn-create {
-  display: inline-block;
-  margin-top: 8px;
-  font-size: 0.9rem;
-  color: #2563eb;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.btn-create:hover {
-  text-decoration: underline;
-}
-
-/* 관리자 카드 하단 액션 영역 */
-.question-card.admin .question-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 18px;
-  flex-wrap: wrap;
-}
-
-/* 공통 버튼 베이스 */
-.question-actions a,
-.question-actions button {
-  padding: 6px 14px;
+/* 테이블 액션 버튼 (관리자 전용) */
+.admin-mode .questions-table .btn-primary,
+.admin-mode .questions-table .btn-edit,
+.admin-mode .questions-table .btn-view,
+.admin-mode .questions-table .btn-delete {
+  margin-left: 8px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
   font-size: 0.85rem;
-  border-radius: 6px;
-  border: 1px solid #d1d5db;
-  background: #ffffff;
-  color: #374151;
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.15s ease;
+  display: inline-block;
+  transition: background-color 0.15s ease;
 }
 
-/* hover 공통 */
-.question-actions a:hover,
-.question-actions button:hover {
-  background: #f3f4f6;
+.admin-mode .questions-table .btn-primary {
+  background-color: #2563eb;
+  color: white;
 }
 
-/* 답안 작성 / 수정 (주요 액션) */
-.question-actions .btn-primary {
-  background: #2563eb;
-  color: #ffffff;
-  border-color: #2563eb;
+.admin-mode .questions-table .btn-primary:hover {
+  background-color: #1e40af;
 }
 
-.question-actions .btn-primary:hover {
-  background: #1e40af;
+.admin-mode .questions-table .btn-edit {
+  background-color: #f59e0b;
+  color: white;
 }
 
-/* 문제 수정 */
-.question-actions .btn-edit {
-  background: #ffffff;
+.admin-mode .questions-table .btn-edit:hover {
+  background-color: #d97706;
 }
 
-/* 사용자 화면 보기 */
-.question-actions .btn-view {
-  background: #f9fafb;
-  color: #374151;
+.admin-mode .questions-table .btn-view {
+  background-color: #10b981;
+  color: white;
 }
 
-/* 삭제 (위험 액션) */
-.question-actions .btn-delete {
-  background: #fee2e2;
-  color: #b91c1c;
-  border-color: #fecaca;
+.admin-mode .questions-table .btn-view:hover {
+  background-color: #059669;
 }
 
-.question-actions .btn-delete:hover {
-  background: #fecaca;
+.admin-mode .questions-table .btn-delete {
+  background-color: #ef4444;
+  color: white;
 }
 
-/* 모바일 대응 */
+.admin-mode .questions-table .btn-delete:hover {
+  background-color: #dc2626;
+}
+
+/* 모바일 반응형 */
 @media (max-width: 600px) {
-  .question-card.admin .question-actions {
-    justify-content: flex-start;
+  .questions-container {
+    padding: 20px;
+  }
+
+  .questions-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .questions-table th,
+  .questions-table td {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+
+  .questions-table .question-text {
+    max-width: 200px;
+  }
+
+  .admin-mode .btn-create {
+    width: 100%;
+    text-align: center;
+    margin-top: 16px;
   }
 }
