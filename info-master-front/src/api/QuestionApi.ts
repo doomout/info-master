@@ -10,4 +10,10 @@ export const QuestionApi = {
   create: (data: QuestionCreate) => api.post("/questions", data),
   update: (id: number, data: QuestionCreate) => api.put(`/questions/${id}`, data),
   delete: (id: number) => api.delete(`/questions/${id}`),
+
+  // Answer CRUD
+  createAnswer: (questionId: number, data: { answerText: string }) =>
+    api.put(`/questions/${questionId}/answer`, data),
+  updateAnswer: (questionId: number, data: { answerText: string }) =>
+    api.put(`/questions/${questionId}/answer`, data),
 };
