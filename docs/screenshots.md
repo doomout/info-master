@@ -1,7 +1,7 @@
 # 프로그램 화면
 
 ## 문제목록
-![Question List](https://github.com/user-attachments/assets/fc60828a-2c8e-4af0-92cc-dcb93865e951)
+![Question List](https://github.com/user-attachments/assets/6301e5fd-d500-4b56-9659-86114fe52fd0)
 
 ## 답안
 ![Answer](https://github.com/user-attachments/assets/ccc76ca4-a472-468f-9000-1f2685971969)
@@ -23,3 +23,6 @@
 
 ## 답안 수정 + 미리보기
 ![Update Answer](https://github.com/user-attachments/assets/0108e6fa-0a81-4dcb-a0a7-91f991c4b697)
+
+## 관리자 모드의 문제 상세 보기에 문제, 답안 수정 삭제 버튼 추가
+!![QuestionDetailPage](https://github.com/user-attachments/assets/ab4b1677-f139-4074-ad99-4db05a7c3f77)
