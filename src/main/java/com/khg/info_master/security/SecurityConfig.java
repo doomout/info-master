@@ -84,23 +84,10 @@ public class SecurityConfig {
 
     // 🌐 CORS 설정
     @Bean
-    @Profile("dev") // 개발 환경용
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://localhost:5173");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
-
-    @Bean
-    @Profile("prod") // 운영 환경용
-    public CorsConfigurationSource prodCorsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*"); 
+        config.addAllowedOrigin("http://localhost:3000"); // 프론트엔드 컨테이너
+        config.addAllowedOrigin("http://localhost:5173"); // 개발용
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
