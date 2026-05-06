@@ -1,15 +1,25 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { QuestionApi } from "../../api/QuestionApi";
+import { TagApi } from "../../api/TagApi";
 import type { Question } from "../../types/Question";
+import type { Tag } from "../../types/Tag";
 import "../Questions/QuestionListPage.css";
 
 export default function AdminQuestionListPage() {
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [selectedTag, setSelectedTag] = useState<number | "">("");
 
   useEffect(() => {
-    QuestionApi.list()
-      .then(({ data }) => setQuestions(data))
+    Promise.all([
+      QuestionApi.list(),
+      TagApi.getAll()
+    ])
+      .then(([{ data: questionsData }, { data: tagsData }]) => {
+        setQuestions(questionsData);
+        setTags(tagsData);
+      })
       .catch(console.error);
   }, []);
 
@@ -27,6 +37,10 @@ export default function AdminQuestionListPage() {
     }
   };
 
+  const filteredQuestions = selectedTag === "" 
+    ? questions 
+    : questions.filter(q => q.tagId === selectedTag);
+
   return (
     <div className="questions-container">
       {/* 헤더 */}
@@ -38,58 +52,79 @@ export default function AdminQuestionListPage() {
         </Link>
       </div>
 
-      {/* 리스트 */}
-      <div className="questions-grid">
-        {questions.map((q) => (
-          <div className="question-card admin" key={q.id}>
-            <div className="question-header">
-              <span className="question-year">
-                {q.examYear}년 / {q.round}회차
-              </span>
-              <span className="question-type">{q.tagName}</span>
-            </div>
-
-            <div className="question-body">
-              <h3 className="question-number">#{q.number}.</h3>
-              <p className="question-text">{q.questionText}</p>
-            </div>
-
-            {/* 관리자 액션 */}
-            <div className="question-actions">
-              <Link
-                to={`/admin/questions/${q.id}`}
-                className="btn-primary"
-              >
-                {q.answer ? "답안 수정" : "답안 작성"}
-              </Link>
-
-              <Link
-                to={`/admin/questions/${q.id}/edit`}
-                className="btn-edit"
-              >
-                문제 수정
-              </Link>
-
-              {/* 사용자 화면 확인용 */}
-              <Link
-                to={`/questions/${q.id}`}
-                className="btn-view"
-                target="_blank"
-              >
-                사용자 화면 보기
-              </Link>
-
-              {/* 문제 삭제 */}
-              <button
-                className="btn-delete"
-                onClick={() => deleteQuestion(q.id)}
-              >
-                문제 삭제
-              </button>
-            </div>
-          </div>
-        ))}
+      {/* 필터 */}
+      <div className="filter-section">
+        <label htmlFor="tag-filter">카테고리 필터:</label>
+        <select 
+          id="tag-filter" 
+          value={selectedTag} 
+          onChange={(e) => setSelectedTag(e.target.value === "" ? "" : Number(e.target.value))}
+        >
+          <option value="">전체</option>
+          {tags.map(tag => (
+            <option key={tag.id} value={tag.id}>{tag.name}</option>
+          ))}
+        </select>
       </div>
+
+      {/* 리스트 */}
+      <table className="questions-table">
+        <thead>
+          <tr>
+            <th>연도/회차</th>
+            <th>카테고리</th>
+            <th>문제 번호</th>
+            <th>문제 내용</th>
+            <th>액션</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredQuestions.map((q) => (
+            <tr key={q.id}>
+              <td className="question-year">
+                {q.examYear}년 / {q.round}회차
+              </td>
+              <td>
+                <span className="question-type">{q.tagName}</span>
+              </td>
+              <td className="question-number">#{q.number}</td>
+              <td className="question-text">{q.questionText}</td>
+              <td className="question-actions">
+                <Link
+                  to={`/admin/questions/${q.id}`}
+                  className="btn-primary"
+                >
+                  {q.answer ? "답안 수정" : "답안 작성"}
+                </Link>
+
+                <Link
+                  to={`/admin/questions/${q.id}/edit`}
+                  className="btn-edit"
+                >
+                  문제 수정
+                </Link>
+
+                {/* 사용자 화면 확인용 */}
+                <Link
+                  to={`/questions/${q.id}`}
+                  className="btn-view"
+                  target="_blank"
+                >
+                  사용자 화면 보기
+                </Link>
+
+                {/* 문제 삭제 */}
+                <button
+                  className="btn-delete"
+                  onClick={() => deleteQuestion(q.id)}
+                >
+                  문제 삭제
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
