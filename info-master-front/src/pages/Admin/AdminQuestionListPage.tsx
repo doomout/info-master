@@ -73,7 +73,6 @@ export default function AdminQuestionListPage() {
           <tr>
             <th>연도/회차</th>
             <th>카테고리</th>
-            <th>문제 번호</th>
             <th>문제 내용</th>
             <th>액션</th>
           </tr>
@@ -87,7 +86,6 @@ export default function AdminQuestionListPage() {
               <td>
                 <span className="question-type">{q.tagName}</span>
               </td>
-              <td className="question-number">#{q.number}</td>
               <td className="question-text">{q.questionText}</td>
               <td className="question-actions">
                 <Link
