@@ -73,10 +73,8 @@ export default function PublicQuestionListPage() {
         <thead>
           <tr>
             <th>연도/회차</th>
-            <th>카테고리</th>
-            <th>문제 번호</th>
             <th>문제 내용</th>
-            <th>액션</th>
+            <th>카테고리</th>
           </tr>
         </thead>
         <tbody>
@@ -101,13 +99,12 @@ export default function PublicQuestionListPage() {
               <td className="question-year">
                 {q.examYear}년 / {q.round}회차
               </td>
-              <td>
-                <span className="question-type">{q.tagName}</span>
-              </td>
-              <td className="question-number">#{q.number}</td>
               <td className="question-text">{q.questionText}</td>
               <td className="question-actions">
                 <span className="btn-view-only">자세히 보기</span>
+              </td>
+              <td>
+                <span className="question-type">{q.tagName}</span>
               </td>
             </tr>
           ))}

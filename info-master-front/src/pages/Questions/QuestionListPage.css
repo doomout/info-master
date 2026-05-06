@@ -212,8 +212,9 @@
 }
 
 .questions-table .btn-edit {
-  background-color: #f59e0b;
+  background-color: #dc2626;
   color: white;
+  font-weight: 600;
 }
 
 .questions-table .btn-view {
@@ -235,11 +236,17 @@
 .btn-create {
   background-color: #2563eb;
   color: white;
-  padding: 8px 16px;
+  padding: 10px 20px;
   border-radius: 6px;
   text-decoration: none;
-  font-weight: 500;
-  font-size: 0.9rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: inline-block;
+  transition: background-color 0.2s ease;
+}
+
+.btn-create:hover {
+  background-color: #1d4ed8;
 }
 
 /* =========================
