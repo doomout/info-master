@@ -13,8 +13,6 @@ import PublicQuestionDetailPage from "./pages/Public/PublicQuestionDetailPage";
 import AdminHomePage from "./pages/Admin/AdminHomePage";
 import AdminRouteGuard from "./routes/AdminRoute";
 
-import AdminQuestionListPage from "./pages/Admin/AdminQuestionListPage";
-import AdminQuestionDetailPage from "./pages/Admin/AdminQuestionDetailPage";
 import AdminQuestionCreatePage from "./pages/Admin/AdminQuestionCreatePage";
 import AdminQuestionEditPage from "./pages/Admin/AdminQuestionEditPage";
 
@@ -45,9 +43,9 @@ export default function App() {
             <Route index element={<AdminHomePage />} />
 
             {/* 문제 관리 */}
-            <Route path="questions" element={<AdminQuestionListPage />} />
+            <Route path="questions" element={<PublicQuestionListPage />} />
             <Route path="questions/create" element={<AdminQuestionCreatePage />} />
-            <Route path="questions/:id" element={<AdminQuestionDetailPage />} />
+            <Route path="questions/:id" element={<PublicQuestionDetailPage />} />
             <Route path="questions/:id/edit" element={<AdminQuestionEditPage />} />
 
             {/* 카테고리 관리 */}
