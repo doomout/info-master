@@ -56,7 +56,7 @@ export default function PublicQuestionListPage() {
   }, []);    
   
   return (
-    <div className="questions-container">
+    <div className={`questions-container ${isAdminMode ? 'admin-mode' : ''}`}>
       <div className="questions-header">
         <h2>문제 목록</h2>
         <p className="questions-desc">
